@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 17.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .figgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0; }
+    .figcard { border:1px solid #D0D9E8; border-top:3px solid #5A2A82; border-radius:8px; padding:12px 16px; }
+    .figcard .fn { font-family:Georgia,serif; font-size:16px; color:#0e1c42; margin-bottom:3px; }
+    .figcard .fd { font-size:13px; color:#6b7a99; }
+    @media(max-width:640px){ .figgrid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:15px; background:#C7922C; color:#fff; border-radius:12px; padding:3px 12px; vertical-align:middle; letter-spacing:.5px;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 17</div>
+        <div style="font-size: 12px; color: #666;">Roman Figure Study &middot; Honors</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 17.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">The seven figures &amp; three angles</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Voices of the Late Republic</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 17.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Choose One &mdash; The Seven Approved Figures</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you learned what the project is. Today you decide <em>whom</em> it's about &mdash; and learn the three angles you'll study them from.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Seven figures are approved, all of them tied to texts you have read this semester. You will meet each one, see how they connect to your reading, and learn the <strong>three research angles</strong> &mdash; biography, reception, and language &mdash; that will structure your work. By the end of this lesson, make your choice: you will work with this figure for the whole project.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> identify the seven approved figures and the text I have read that connects to each.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> apply the three research angles &mdash; biography &amp; achievement, reception, and language &mdash; to any figure.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">What you're deciding today</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Before you see the list: what would make a figure a <em>good</em> choice for you?</div>
+            <div class="widget-options">
+                <button data-response="Sound reasoning. A figure with abundant surviving Latin gives you real options for the 55-point translation &mdash; the heart of the project.">Plenty of primary-source Latin to draw on</button>
+                <button data-response="A strong honors angle. A figure whose reputation shifted over the centuries makes the reception section genuinely interesting to write.">A reputation that changed over time</button>
+                <button data-response="Perfectly valid. Personal interest sustains a long project &mdash; just confirm your figure has an authentic passage you can actually find and translate.">Someone I simply find fascinating</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE SEVEN FIGURES <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Choose one &mdash; you'll work with this figure for the whole project</h3>
+        <div class="figgrid">
+            <div class="figcard"><div class="fn">Marcus Tullius Cicero</div><div class="fd">106&ndash;43 BC &middot; Orator, philosopher, consul</div></div>
+            <div class="figcard"><div class="fn">Marcus Porcius Cato (the Elder)</div><div class="fd">234&ndash;149 BC &middot; Censor, historian, moralist</div></div>
+            <div class="figcard"><div class="fn">Publius Cornelius Scipio Africanus</div><div class="fd">236&ndash;183 BC &middot; General, victor at Zama</div></div>
+            <div class="figcard"><div class="fn">Gnaeus Pompeius Magnus (Pompey)</div><div class="fd">106&ndash;48 BC &middot; General, first triumvir</div></div>
+            <div class="figcard"><div class="fn">Marcus Vipsanius Agrippa</div><div class="fd">63&ndash;12 BC &middot; Admiral, builder, Augustus's general</div></div>
+            <div class="figcard"><div class="fn">Gaius Cilnius Maecenas</div><div class="fd">70&ndash;8 BC &middot; Patron of the arts, advisor to Augustus</div></div>
+            <div class="figcard"><div class="fn">Gaius Iulius Caesar</div><div class="fd">100&ndash;44 BC &middot; General, dictator, author</div></div>
+        </div>
+        <div class="culture-box">
+            <div class="lbl">&#128220; ALL SEVEN CONNECT TO YOUR READING</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.65;margin:0;"><strong>Every one of these figures appears in, or is discussed by, at least one text you have read this semester.</strong> You have read Cicero in depth (M09&ndash;M16); you encountered <strong>Pompey</strong> in <span class="lat">Pro Archi&#257;</span>, <strong>Cato</strong> in <span class="lat">De Senect&#363;te</span>, and <strong>Scipio Africanus</strong> through Laelius in <span class="lat">De Amiciti&#257;</span>. <strong>Caesar, Agrippa,</strong> and <strong>Maecenas</strong> emerge more fully in Semester 2 &mdash; choosing one of them makes your capstone a preview of what's ahead.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; THE THREE ANGLES <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">How to study a Roman figure</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">A strong figure study looks at its subject from three directions. Keep all three in view as you research.</p>
+        <div style="background:#F1EBF6;border:1px solid #D4C2E4;border-left:5px solid #5A2A82;border-radius:8px;padding:14px 18px;margin:10px 0;">
+            <div style="font-size:11px;color:#5A2A82;letter-spacing:.4px;margin-bottom:6px;">1 &middot; BIOGRAPHY &amp; ACHIEVEMENT</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">What did this person do? What made them historically significant? What primary sources &mdash; Latin texts &mdash; exist from or about them?</p>
+        </div>
+        <div style="background:#F1EBF6;border:1px solid #D4C2E4;border-left:5px solid #5A2A82;border-radius:8px;padding:14px 18px;margin:10px 0;">
+            <div style="font-size:11px;color:#5A2A82;letter-spacing:.4px;margin-bottom:6px;">2 &middot; RECEPTION</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">How has this figure been interpreted &mdash; by later Romans, by Renaissance humanists, by modern historians? Are they controversial?</p>
+        </div>
+        <div style="background:#F1EBF6;border:1px solid #D4C2E4;border-left:5px solid #5A2A82;border-radius:8px;padding:14px 18px;margin:10px 0;">
+            <div style="font-size:11px;color:#5A2A82;letter-spacing:.4px;margin-bottom:6px;">3 &middot; LANGUAGE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">What Latin vocabulary and texts are associated with this figure? Can you find an authentic Latin passage &mdash; from their own writing or a contemporary's &mdash; that illuminates their character or significance?</p>
+        </div>
+        <p style="font-size: 16px; color: #1a2340; line-height: 1.6; margin: 10px 0 0;">Your project requires a Latin primary-source text of about <strong>4&ndash;8 lines</strong> to translate. It does not have to be difficult Latin &mdash; but it must be <strong>authentic</strong>: a primary source, not a later summary. Tomorrow you'll learn exactly how to find and vet one.</p>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; KNOW YOUR FIELD <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks connecting figures to texts and angles. These are the facts you'll build on &mdash; take them slowly.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; figure &amp; text</div>
+            <div class="widget-question">Which figure did you encounter through Laelius in <span class="lat">De Amiciti&#257;</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">Pompey</button>
+                <button data-correct="true">Scipio Africanus</button>
+                <button data-correct="false">Maecenas</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; figure &amp; text</div>
+            <div class="widget-question">In which text did you encounter Pompey this semester?</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">Pro Archi&#257;</span></button>
+                <button data-correct="false"><span class="lat">De Senect&#363;te</span></button>
+                <button data-correct="false"><span class="lat">De Amiciti&#257;</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the S2 preview</div>
+            <div class="widget-question">Choosing which figure makes the capstone a preview of Semester 2?</div>
+            <div class="widget-options">
+                <button data-correct="false">Cicero</button>
+                <button data-correct="false">Cato the Elder</button>
+                <button data-correct="true">Agrippa, Maecenas, or Caesar</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the angles</div>
+            <div class="widget-question">Asking "how did Renaissance humanists interpret this figure?" belongs to which research angle?</div>
+            <div class="widget-options">
+                <button data-correct="false">Biography &amp; achievement</button>
+                <button data-correct="true">Reception</button>
+                <button data-correct="false">Language</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the passage rule</div>
+            <div class="widget-question">Your Latin passage must be roughly how long, and of what kind?</div>
+            <div class="widget-options">
+                <button data-correct="false">1&ndash;2 lines, from any source including summaries</button>
+                <button data-correct="false">A whole speech, in your own paraphrase</button>
+                <button data-correct="true">About 4&ndash;8 lines, authentic primary source</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit now: name the figure you will study and one reason. Say it out loud (or jot it), then reveal a way to pressure-test your choice.</p>
+            <button class="reveal-btn">Reveal a checklist</button>
+            <div class="reveal-body">Before you lock it in, confirm: (1) Can I find an <strong>authentic Latin passage</strong> of 4&ndash;8 lines connected to this figure? (2) Is there enough on their <strong>biography and reception</strong> to write a full profile? (3) Does the passage contain <strong>key words</strong> with English descendants for the etymology section? If all three are yes, you have a strong choice.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 17.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you learn to find and vet an authentic primary source, and you meet the Latin research vocabulary &mdash; <span class="lat">fons, auctor, testimonium</span> &mdash; that scholars use to talk about sources.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then write your chosen figure's full Latin name at the top of a fresh research page &mdash; that name is where the whole project begins.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE CHOICE IS MADE</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">One Roman, three angles. You have your subject and your framework. Tomorrow you go hunting for their words.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 17.02 &middot; The seven figures &amp; three angles</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that connection is exactly right.'
+        : 'Not quite — check the figure-and-text box or the three-angles list above, then try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

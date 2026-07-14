@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 2.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    .warn-box { background:#FBEDEB; border:1px solid #E7C0B9; border-left:5px solid #C0392B; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .warn-box .lbl { font-size:11px; color:#A5341F; letter-spacing:.4px; margin-bottom:6px; }
+    .vgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+    .vcard { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; }
+    .vcard .vlat { font-style:italic; color:#0E1C42; font-size:16px; }
+    .vcard .veng { font-size:14px; color:#6b7a99; margin-top:2px; }
+    .vcard .vtag { display:inline-block; background:#5A2A82; color:#fff; font-size:10px; border-radius:10px; padding:1px 8px; margin-top:6px; letter-spacing:.4px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} .vgrid{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:15px; background:#C7922C; color:#fff; border-radius:4px; padding:3px 9px; vertical-align:middle; letter-spacing:1px;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 02</div>
+        <div style="font-size: 12px; color: #666;">Deponent Verbs II &amp; Semi-Deponents</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 2.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Semi-deponents &amp; vocabulary</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Plautus &middot; <em>M&#299;les Gl&#333;ri&#333;sus</em></div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 2.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> The Verb With a Split Personality</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 38 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">A semi-deponent is active in the present, deponent in the perfect. Half one thing, half another &mdash; and reliably so.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Today you learn <span class="lat">aude&#333;, aud&#275;re, ausus sum</span> &mdash; a verb that behaves normally in the present system, then switches to passive-form / active-meaning in the perfect. You'll also lock in the module's full vocabulary set, the words you'll need when you open Plautus tomorrow.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> conjugate the semi-deponent <span class="lat">aude&#333;</span> and translate its perfect-system forms actively.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> use the module's vocabulary, including the ablative object required by <span class="lat">&#363;tor</span>.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 1 &middot; THE SEMI-DEPONENT <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><span class="lat">aude&#333;</span> &mdash; active now, deponent later</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">A <strong>semi-deponent</strong> uses active forms in the present system (present, imperfect, future) but deponent forms &mdash; passive ending, active meaning &mdash; in the perfect system.</p>
+        <div class="etym-box">
+            <div class="lbl">&#128220; RULE 3 &middot; RECOGNIZING A SEMI-DEPONENT</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Dictionary signal: active present infinitive + passive-form perfect. <span class="lat">Aude&#333;, aud&#275;re, <strong>ausus sum</strong></span>. The present <span class="lat">audet</span> = &ldquo;he dares&rdquo; (active form); the perfect <span class="lat">ausus est</span> = &ldquo;he dared&rdquo; (passive form, active meaning).</p>
+        </div>
+        <div class="contrast">
+            <div class="col a">
+                <h4><span class="lat">aude&#333;</span> &mdash; Present (active forms)</h4>
+                <table class="gtable" style="margin:0;">
+                    <tbody>
+                        <tr><td><span class="lat">aude&#333;</span></td><td>I dare</td></tr>
+                        <tr><td><span class="lat">aud&#275;s</span></td><td>you dare</td></tr>
+                        <tr><td><span class="lat">audet</span></td><td>he/she dares</td></tr>
+                        <tr><td><span class="lat">aud&#275;mus</span></td><td>we dare</td></tr>
+                        <tr><td><span class="lat">aud&#275;tis</span></td><td>you all dare</td></tr>
+                        <tr><td><span class="lat">audent</span></td><td>they dare</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col b">
+                <h4><span class="lat">aude&#333;</span> &mdash; Perfect (deponent forms)</h4>
+                <table class="gtable" style="margin:0;">
+                    <tbody>
+                        <tr><td><span class="lat">ausus sum</span></td><td>I (have) dared</td></tr>
+                        <tr><td><span class="lat">ausus es</span></td><td>you (have) dared</td></tr>
+                        <tr><td><span class="lat">ausus est</span></td><td>he/she (has) dared</td></tr>
+                        <tr><td><span class="lat">aus&#299; sumus</span></td><td>we (have) dared</td></tr>
+                        <tr><td><span class="lat">aus&#299; estis</span></td><td>you all (have) dared</td></tr>
+                        <tr><td><span class="lat">aus&#299; sunt</span></td><td>they (have) dared</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="warn-box">
+            <div class="lbl">&#9888;&#65039; COMMON CONFUSION</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Do NOT read <span class="lat">ausus est</span> as passive (&ldquo;he was dared&rdquo;). The perfect participle <span class="lat">ausus</span> of a semi-deponent carries <strong>active</strong> meaning. A real passive perfect from a different verb would be e.g., <span class="lat">aud&#299;tus est</span> (&ldquo;he was heard&rdquo;).</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; MODULE VOCABULARY <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The words for the week</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Learn these as full dictionary entries &mdash; the principal parts are how you'll recognize each verb's type on sight.</p>
+        <div class="vgrid">
+            <div class="vcard"><div class="vlat">loquor, loqu&#299;, loc&#363;tus sum</div><div class="veng">to speak, talk</div><span class="vtag">3rd dep.</span></div>
+            <div class="vcard"><div class="vlat">sequor, sequ&#299;, sec&#363;tus sum</div><div class="veng">to follow</div><span class="vtag">3rd dep.</span></div>
+            <div class="vcard"><div class="vlat">&#363;tor, &#363;t&#299;, &#363;sus sum (+abl.)</div><div class="veng">to use</div><span class="vtag">3rd dep.</span></div>
+            <div class="vcard"><div class="vlat">patior, pat&#299;, passus sum</div><div class="veng">to suffer, endure; allow</div><span class="vtag">3rd-i&#333; dep.</span></div>
+            <div class="vcard"><div class="vlat">morior, mor&#299;, mortuus sum</div><div class="veng">to die</div><span class="vtag">3rd-i&#333; dep.</span></div>
+            <div class="vcard"><div class="vlat">orior, or&#299;r&#299;, ortus sum</div><div class="veng">to rise, arise, begin</div><span class="vtag">4th dep.</span></div>
+            <div class="vcard"><div class="vlat">aude&#333;, aud&#275;re, ausus sum</div><div class="veng">to dare</div><span class="vtag">semi-dep.</span></div>
+            <div class="vcard"><div class="vlat">dolus, -&#299;, m.</div><div class="veng">trick, scheme, deceit</div><span class="vtag">noun</span></div>
+        </div>
+        <div class="warn-box" style="background:#FDF7E9;border-color:#E4C9A8;border-left-color:#C7922C;">
+            <div class="lbl" style="color:#9a7b1e;">&#128161; DON'T MISS &middot; &#363;TOR TAKES THE ABLATIVE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">&#363;tor</span> does not take an accusative object &mdash; it governs the <strong>ablative</strong>. &ldquo;I use the plan&rdquo; is <span class="lat">c&#333;nsili&#333; &#363;tor</span>, literally something like &ldquo;I make myself useful <em>with</em> the plan.&rdquo; Watch for this in tomorrow's reading.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; APPLY IT <span class="pill-time">13 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps &mdash; semi-deponent forms and the module vocabulary. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate the perfect</div>
+            <div class="widget-question"><span class="lat">Ausus est.</span> What does this semi-deponent form mean?</div>
+            <div class="widget-options">
+                <button data-correct="true">he dared</button>
+                <button data-correct="false">he was dared</button>
+                <button data-correct="false">he dares</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which system is active?</div>
+            <div class="widget-question">In a semi-deponent like <span class="lat">aude&#333;</span>, which forms use <em>active</em> endings?</div>
+            <div class="widget-options">
+                <button data-correct="false">the perfect system only</button>
+                <button data-correct="true">the present system (present, imperfect, future)</button>
+                <button data-correct="false">none &mdash; it is fully deponent</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; case with &#363;tor</div>
+            <div class="widget-question">The verb <span class="lat">&#363;tor</span> takes an object in which case?</div>
+            <div class="widget-options">
+                <button data-correct="false">accusative</button>
+                <button data-correct="false">genitive</button>
+                <button data-correct="true">ablative</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; not a passive</div>
+            <div class="widget-question">Which form is a genuine passive perfect (&ldquo;was heard&rdquo;) &mdash; NOT a semi-deponent?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">ausus est</span></button>
+                <button data-correct="true"><span class="lat">aud&#299;tus est</span></button>
+                <button data-correct="false"><span class="lat">loc&#363;tus est</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question">What does the noun <span class="lat">dolus, -&#299;, m.</span> mean?</div>
+            <div class="widget-options">
+                <button data-correct="false">grief, pain</button>
+                <button data-correct="true">trick, scheme, deceit</button>
+                <button data-correct="false">master, lord</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit first: translate <span class="lat">Sequ&#299; c&#333;nsili&#333; t&#363;&#333; &#363;t&#299; ausus sum</span> and name the verb type of <span class="lat">ausus sum</span>. Say it aloud, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">&ldquo;I dared to follow and to use your plan.&rdquo; <span class="lat">ausus sum</span> is the perfect of the <strong>semi-deponent</strong> <span class="lat">aude&#333;</span> &mdash; passive in form, active in meaning; <span class="lat">sequ&#299;</span> and <span class="lat">&#363;t&#299;</span> are deponent infinitives, and <span class="lat">c&#333;nsili&#333;</span> is ablative because <span class="lat">&#363;tor</span> governs the ablative.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 2.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read authentic Plautus &mdash; an adapted passage from <em>M&#299;les Gl&#333;ri&#333;sus</em>, Acts II&ndash;III &mdash; and watch the clever slave Palaestrio spin a scheme using the very deponents you've just mastered.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then say aloud why <span class="lat">ausus est</span> means &ldquo;he dared&rdquo; and not &ldquo;he was dared&rdquo; &mdash; and give the case that <span class="lat">&#363;tor</span> requires.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE TOOLKIT IS COMPLETE</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Deponents across three conjugations, the semi-deponent, and the words to read with. Tomorrow you put them to work on real Latin comedy.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 2.03 &middot; Semi-deponents &amp; vocabulary</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — passive in form, active in meaning, and the vocabulary is landing.'
+        : 'Not quite — recheck the semi-deponent rule (or the vocabulary entry) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

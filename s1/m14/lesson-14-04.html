@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 14.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FBFAF7; border:1px solid #E4DCCB; border-radius:8px; padding:16px 20px; margin:14px 0; }
+    .passage .pt { font-size:12px; color:#9a7b1e; letter-spacing:.3px; margin-bottom:10px; font-style:italic; }
+    .passage .ln { color:#b9a98e; font-size:12px; margin-right:8px; }
+    .passage .row { font-family:Georgia,'Times New Roman',serif; font-size:17px; color:#1a2340; line-height:1.8; margin-bottom:6px; }
+    .gloss { font-size:13px; color:#6b7a99; line-height:1.7; border-top:1px solid #E4DCCB; padding-top:10px; margin-top:10px; }
+    .gloss strong { color:#0e1c42; }
+    .ctr-item { border:1px solid #D0D9E8; border-radius:8px; padding:12px 16px; margin:12px 0; }
+    .ctr-item .s-lat { font-family:Georgia,serif; font-size:16px; color:#0e1c42; display:block; margin-bottom:8px; }
+    .ctr-item textarea { width:100%; box-sizing:border-box; border:1px solid #D0D9E8; border-radius:6px; padding:8px 10px; font-size:14px; font-family:inherit; color:#1a2340; min-height:52px; resize:vertical; margin-bottom:8px; }
+    .ctr-item textarea:focus { outline:none; border-color:#0E1C42; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:15px; background:#5A2A82; color:#fff; border-radius:12px; padding:2px 12px; vertical-align:middle;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 14</div>
+        <div style="font-size: 12px; color: #666;">Advanced Cicero Reading I</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 14.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading Cicero</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Cicero &mdash; Friendship &amp; Age</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 14.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Cicero &mdash; Friendship, then Age</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Strategy, syntax, vocabulary &mdash; today they all serve the text.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Two lightly adapted passages of Cicero: <em>De Amicitia</em> 20&ndash;22 and <em>De Senectute</em> 6&ndash;9. Read each with the five-step strategy from Lesson 14.01. Then you will <em>commit</em> your own translation of three key sentences before revealing a model &mdash; the honest way to know whether you can read at this level.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate lightly adapted Cicero on friendship and old age, naming the constructions as I go.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain Cicero's central claims &mdash; that friendship rests on virtue, and that old age well-lived is not to be feared.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; LITERARY READING I <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">On Friendship &mdash; <em>De Amicitia</em> 20&ndash;22</h3>
+        <p style="font-size: 16px; color: #1a2340; line-height: 1.6; margin: 0 0 6px;">Read the whole passage aloud first. Find each main verb, then the subordinate triggers, before you translate.</p>
+        <div class="passage">
+            <div class="pt">D&#275; Am&#299;citi&#257; &mdash; Laelius speaks to Fannius and Mucius Scaevola (adapted)</div>
+            <div class="row"><span class="ln">1.</span>Nihil est am&#299;citi&#257; praestabilius, nihil tam aptum ad i&#363;cunditātem v&#299;vend&#299;, nihil tam difficile quod am&#299;cus n&#333;n praest&#257;re possit.</div>
+            <div class="row"><span class="ln">2.</span>Am&#299;citia enim ex e&#257; rad&#299;ce n&#257;scitur quae virt&#363;s vocātur &mdash; sine virt&#363;te am&#299;citia esse n&#333;n potest.</div>
+            <div class="row"><span class="ln">3.</span>Qu&#299; semel in am&#299;citiam recēperit eum, is dēbet eum tamquam alterum sē ipsum habēre.</div>
+            <div class="row"><span class="ln">4.</span>Sunt qu&#299; putent &#363;tilitātem esse vinculum am&#299;citiae &mdash; at err&#333;: n&#333;n enim &#363;tilitās am&#299;citiam pepercit, sed am&#299;citia &#363;tilitātem.</div>
+            <div class="row"><span class="ln">5.</span>Laelius record&#257;b&#257;tur Sc&#299;pi&#333;nis tamquam eius qu&#299; nusquam abfut&#363;rus esset &mdash; ita v&#299;vus in anim&#333; manēbat.</div>
+            <div class="row"><span class="ln">6.</span>N&#333;b&#299;s difficillimum est ut sine am&#299;c&#333; v&#299;vāmus &mdash; at facilius sine mult&#299;s ali&#299;s rēbus.</div>
+            <div class="row"><span class="ln">7.</span>Omnia quae ad v&#299;tam beātam pertinent am&#299;citia continet &mdash; nēm&#333; est qu&#299; sine e&#257; beātus esse possit.</div>
+            <div class="row"><span class="ln">8.</span>Haec tanta est vis am&#299;citiae ut, s&#299; quis Sc&#299;pi&#333;nem Laeliumque v&#299;disset, n&#333;n intellegeret uter dominus, uter hospes esset.</div>
+            <div class="gloss"><strong>Gloss:</strong> praestabilius &mdash; more excellent, more outstanding &middot; i&#363;cunditātem v&#299;vend&#299; &mdash; the pleasantness of living (gerund) &middot; rad&#299;ce &mdash; root (abl. of source) &middot; semel &mdash; once, ever &middot; recēperit &mdash; has received (perf. subj.; primary sequence) &middot; alterum sē ipsum &mdash; a second self &middot; vinculum &mdash; bond, chain &middot; pepercit &mdash; here in a play on words, &ldquo;produced&rdquo; (the text turns an unusual usage) &middot; abfut&#363;rus esset &mdash; was going to be absent (fut. inf. in indirect statement, secondary sequence) &middot; beātam &mdash; happy, blessed &middot; pertinent &mdash; belong to, pertain to &middot; uter &mdash; which of the two &middot; hospes &mdash; guest-friend</div>
+        </div>
+        <div class="culture-box">
+            <div class="lbl">&#128220; LITERARY CONTEXT &middot; DE AMICITIA</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.65;margin:0;">Cicero wrote <em>De Amicitia</em> in 44 BC, shortly after the assassination of Caesar and the death of his beloved daughter Tullia. The dialogue is set fictitiously in 129 BC: the statesman Laelius speaks to his sons-in-law about his friendship with the recently dead Scipio Africanus the Younger. The dramatic irony &mdash; a man explaining friendship through the death of a friend, while Cicero himself is about to lose everything &mdash; is not accidental.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; LITERARY READING II <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">On Old Age &mdash; <em>De Senectute</em> 6&ndash;9</h3>
+        <div class="passage">
+            <div class="pt">D&#275; Senect&#363;te &mdash; Cato Major speaks of age and wisdom (adapted)</div>
+            <div class="row"><span class="ln">9.</span>N&#333;n est enim senect&#363;s obiicienda &mdash; n&#333;n est illud tempus quod pertimēscendum sit.</div>
+            <div class="row"><span class="ln">10.</span>Qu&#299; recte v&#299;xerit ac bene m&#333;rātus fuerit, is senect&#363;tem n&#333;n timet sed expectat.</div>
+            <div class="row"><span class="ln">11.</span>Cat&#333; record&#257;b&#257;tur quam multa studia, quam mult&#299; am&#299;c&#299;, quam magnae rēs gestae in v&#299;t&#257; fuissent.</div>
+            <div class="row"><span class="ln">12.</span>Illa quae multa et magna ēgimus in adulēscenti&#257; &mdash; n&#333;nne ad senect&#363;tem memoriae i&#363;cunditātem afferunt?</div>
+            <div class="gloss"><strong>Gloss:</strong> obiicienda &mdash; to be objected to / cast against (gerundive, passive periphrastic) &middot; pertimēscendum sit &mdash; ought to be greatly feared (gerundive + sit = subjunctive periphrastic; characteristic) &middot; recte v&#299;xerit &mdash; has lived rightly (perf. subj.; primary sequence) &middot; bene m&#333;rātus fuerit &mdash; has been of good character (perf. subj. of deponent m&#333;ror) &middot; record&#257;b&#257;tur &mdash; recalled (imperfect deponent) &middot; fuissent &mdash; pluperf. subj. (indirect question, secondary sequence) &middot; adulēscenti&#257; &mdash; youth &middot; memoriae i&#363;cunditātem &mdash; the pleasantness to memory (dat. + acc.)</div>
+        </div>
+        <div class="culture-box">
+            <div class="lbl">&#128220; LITERARY CONTEXT &middot; DE SENECTUTE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.65;margin:0;">Written in 44 BC alongside <em>De Amicitia</em>, <em>De Senectute</em> features the elder Cato (234&ndash;149 BC) as speaker. Cicero was 62 when he wrote it &mdash; in political exile from power after Caesar's death. The book is partly consolation, partly philosophical argument: that old age is not the deprivation of life's goods but their transformation. Reading it alongside <em>De Amicitia</em>, you see Cicero in conversation with death, loss, and the meaning of a life well lived.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9997;&#65039; PART 3 &middot; COMMIT, THEN REVEAL <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Three sentences from the reading</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Write your own translation in the box <em>before</em> you reveal. This is the honest test of whether you read it or only recognized it.</p>
+        <div class="ctr-item">
+            <span class="s-lat">1. Am&#299;citia enim ex e&#257; rad&#299;ce n&#257;scitur quae virt&#363;s vocātur &mdash; sine virt&#363;te am&#299;citia esse n&#333;n potest.</span>
+            <textarea placeholder="Your translation&hellip;"></textarea>
+            <button class="reveal-btn">Reveal model</button>
+            <div class="reveal-body">For friendship is born from that root which is called virtue &mdash; without virtue friendship cannot exist. <em style="color:#2A9D5C;">quae virt&#363;s vocātur = ordinary relative clause, indicative. n&#257;scitur = deponent present. esse n&#333;n potest = complementary infinitive.</em></div>
+        </div>
+        <div class="ctr-item">
+            <span class="s-lat">2. Haec tanta est vis am&#299;citiae ut, s&#299; quis Sc&#299;pi&#333;nem Laeliumque v&#299;disset, n&#333;n intellegeret uter dominus, uter hospes esset.</span>
+            <textarea placeholder="Your translation&hellip;"></textarea>
+            <button class="reveal-btn">Reveal model</button>
+            <div class="reveal-body">So great is the power of friendship that, if anyone had seen Scipio and Laelius, he would not have understood which was the host, which the guest. <em style="color:#2A9D5C;">Tanta est&hellip;ut = result clause. s&#299;&hellip;v&#299;disset&hellip;intellegeret = mixed contrary-to-fact condition (past protasis, present apodosis). uter&hellip;uter = indirect question nested inside the result clause.</em></div>
+        </div>
+        <div class="ctr-item">
+            <span class="s-lat">3. Qu&#299; recte v&#299;xerit ac bene m&#333;rātus fuerit, is senect&#363;tem n&#333;n timet sed expectat.</span>
+            <textarea placeholder="Your translation&hellip;"></textarea>
+            <button class="reveal-btn">Reveal model</button>
+            <div class="reveal-body">Whoever has lived rightly and has been of good character, that person does not fear old age but awaits it. <em style="color:#2A9D5C;">qu&#299;&hellip;v&#299;xerit/fuerit = relative clause of characteristic (indefinite antecedent + perfect subjunctive). is = correlative pronoun referring back to qu&#299;.</em></div>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; CHECK YOUR READING <span class="pill-time">6 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test the syntax, some the sense of the passages. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the claim</div>
+            <div class="widget-question">In line 2, what does Cicero say friendship is born from?</div>
+            <div class="widget-options">
+                <button data-correct="false">usefulness (<span class="lat">&#363;tilitās</span>)</button>
+                <button data-correct="true">virtue (<span class="lat">virt&#363;s</span>)</button>
+                <button data-correct="false">pleasure (<span class="lat">i&#363;cunditās</span>)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; construction</div>
+            <div class="widget-question">In line 8, <span class="lat">tanta est vis&hellip;ut&hellip;nōn intellegeret</span> is what construction?</div>
+            <div class="widget-options">
+                <button data-correct="false">a purpose clause</button>
+                <button data-correct="false">an indirect command</button>
+                <button data-correct="true">a result clause</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the image</div>
+            <div class="widget-question">Line 3 says a true friend should be held as what?</div>
+            <div class="widget-options">
+                <button data-correct="true">a second self (<span class="lat">alterum sē ipsum</span>)</button>
+                <button data-correct="false">a useful ally</button>
+                <button data-correct="false">a guest in one's house</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; De Senectute</div>
+            <div class="widget-question">According to line 10, who does <em>not</em> fear old age?</div>
+            <div class="widget-options">
+                <button data-correct="false">the person who has grown wealthy</button>
+                <button data-correct="false">the person who has avoided public life</button>
+                <button data-correct="true">the person who has lived rightly and been of good character</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; sequence</div>
+            <div class="widget-question">In line 11, <span class="lat">recordābātur&hellip;fuissent</span>, why is <span class="lat">fuissent</span> pluperfect subjunctive?</div>
+            <div class="widget-options">
+                <button data-correct="false">it is a contrary-to-fact condition</button>
+                <button data-correct="true">indirect question in secondary sequence, action prior to a past main verb</button>
+                <button data-correct="false">it is a passive periphrastic</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which passage felt harder to read today?</div>
+            <div class="widget-options">
+                <button data-response="Understandable — De Amicitia has the longest period (line 8) with a condition and an indirect question nested in a result clause. Reread it with the five-step strategy and it unlocks.">De Amicitia &mdash; the nested clauses</button>
+                <button data-response="Fair — De Senectute leans on the periphrastics and an indirect question. If the gerundive forms slowed you down, revisit Lesson 14.02, Part 2.">De Senectute &mdash; the periphrastics</button>
+                <button data-response="Great — hold onto that fluency, but keep naming constructions as you go so the Module Quiz and Translation Assignment stay easy.">Honestly, both read smoothly</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit first: in one sentence, how do the two works speak to each other? Think it through, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">Both were written in 44 BC as Cicero faced Caesar's death, his daughter's death, and his own political end. <em>De Amicitia</em> argues that a life is made good by friendship rooted in virtue; <em>De Senectute</em> argues that such a life, well lived, makes even old age and the approach of death not something to fear but something whose memories bring pleasure. Together they are Cicero's consolation to himself.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 14.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the module together with mixed practice, then move to the graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then, in three sentences, retell what Cicero claims about friendship and old age &mdash; using <span class="lat">amīcitia</span>, <span class="lat">virtūs</span>, and <span class="lat">senectūs</span> at least once each.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ CICERO TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Real periods, real philosophy &mdash; and you named the constructions as you went. One day of consolidation and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; HONORS &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 14.04 &middot; Reading Cicero</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that is the right reading.'
+        : 'Not quite — reconsider the construction and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

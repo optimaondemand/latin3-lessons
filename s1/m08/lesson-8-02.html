@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 8.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .rule-box { background:#F4F6FA; border:1px solid #D0D9E8; border-left:4px solid #5A2A82; border-radius:6px; padding:14px 18px; margin:12px 0; }
+    .rule-box .rl { font-size:11px; color:#5A2A82; letter-spacing:.3px; margin-bottom:6px; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:16px; color:#C7922C; letter-spacing:1px;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Sem 1 &middot; Module 08</div>
+        <div style="font-size: 12px; color: #666;">Cum Clauses &mdash; Four Types</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 8.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">The four types by name</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius: The Werewolf</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 8.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Temporal, Historical, Causal, Concessive</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you made the first cut &mdash; indicative or subjunctive. Today you name all four types and learn a diagnostic order that never fails.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">The conjunction <span class="lat">cum</span> introduces four clause types: one indicative and three subjunctive. Each has a signal. Master the four rules and the <strong>tamen test</strong> today, and by the end of the week you will classify <span class="lat">cum</span> clauses on sight &mdash; the way an experienced reader does.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> state the four <span class="lat">cum</span> types, the mood each takes, and the signal that identifies it.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> apply the <em>tamen</em> test and the diagnostic order to classify any <span class="lat">cum</span> clause.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> justify each classification by pointing to context, not guesswork.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 1 &middot; THE FOUR RULES <span class="pill-time">16 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><em>Cum</em>: when, since, although</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;"><span class="lat">Cum</span> with the indicative is a simple temporal clause. <span class="lat">Cum</span> with the subjunctive is one of three nuanced types &mdash; historical, causal, or concessive &mdash; and context tells you which.</p>
+        <div class="rule-box">
+            <div class="rl">RULE 1 &middot; TEMPORAL CUM (INDICATIVE)</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">Cum</span> + <strong>indicative</strong>: &ldquo;when / whenever&rdquo; &mdash; a simple time reference, often with present or future tense. <span class="lat">Cum R&#333;mae erat, multa v&#299;dit</span> &mdash; &ldquo;When he was in Rome, he saw many things.&rdquo; The indicative signals a simple, neutral time relationship.</p>
+        </div>
+        <div class="rule-box">
+            <div class="rl">RULE 2 &middot; HISTORICAL / CIRCUMSTANTIAL CUM (SUBJUNCTIVE)</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">Cum</span> + <strong>imperfect or pluperfect subjunctive</strong> in past narrative: &ldquo;when&rdquo; &mdash; describes the circumstances surrounding the main action. Often called <span class="lat">cum</span> historicum or <span class="lat">cum</span> circumstantial. <span class="lat">Cum haec d&#299;xisset, abiit</span> &mdash; &ldquo;When he had said these things, he left.&rdquo; Recognizable by: past narrative context, imperfect or pluperfect subjunctive, no marker of cause or concession.</p>
+        </div>
+        <div class="rule-box">
+            <div class="rl">RULE 3 &middot; CAUSAL CUM (SUBJUNCTIVE)</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">Cum</span> + subjunctive: &ldquo;since, because&rdquo; &mdash; the <span class="lat">cum</span> clause gives the reason for the main action. <span class="lat">Cum esset d&#299;ves, mult&#333;s am&#299;c&#333;s hab&#275;bat</span> &mdash; &ldquo;Since he was rich, he had many friends.&rdquo; Signal: the <span class="lat">cum</span> clause is the cause or explanation; it could often be replaced by <span class="lat">quod</span> or <span class="lat">quia</span>.</p>
+        </div>
+        <div class="rule-box">
+            <div class="rl">RULE 4 &middot; CONCESSIVE CUM (SUBJUNCTIVE)</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">Cum</span> + subjunctive + <strong><span class="lat">tamen</span></strong> (or similar): &ldquo;although&rdquo; &mdash; the main clause holds despite the <span class="lat">cum</span> clause. <span class="lat">Cum &#275;brius esset, tamen r&#275;ct&#275; loqu&#275;b&#257;tur</span> &mdash; &ldquo;Although he was drunk, he nevertheless spoke correctly.&rdquo; Signal: <span class="lat">tamen</span> in the main clause is the key marker of concession.</p>
+        </div>
+        <table class="gtable">
+            <thead><tr><th>Type</th><th>Mood</th><th>Translation</th><th>Signal</th></tr></thead>
+            <tbody>
+                <tr><td class="lat">Temporal</td><td>Indicative</td><td>when / whenever</td><td>Simple time; indicative</td></tr>
+                <tr><td class="lat">Historical / Circumstantial</td><td>Impf. / Plupf. Subj.</td><td>when (setting the scene)</td><td>Past narrative; no <span class="lat">tamen</span>; no causal logic</td></tr>
+                <tr><td class="lat">Causal</td><td>Subjunctive</td><td>since / because</td><td><span class="lat">Cum</span> clause = reason for main verb</td></tr>
+                <tr><td class="lat">Concessive</td><td>Subjunctive</td><td>although</td><td><span class="lat">tamen</span> in main clause</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 2 &middot; THE DIAGNOSTIC ORDER <span class="pill-time">8 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The <em>tamen</em> test &mdash; and what comes after it</h3>
+        <div class="culture-box">
+            <div class="lbl">&#128736;&#65039; SHORTCUT &middot; THE TAMEN TEST</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">If <span class="lat">tamen</span> appears in the main clause &rarr; concessive <span class="lat">cum</span> (&ldquo;although&rdquo;). If there is no <span class="lat">tamen</span> and the <span class="lat">cum</span> clause is the cause &rarr; causal. If the <span class="lat">cum</span> clause just sets the scene in past narrative &rarr; historical. Indicative &rarr; temporal. Apply the tests <strong>in order</strong>: tamen test &rarr; causal-logic test &rarr; narrative test &rarr; indicative.</p>
+        </div>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 10px 0 0;">Why an <em>order</em>? Because the tests overlap. A concessive clause is technically in past narrative too &mdash; but <span class="lat">tamen</span> outranks the narrative reading. Running the tests in sequence stops you from settling for &ldquo;historical&rdquo; when a sharper reading is available.</p>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CLASSIFY <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Run the diagnostic order on each clause below. Five reps &mdash; watch for the <span class="lat">tamen</span> that flips a reading. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">In <span class="lat">Cum Nicer&#333;s haec n&#257;rr&#257;visset, omn&#275;s obstupu&#275;runt</span>, what type of <span class="lat">cum</span> clause is this?</div>
+            <div class="widget-options">
+                <button data-response="Right instinct to check. Nārrāvisset is pluperfect subjunctive — past narrative, no tamen, no causal logic. The cum clause sets the scene: 'when Niceros had told this story, everyone was dumbstruck.' Historical/circumstantial.">Historical &mdash; &ldquo;when he had told this&rdquo;</button>
+                <button data-response="Look again at the mood and context: nārrāvisset is pluperfect subjunctive, but there is no tamen and no obvious cause. In past narrative that points to the historical/circumstantial type — it simply sets the scene.">Concessive &mdash; &ldquo;although he had told this&rdquo;</button>
+                <button data-response="Reasonable to weigh — but the cum clause is not offering a reason here; it is establishing the moment. With a pluperfect subjunctive in narrative and no tamen, read it as historical/circumstantial.">Causal &mdash; &ldquo;since he had told this&rdquo;</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum d&#299;ves esset, tamen miser erat.</span></div>
+            <div class="widget-options">
+                <button data-correct="true">Concessive</button>
+                <button data-correct="false">Causal</button>
+                <button data-correct="false">Temporal</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum haec d&#299;xisset, abiit.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">Causal</button>
+                <button data-correct="true">Historical</button>
+                <button data-correct="false">Concessive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum esset &#275;brius, err&#257;bat.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">Temporal</button>
+                <button data-correct="false">Concessive</button>
+                <button data-correct="true">Causal</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum R&#333;mae erit, t&#275; v&#299;sitet.</span></div>
+            <div class="widget-options">
+                <button data-correct="true">Temporal</button>
+                <button data-correct="false">Historical</button>
+                <button data-correct="false">Causal</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum haec aud&#299;visset, obstupuit.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">Concessive</button>
+                <button data-correct="false">Causal</button>
+                <button data-correct="true">Historical</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit first: two clauses both have an imperfect subjunctive, but one has <span class="lat">tamen</span> in its main clause. How does that one word change your classification? Say your reasoning, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><span class="lat">Tamen</span> forces a <strong>concessive</strong> reading (&ldquo;although&rdquo;), even though the mood alone would allow historical or causal. That is why the tamen test runs <em>first</em> in the diagnostic order: it outranks the other signals.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 8.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you meet the module's vocabulary &mdash; the adverbs and nouns of the werewolf tale &mdash; and put the four <span class="lat">cum</span> types through a full classification workout before Thursday's reading.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then recite the diagnostic order from memory: <em>tamen test &rarr; causal-logic test &rarr; narrative test &rarr; indicative</em> &mdash; and name the type each step points to.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE FRAMEWORK IS BUILT</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Four types, four signals, one order to run them in. Tomorrow the vocabulary joins the grammar, and you drill classification until it is automatic.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; HONORS &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 8.02 &middot; The four types by name</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — you ran the diagnostic order and pointed to the right signal.'
+        : 'Not quite — run the order again: tamen test, then causal logic, then narrative, then indicative. Try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

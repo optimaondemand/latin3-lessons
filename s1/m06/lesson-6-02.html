@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 6.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 06</div>
+        <div style="font-size: 12px; color: #666;">Indirect Question &middot; Honors</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 6.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">The rules &amp; sequence of tenses</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius &mdash; Dinner Gossip</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 6.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> The Rules &mdash; Formula, Interrogatives, and Sequence</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you learned to <em>spot</em> the indirect question. Today you learn to build it correctly.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Three rules do all the work: the <strong>formula</strong> (which verbs and words trigger it), the <strong>interrogative words</strong> that introduce it, and the <strong>sequence of tenses</strong> that picks the right subjunctive. You'll also meet a special construction that trips up even strong readers &mdash; <span class="lat">dubitō quīn</span>. Get these down and every indirect question in the course becomes readable.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> state the indirect-question formula and recognize the common interrogative words.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> apply sequence of tenses to choose the correct subjunctive.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> handle the <span class="lat">dubitō quīn</span> construction and tell an indirect question apart from purpose and result clauses.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Yesterday's two signals</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Without scrolling back: what two marks tell you a clause is an indirect question?</div>
+            <div class="widget-options">
+                <button data-response="Yes — an interrogative word plus a subjunctive verb, after a verb of mental activity. Today we make the second signal precise: which subjunctive tense, and why.">An interrogative word and a subjunctive verb</button>
+                <button data-response="Close enough to build on. The reliable marks are an interrogative word (quis, cūr, ubi…) and a subjunctive verb after a verb of asking or knowing. Let's turn that into exact rules.">I remember the subjunctive part</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE FORMULA &amp; THE WORDS <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Rule 1 &mdash; the formula</h3>
+        <div class="etym-box">
+            <div class="lbl">&#128204; RULE 1 &middot; FORMULA</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><strong>Verb of mental activity</strong> (<span class="lat">rogō, sciō, nesciō, quaerō, videō, audiō, dubitō, mīror</span>&hellip;) + <strong>interrogative word</strong> (<span class="lat">quis, quid, quālis, quantus, quam, ubi, quandō, cūr, num, utrum&hellip;an, -ne</span>) + <strong>subjunctive verb</strong>. Sequence of tenses applies: a primary main verb takes present or perfect subjunctive; a secondary (past) main verb takes imperfect or pluperfect subjunctive.</p>
+        </div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 16px 0 8px 0;">Rule 2 &mdash; the interrogative words</h3>
+        <div class="etym-box">
+            <div class="lbl">&#128204; RULE 2 &middot; INTERROGATIVE WORDS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">quis / quid</span> (who / what) &middot; <span class="lat">quālis</span> (what kind) &middot; <span class="lat">quantus</span> (how great) &middot; <span class="lat">quam</span> (how [adv.]) &middot; <span class="lat">ubi</span> (where) &middot; <span class="lat">quandō</span> (when) &middot; <span class="lat">cūr</span> (why) &middot; <span class="lat">num</span> (whether) &middot; <span class="lat">utrum&hellip;an</span> (whether&hellip;or) &middot; <span class="lat">-ne</span> enclitic (yes/no).</p>
+        </div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; ONE WARNING ABOUT <span class="lat">num</span></div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">In a <em>direct</em> question, <span class="lat">num</span> expects the answer &ldquo;no.&rdquo; But in an <em>indirect</em> question, <span class="lat">num</span> simply means &ldquo;whether&rdquo; and carries no built-in negative. <span class="lat">Nesciō num vēnerit</span> = &ldquo;I do not know <em>whether</em> he came,&rdquo; not &ldquo;&hellip;that he surely did not come.&rdquo;</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 3 &middot; SEQUENCE OF TENSES <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Choosing the right subjunctive</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Two questions decide the tense: (1) Is the <strong>main verb</strong> primary (present/future) or secondary (past)? (2) Is the embedded action <strong>at the same time</strong> as the main verb, or <strong>before</strong> it?</p>
+        <table class="gtable">
+            <thead><tr><th>Sequence</th><th>Same-time subordinate</th><th>Before (prior) subordinate</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Primary</strong> (present/future main)</td><td><span class="lat">present</span> subjunctive</td><td><span class="lat">perfect</span> subjunctive</td></tr>
+                <tr><td><strong>Secondary</strong> (past main)</td><td><span class="lat">imperfect</span> subjunctive</td><td><span class="lat">pluperfect</span> subjunctive</td></tr>
+            </tbody>
+        </table>
+        <div class="sentence"><span class="s-lat">Rogat quid faciās.</span><p class="parse">He asks what you are doing. &mdash; primary main (<span class="lat">rogat</span>) + same time &rarr; present subj. <span class="lat">faciās</span>.</p></div>
+        <div class="sentence"><span class="s-lat">Rogāvit quid fēcissēs.</span><p class="parse">He asked what you had done. &mdash; secondary main (<span class="lat">rogāvit</span>) + prior action &rarr; pluperfect subj. <span class="lat">fēcissēs</span>.</p></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 18px 0 8px 0;">Rule 3 &mdash; <span class="lat">dubitō quīn</span></h3>
+        <div class="etym-box">
+            <div class="lbl">&#128204; RULE 3 &middot; DUBITŌ QUĪN</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">After a <em>negative or implied-negative</em> <span class="lat">dubitō</span>, Latin uses <span class="lat">quīn</span> + subjunctive (not <span class="lat">num</span>): <span class="lat">Nēmō dubitābat quīn dīves esset</span> &mdash; &ldquo;No one doubted that he was rich.&rdquo; Here <span class="lat">quīn</span> = &ldquo;but that&rdquo; and carries an affirmative embedded meaning. <span class="lat">Quīn</span> + subjunctive also follows <span class="lat">nōn dubitō</span>, <span class="lat">haud dubitō</span>, and verbs of preventing.</p>
+        </div>
+        <div class="culture-box">
+            <div class="lbl">&#129513; DIAGNOSTIC &middot; INDIRECT QUESTION VS. PURPOSE / RESULT</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Indirect question: interrogative word + subjunctive, after a mental-activity verb &mdash; <em>no</em> <span class="lat">ut</span>. Purpose clause: <span class="lat">ut / nē</span> + subjunctive, after a verb of motion or action. Result clause: <span class="lat">ut</span> + subjunctive, after <span class="lat">ita, tam, tantus</span>. Relative clause of characteristic: <span class="lat">quī</span> + subjunctive. When in doubt, identify the introducing word first.</p>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; APPLY THE RULES <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps on the formula, the sequence table, and <span class="lat">quīn</span>. Keep the charts above in view; the goal is to make the choice automatic.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; sequence</div>
+            <div class="widget-question">Main verb is <strong>present</strong> and the embedded action is <strong>at the same time</strong>. Which subjunctive?</div>
+            <div class="widget-options">
+                <button data-correct="true">present subjunctive</button>
+                <button data-correct="false">imperfect subjunctive</button>
+                <button data-correct="false">perfect subjunctive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; sequence</div>
+            <div class="widget-question">Main verb is <strong>past</strong> and the embedded action happened <strong>before</strong> it. Which subjunctive?</div>
+            <div class="widget-options">
+                <button data-correct="false">imperfect subjunctive</button>
+                <button data-correct="true">pluperfect subjunctive</button>
+                <button data-correct="false">present subjunctive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the quīn rule</div>
+            <div class="widget-question">After a negative <span class="lat">dubitō</span> (&ldquo;no one doubted&hellip;&rdquo;), Latin introduces the clause with&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">num</span> + indicative</button>
+                <button data-correct="true"><span class="lat">quīn</span> + subjunctive</button>
+                <button data-correct="false"><span class="lat">ut</span> + subjunctive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; interrogative word</div>
+            <div class="widget-question">Which word can introduce an indirect question?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">et</span> (and)</button>
+                <button data-correct="false"><span class="lat">sed</span> (but)</button>
+                <button data-correct="true"><span class="lat">cūr</span> (why)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; read the sequence</div>
+            <div class="widget-question">In <span class="lat">Nesciō num convīva vēnerit</span>, <span class="lat">nesciō</span> is present and <span class="lat">vēnerit</span> is perfect subjunctive. What does this signal?</div>
+            <div class="widget-options">
+                <button data-correct="false">secondary sequence; same-time action</button>
+                <button data-correct="true">primary sequence; the coming happened before the not-knowing</button>
+                <button data-correct="false">a purpose clause with <span class="lat">ut</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit first, then check: parse the sequence in <span class="lat">Quaesīvit quantum habēret</span> &mdash; primary or secondary? same-time or prior? and what is <span class="lat">habēret</span>? Say it, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><strong>Secondary sequence, same-time action.</strong> The main verb <span class="lat">quaesīvit</span> is perfect (a past tense) &rarr; secondary sequence; the having is contemporaneous with the asking &rarr; imperfect subjunctive <span class="lat">habēret</span>. &ldquo;He asked how much he had.&rdquo;</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 6.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you meet the module vocabulary &mdash; the words of asking, doubting, and dining &mdash; and put the rules to work by turning direct questions into indirect ones.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then recite the sequence-of-tenses grid out loud: primary &rarr; present / perfect; secondary &rarr; imperfect / pluperfect.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE MACHINERY IS YOURS</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Formula, interrogatives, sequence, and <span class="lat">quīn</span> &mdash; the four rules that govern every indirect question you'll read. Tomorrow you start producing them.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 6.02 &middot; The rules &amp; sequence of tenses</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct.'
+        : 'Not quite — review the rule above and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

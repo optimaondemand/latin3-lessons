@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 13.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 HONORS <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 13</div>
+        <div style="font-size: 12px; color: #666;">Subjunctive System Review</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 13.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Conditions, relatives &amp; sequence</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Cicero &amp; the Subjunctive</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 13.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Family 3 &mdash; The Hypothetical, the Qualifying, and the Thread</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">The last room in the house &mdash; and the thread that ties every room together.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Family 3 is where Latin reasons about what <em>might</em> be and what is only <em>the sort of thing</em>: the conditional sentences (future-less-vivid and contrary-to-fact) and the relative clauses of characteristic and of purpose. Then you lock down the <strong>sequence of tenses</strong>, the single rule that governs which subjunctive tense every one of these constructions takes. Finally you review the module's working vocabulary &mdash; the words you will meet on Day 4 in Cicero.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> classify future-less-vivid and contrary-to-fact conditions by the tense of their subjunctives.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize relative clauses of characteristic and of purpose, and apply the sequence of tenses.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recall the module's key vocabulary in preparation for reading Cicero.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Of the three families, which do you personally find hardest to sort at speed?</div>
+            <div class="widget-options">
+                <button data-response="A very common answer. Conditions reward one habit: read the tense of both subjunctives first. Present-present = future-less-vivid; imperfect-imperfect = present CTF; pluperfect-pluperfect = past CTF. The tense is the label.">The conditions &mdash; the CTF types blur together</button>
+                <button data-response="Reasonable &mdash; the relative of characteristic and of purpose look alike. The tell: a verb of sending/seeking before the relative points to purpose; a generalizing antecedent (is, n&#275;m&#333; est qu&#299;) points to characteristic.">The relative clauses of characteristic vs. purpose</button>
+                <button data-response="Honest &mdash; and today's the day to fix it. Whatever you flagged in your M12 survey, give it your extra minutes here, because Day 4 puts all of it into live Cicero.">Honestly the whole of Family 3 needs another pass</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; CONDITIONS &amp; RELATIVES <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The subjunctive conditions and relatives</h3>
+        <table class="gtable">
+            <thead><tr><th>Construction</th><th>Trigger / signal</th><th>Mood / tense</th><th>Translation key</th></tr></thead>
+            <tbody>
+                <tr><td>Future less vivid</td><td><span class="lat">s&#299;</span> + pres. subj. / pres. subj.</td><td>pres. subj. both clauses</td><td>&ldquo;if&hellip;should&hellip;, would&hellip;&rdquo;</td></tr>
+                <tr><td>Contrary-to-fact (present)</td><td><span class="lat">s&#299;</span> + impf. subj. / impf. subj.</td><td>impf. subj. both clauses</td><td>&ldquo;if&hellip;were&hellip;, would be&hellip;&rdquo;</td></tr>
+                <tr><td>Contrary-to-fact (past)</td><td><span class="lat">s&#299;</span> + plupf. subj. / plupf. subj.</td><td>plupf. subj. both clauses</td><td>&ldquo;if&hellip;had been&hellip;, would have been&hellip;&rdquo;</td></tr>
+                <tr><td>Relative of characteristic</td><td><span class="lat">is / n&#275;m&#333; est qu&#299;</span> + subj.</td><td>pres. / impf. subj.</td><td>&ldquo;the sort who&hellip; / no one who&hellip;&rdquo;</td></tr>
+                <tr><td>Relative of purpose</td><td>verb of sending + <span class="lat">qu&#299;</span> + subj.</td><td>pres. / impf. subj.</td><td>&ldquo;who would&hellip; / in order to&hellip;&rdquo;</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; THE TENSE IS THE LABEL (CONDITIONS)</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">For the subjunctive conditions, read the <em>tense</em> of both verbs first and the type names itself: <strong>present + present</strong> &rarr; future-less-vivid (&ldquo;should&hellip;would&rdquo;); <strong>imperfect + imperfect</strong> &rarr; present contrary-to-fact (&ldquo;were&hellip;would be&rdquo;); <strong>pluperfect + pluperfect</strong> &rarr; past contrary-to-fact (&ldquo;had&hellip;would have&rdquo;). Watch for the occasional mixed CTF, where protasis and apodosis differ in tense.</p>
+        </div>
+        <div class="sentence"><span class="s-lat">S&#299; haec d&#299;xisset, err&#257;visset.</span><p class="parse">If he had said this, he would have been wrong. &mdash; pluperfect + pluperfect subj. &rarr; past contrary-to-fact.</p></div>
+        <div class="sentence"><span class="s-lat">M&#299;sit l&#275;g&#257;t&#333;s qu&#299; pacem peterent.</span><p class="parse">He sent envoys to seek peace / who would seek peace. &mdash; verb of sending + <span class="lat">qu&#299;</span> + impf. subj. &rarr; relative of purpose.</p></div>
+        <div class="sentence"><span class="s-lat">N&#275;m&#333; est qu&#299; hoc cr&#275;dat.</span><p class="parse">There is no one who believes this / of the sort to believe this. &mdash; generalizing antecedent <span class="lat">n&#275;m&#333; est</span> + <span class="lat">qu&#299;</span> + subj. &rarr; relative of characteristic.</p></div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; THE THREAD &amp; THE WORDS <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Sequence of tenses</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">One rule governs which subjunctive tense a subordinate clause takes. It depends on whether the main verb is <strong>primary</strong> (present/future/future-perfect) or <strong>secondary</strong> (any past tense).</p>
+        <table class="gtable">
+            <thead><tr><th>Main verb</th><th>Same-time / after</th><th>Before (completed)</th></tr></thead>
+            <tbody>
+                <tr><td>Primary (pres./fut.)</td><td>present subjunctive</td><td>perfect subjunctive</td></tr>
+                <tr><td>Secondary (past)</td><td>imperfect subjunctive</td><td>pluperfect subjunctive</td></tr>
+            </tbody>
+        </table>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:10px 0;">In short: present/perfect subjunctive report action <em>incomplete</em> relative to a primary main verb; imperfect/pluperfect report action after or <em>complete</em> relative to a secondary main verb. This single rule sets the tense in nearly every construction you reviewed this week.</p>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 16px 0 8px 0;">Working vocabulary for the reading</h3>
+        <table class="gtable">
+            <thead><tr><th>Latin</th><th>Meaning</th></tr></thead>
+            <tbody>
+                <tr><td><span class="lat">poster&#299;</span></td><td>posterity, future generations</td></tr>
+                <tr><td><span class="lat">coni&#363;r&#257;ti&#333;, -&#333;nis</span> (f.)</td><td>conspiracy</td></tr>
+                <tr><td><span class="lat">d&#299;ligēns, -entis</span></td><td>diligent, careful</td></tr>
+                <tr><td><span class="lat">celerit&#257;s, -&#257;tis</span> (f.)</td><td>speed, swiftness</td></tr>
+                <tr><td><span class="lat">auxilia, -&#333;rum</span> (n. pl.)</td><td>reinforcements, auxiliary troops</td></tr>
+                <tr><td><span class="lat">mere&#333;, -&#275;re, meru&#299;</span></td><td>to earn, deserve</td></tr>
+                <tr><td><span class="lat">expell&#333; / pell&#333;</span></td><td>to drive out, expel</td></tr>
+                <tr><td><span class="lat">laed&#333;, -ere</span></td><td>to harm, injure</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; CLASSIFY &amp; APPLY <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps on Family 3 and the sequence of tenses. Read tenses carefully &mdash; here they carry the whole label. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify the condition</div>
+            <div class="widget-question"><span class="lat">S&#299; haec d&#299;xisset, err&#257;visset.</span> Which condition is this?</div>
+            <div class="widget-options">
+                <button data-correct="false">Future less vivid</button>
+                <button data-correct="false">Present contrary-to-fact</button>
+                <button data-correct="true">Past contrary-to-fact</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify the condition</div>
+            <div class="widget-question"><span class="lat">S&#299; hoc d&#299;c&#257;s, err&#275;s.</span> (both present subjunctive) This is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">Future less vivid (&ldquo;should&hellip;would&rdquo;)</button>
+                <button data-correct="false">Present contrary-to-fact</button>
+                <button data-correct="false">Past contrary-to-fact</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the relative</div>
+            <div class="widget-question"><span class="lat">M&#299;sit qu&#299; pacem peterent.</span> The relative clause is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">Relative of characteristic</button>
+                <button data-correct="true">Relative of purpose</button>
+                <button data-correct="false">Indirect question</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; sequence of tenses</div>
+            <div class="widget-question">A <strong>secondary</strong> main verb, with subordinate action happening <em>before</em> it, calls for which tense?</div>
+            <div class="widget-options">
+                <button data-correct="false">perfect subjunctive</button>
+                <button data-correct="true">pluperfect subjunctive</button>
+                <button data-correct="false">present subjunctive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question"><span class="lat">Meruit</span> (perfect of <span class="lat">mere&#333;</span>) means&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">he feared</button>
+                <button data-correct="false">he drove out</button>
+                <button data-correct="true">he earned / deserved</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit first: how do you tell a relative clause of <strong>purpose</strong> from one of <strong>characteristic</strong>? Give the tell, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><strong>Relative of purpose</strong> follows a verb of sending or seeking (<span class="lat">m&#299;sit, l&#275;git</span>) and means &ldquo;who would&hellip; / in order to&hellip;&rdquo; &mdash; the clause states an <em>aim</em>. <strong>Relative of characteristic</strong> follows a generalizing or indefinite antecedent (<span class="lat">is est qu&#299;, n&#275;m&#333; est qu&#299;, sunt qu&#299;</span>) and means &ldquo;the sort who&hellip;&rdquo; &mdash; the clause states a <em>quality</em>. Ask: aim or quality?</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 13.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow the whole system meets real prose: a synthesis passage on Cicero and the Catilinarian conspiracy in which every S1 subjunctive construction appears at least once. You read, identify, and translate.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then say aloud the tense pattern for each of the three subjunctive conditions, and recite the sequence-of-tenses rule in one sentence.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE SYSTEM IS COMPLETE</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">All three families, the sequence of tenses, and the vocabulary are in place. Tomorrow you stop reviewing and start <em>reading</em> &mdash; Cicero, in full sentences, with every construction live at once.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 HONORS &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 13.03 &middot; Conditions, relatives &amp; sequence</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — you read the tense and let it name the construction.'
+        : 'Not quite — check the tense of each subjunctive (or the antecedent), then try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

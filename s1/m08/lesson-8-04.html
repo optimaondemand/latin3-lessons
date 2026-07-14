@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 8.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FBF9F4; border:1px solid #E4DBC9; border-radius:8px; padding:16px 20px; margin:14px 0; }
+    .passage ol { margin:0; padding-left:26px; }
+    .passage li { font-style:italic; color:#0E1C42; font-size:17px; line-height:2.0; margin-bottom:2px; }
+    .gloss { font-size:14px; color:#6b7a99; line-height:1.7; border-top:1px solid #E4DBC9; margin-top:12px; padding-top:10px; }
+    .gloss strong { color:#5A2A82; }
+    .ctr { border:1px solid #D0D9E8; border-radius:8px; padding:12px 16px; margin:10px 0; }
+    .ctr .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .ctr textarea { width:100%; box-sizing:border-box; border:1px solid #D0D9E8; border-radius:6px; padding:8px 10px; font-family:inherit; font-size:14px; margin:8px 0; resize:vertical; min-height:52px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:16px; color:#C7922C; letter-spacing:1px;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Sem 1 &middot; Module 08</div>
+        <div style="font-size: 12px; color: #666;">Cum Clauses &mdash; Four Types</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 8.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; <em>Versipellis</em></div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius: The Werewolf</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 8.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> The Werewolf &mdash; Petronius, <em>Satyrica</em> 61&ndash;62</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Grammar plus vocabulary equals a real Roman ghost story &mdash; and every <span class="lat">cum</span> type you learned appears in eight lines.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">No new grammar today: today you <em>use</em> what you built. You will read an adapted passage of Petronius's <span class="lat">Versipellis</span> &mdash; the werewolf told by the freedman Niceros at Trimalchio's dinner &mdash; and track how the author switches <span class="lat">cum</span> types line by line to drive the narrative.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate the adapted <span class="lat">Versipellis</span> passage, identifying the <span class="lat">cum</span> type in each clause.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain how Petronius embeds an inset tale and why rapid <span class="lat">cum</span>-shifting is a mark of vivid Latin narrative.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READ THE PASSAGE <span class="pill-time">16 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><em>Versipellis</em> &mdash; adapted from Petronius, <em>Satyrica</em> 61&ndash;62</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Read each line aloud. For every <span class="lat">cum</span>, make the first cut (mood), then name the type. The gloss below carries the harder words &mdash; try the line yourself before you lean on it.</p>
+        <div class="passage">
+            <ol>
+                <li>Cum Trimalchi&#333; test&#257;mentum suum recit&#257;visset, Nicer&#333;s f&#257;bulam m&#299;r&#257;bilissimam narr&#257;re coepit.</li>
+                <li>Cum iter facerem, inquit, repente com&#275;s meus versipellis factus est.</li>
+                <li>Cum hoc subit&#333; v&#299;dissem, timor m&#275; c&#275;pit et prope mortuus fu&#299;.</li>
+                <li>Ille autem, cum lupus esset, ulul&#257;re coepit et in silvam f&#363;git.</li>
+                <li>Cum timidus essem, tamen domum perv&#275;n&#299; et hospit&#299; me&#333; d&#299;x&#299; quid accidisset.</li>
+                <li>Hospes, cum haec aud&#299;visset, p&#257;lluit &mdash; quippe t&#257;lia numquam ante&#257; aud&#299;verat.</li>
+                <li>Praetere&#257; d&#299;xit: &ldquo;Nisi ocul&#299;s me&#299;s v&#299;dissem, n&#333;n cr&#275;didissem.&rdquo;</li>
+                <li>D&#275;nique omn&#275;s conv&#299;vae, cum haec aud&#299;vissent, atton&#301;t&#299; erant &mdash; n&#275;m&#333; r&#299;d&#275;bat.</li>
+            </ol>
+            <div class="gloss">
+                <strong>Gloss:</strong> recit&#257;visset &mdash; had read aloud (plupf. subj.) &middot; versipellis &mdash; a shape-changer, werewolf (literally &ldquo;skin-turner&rdquo;) &middot; ulul&#257;re &mdash; to howl &middot; p&#257;lluit &mdash; turned pale (perfect of pall&#275;sc&#333;) &middot; quippe &mdash; of course, naturally &middot; ante&#257; &mdash; before, previously &middot; nisi v&#299;dissem&hellip;cr&#275;didissem &mdash; unless I had seen&hellip;I would not have believed (contrary-to-fact condition, M09 preview) &middot; atton&#301;t&#299; &mdash; thunderstruck, astonished
+            </div>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; LITERARY NOTE <span class="pill-time">6 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#128220; PETRONIUS'S INSET NARRATIVE</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">The werewolf story (chapters 61&ndash;62) is the most famous episode of the <span class="lat">C&#275;na Trimalchi&#333;nis</span> &mdash; the &ldquo;Dinner of Trimalchio.&rdquo; Petronius embeds it as a first-person tale told by a guest, Niceros: a story within a story within a novel.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">Observe how all four <span class="lat">cum</span> types appear across these lines &mdash; line 1 (historical), line 2 (historical/temporal), line 3 (historical), line 4 (causal), line 5 (concessive + <span class="lat">tamen</span>), line 6 (historical), line 8 (historical). The rapid alternation of <span class="lat">cum</span> types is a marker of vivid Latin narrative style: each shift re-frames the moment, and the reader who classifies quickly feels the story move.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test comprehension, some test your <span class="lat">cum</span> classification of specific lines. Take them slowly. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">Who tells the werewolf story, and to whom?</div>
+            <div class="widget-options">
+                <button data-correct="false">Trimalchio, to the werewolf</button>
+                <button data-correct="true">Niceros, to the dinner guests</button>
+                <button data-correct="false">The host, to Niceros</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify (line 4)</div>
+            <div class="widget-question">In line 4, <span class="lat">cum lupus esset</span> is which type?</div>
+            <div class="widget-options">
+                <button data-correct="true">Causal &mdash; &ldquo;since he was a wolf&rdquo;</button>
+                <button data-correct="false">Concessive &mdash; &ldquo;although he was a wolf&rdquo;</button>
+                <button data-correct="false">Temporal &mdash; &ldquo;when he was a wolf&rdquo;</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify (line 5)</div>
+            <div class="widget-question">In line 5, <span class="lat">cum timidus essem, tamen&hellip;</span> is which type?</div>
+            <div class="widget-options">
+                <button data-correct="false">Historical</button>
+                <button data-correct="false">Causal</button>
+                <button data-correct="true">Concessive &mdash; note the <span class="lat">tamen</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate</div>
+            <div class="widget-question">Translate line 3: <span class="lat">Cum hoc subit&#333; v&#299;dissem, timor m&#275; c&#275;pit.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">Although I saw this, fear did not take me</button>
+                <button data-correct="true">When I had suddenly seen this, fear seized me</button>
+                <button data-correct="false">Since I see this, fear takes me</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary in the text</div>
+            <div class="widget-question"><span class="lat">Versipellis</span> literally means:</div>
+            <div class="widget-options">
+                <button data-correct="false">night-walker</button>
+                <button data-correct="false">blood-drinker</button>
+                <button data-correct="true">skin-turner (a shape-changer)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Now that you have read it: what makes this passage feel fast and eerie in Latin?</div>
+            <div class="widget-options">
+                <button data-response="Yes — the drumbeat of cum clauses and the shock adverbs (repente, subitō) keep re-setting the scene, so the reader is always one clause behind the action. That is deliberate craft.">The pile-up of <span class="lat">cum</span> clauses and shock adverbs</button>
+                <button data-response="A sharp observation. The first-person voice (Niceros speaking) pulls you inside the fear — the terror is reported by the man who felt it, which is far more unsettling than a distant narrator.">The first-person voice of a frightened man</button>
+                <button data-response="Good eye — the plot is spare: companion, transformation, flight, confirmation. Petronius trusts the grammar and the adverbs to do the work, and lets the horror land in a single word, versipellis.">The bare, stripped-down plot</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <h4 style="font-size:17px;color:#0e1c42;margin:0 0 8px;">Commit, then reveal &mdash; two lines from the passage</h4>
+            <div class="ctr">
+                <span class="s-lat">Cum timidus essem, tamen domum perv&#275;n&#299; et hospit&#299; me&#333; d&#299;x&#299; quid accidisset.</span>
+                <textarea placeholder="Your translation, plus the cum type&hellip;"></textarea>
+                <button class="reveal-btn">Reveal answer</button>
+                <div class="reveal-body"><strong>Although</strong> I was afraid, I nevertheless reached home and told my host what had happened. &mdash; <span class="lat">Tamen</span> in the main clause &rarr; <strong>concessive</strong> <span class="lat">cum</span>. Note also <span class="lat">quid accidisset</span> = an indirect question in secondary sequence (pluperfect subjunctive).</div>
+            </div>
+            <div class="ctr">
+                <span class="s-lat">D&#275;nique omn&#275;s conv&#299;vae, cum haec aud&#299;vissent, atton&#301;t&#299; erant &mdash; n&#275;m&#333; r&#299;d&#275;bat.</span>
+                <textarea placeholder="Your translation, plus the cum type&hellip;"></textarea>
+                <button class="reveal-btn">Reveal answer</button>
+                <div class="reveal-body">Finally, all the guests, <strong>when</strong> they had heard these things, were thunderstruck &mdash; no one laughed. &mdash; <span class="lat">Cum</span> + pluperfect subjunctive, past narrative, no <span class="lat">tamen</span>, no causal logic &rarr; <strong>historical/circumstantial</strong>. The clause sets the scene for <span class="lat">atton&#301;t&#299; erant</span>.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 8.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with mixed practice &mdash; then you are ready for the module's graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell the <span class="lat">Versipellis</span> story in three sentences, and name the <span class="lat">cum</span> type of at least two lines from memory.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ PETRONIUS TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">A real Roman ghost story, read in the original word order &mdash; and every <span class="lat">cum</span> type accounted for. One more day of practice and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; HONORS &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 8.04 &middot; Reading &mdash; <em>Versipellis</em></div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read. You are reading Petronius as a Roman reader would.'
+        : 'Not quite — reread the line (check the mood and any tamen) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

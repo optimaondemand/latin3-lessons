@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 6.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .readline { display:block; font-style:italic; color:#0E1C42; font-size:16.5px; line-height:2; }
+    .readline .ln { color:#9aa6bd; font-style:normal; font-size:12px; margin-right:.5rem; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 06</div>
+        <div style="font-size: 12px; color: #666;">Indirect Question &middot; Honors</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 6.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Petronius at the table</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius &mdash; Dinner Gossip</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 6.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> <span class="lat">Hospitēs Loquuntur</span> &mdash; Whispers at Trimalchio's Table</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Rules plus vocabulary equals reading. Today the pieces click together &mdash; in a real Latin author.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You read an adapted passage from <strong>Petronius' <em>Satyrica</em></strong> (chapters 37&ndash;46), where the guests at the freedman Trimalchio's absurd dinner party can only whisper their questions. Almost every line is an indirect question &mdash; and that is exactly the point. No new grammar today: today you <em>use</em> what you built, and you see why an author would choose this construction.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate Petronius' indirect questions, applying sequence of tenses.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain how Petronius uses indirect speech as satire.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READ THE PASSAGE <span class="pill-time">15 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><span class="lat">Hospitēs Loquuntur</span> &mdash; Adapted from Petronius, <em>Satyrica</em> 37&ndash;46</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 12px 0;">Read each line aloud. Find the verb of mental activity, then the interrogative word, then the subjunctive &mdash; and use sequence of tenses to decide whether the embedded action is at the same time as, or before, the main verb. Use the gloss below for the hard words.</p>
+        <div style="background:#FCFAF5;border:1px solid #E4C9A8;border-radius:8px;padding:16px 20px;margin:0 0 12px;">
+            <span class="readline"><span class="ln">1.</span>Convīvae inter sē susurrābant et rogābant quid sibi vellent omnia quae vīdissent.</span>
+            <span class="readline"><span class="ln">2.</span>Nēmō sciēbat quis esset Trīmalchiō aut unde tam magna cōpia argentī eī fuisset.</span>
+            <span class="readline"><span class="ln">3.</span>Quīdam quaerēbant cūr tam superbus esset quī modo servus fuisset.</span>
+            <span class="readline"><span class="ln">4.</span>Alius dīxit sē nescīre num Trīmalchiō plūs aurī an argentī possidēret.</span>
+            <span class="readline"><span class="ln">5.</span>Scīlicet nēmō dubitābat quīn dīves esset &mdash; sed quam dīves, nēmō dīcere poterat.</span>
+            <span class="readline"><span class="ln">6.</span>Trīmalchiō ipse nārrāvit quanta esset rēs sua et quantum in annō lucrārētur.</span>
+            <span class="readline"><span class="ln">7.</span>Convīvae mīrātī sunt quantum nimius apparātus sibi cōnstitisset.</span>
+            <span class="readline"><span class="ln">8.</span>Tandem Trīmalchiō rogāvit num omnēs bene cēnāssent &mdash; nēmō respondēre ausus est.</span>
+        </div>
+        <div class="etym-box">
+            <div class="lbl">&#128278; GLOSS</div>
+            <p style="font-size:15px;color:#1a2340;line-height:1.65;margin:0;"><span class="lat">susurrābant</span> &mdash; were whispering &middot; <span class="lat">quid sibi vellent</span> &mdash; what they meant (lit. &ldquo;what they wanted for themselves&rdquo;) &middot; <span class="lat">modo</span> &mdash; just recently &middot; <span class="lat">num&hellip;an</span> &mdash; whether&hellip;or (double indirect question) &middot; <span class="lat">quīn</span> &mdash; but that (after negative <span class="lat">dubitō</span>) &middot; <span class="lat">rēs</span> &mdash; property, estate &middot; <span class="lat">lucrārētur</span> &mdash; he was profiting (deponent impf. subj. of <span class="lat">lucror</span>) &middot; <span class="lat">cōnstitisset</span> &mdash; had cost (pluperf. subj. of <span class="lat">cōnstō</span> + dat.) &middot; <span class="lat">cēnāssent</span> &mdash; syncopated = <span class="lat">cēnāvissent</span></p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; LITERARY NOTE <span class="pill-time">8 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127863; TRIMALCHIO'S DINNER &middot; <em>SATYRICA</em>, THE CĒNA</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">Petronius (1st c. AD, a courtier of Nero) wrote the <em>Satyrica</em>, a satirical novel whose most famous episode is the <span class="lat">Cēna Trīmalchiōnis</span> &mdash; the &ldquo;Dinner of Trimalchio.&rdquo; Trimalchio is a freedman (a former slave, <span class="lat">quī modo servus fuisset</span>) who has grown grotesquely rich and now stages a dinner of vulgar excess to display his wealth. The other guests, embarrassed and fascinated, whisper their questions among themselves.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">This is a portrait of the newly rich in Neronian Rome &mdash; a world where money has outrun taste, and where nobody dares say plainly what everybody is thinking.</p>
+        </div>
+        <div class="virtue-box">
+            <div class="lbl">&#128173; WHISPERING AS SATIRE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Petronius renders the guests' table-talk almost entirely in indirect speech &mdash; not direct quotation but whispered, embedded questions. The effect is doubly satirical: the guests cannot speak directly (social anxiety), and their indirect questions reveal exactly what Petronius wants us to see &mdash; their confusion, envy, and fascinated incomprehension of Trimalchio's world. Line 8's silence after Trimalchio's yes/no question is the punchline: nobody dares even answer a simple <span class="lat">num</span>.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">12 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test the Latin, some test the satire. Take them slowly; the point is to prove you can both read the sentences and follow what Petronius is doing.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; who is he</div>
+            <div class="widget-question">Line 3 says Trimalchio is <span class="lat">quī modo servus fuisset</span>. Who is he?</div>
+            <div class="widget-options">
+                <button data-correct="false">a poor sailor down on his luck</button>
+                <button data-correct="true">a wealthy former slave now hosting the dinner</button>
+                <button data-correct="false">a Roman consul</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate</div>
+            <div class="widget-question">Line 5: <span class="lat">nēmō dubitābat quīn dīves esset</span> means&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">no one doubted that he was rich</button>
+                <button data-correct="false">everyone doubted that he was rich</button>
+                <button data-correct="false">no one asked whether he was rich</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the satire</div>
+            <div class="widget-question">Why does Petronius put the guests' talk almost entirely in indirect questions?</div>
+            <div class="widget-options">
+                <button data-correct="false">because the passage is written in verse</button>
+                <button data-correct="false">only to teach students the subjunctive</button>
+                <button data-correct="true">to show them whispering &mdash; anxious, envious, unable to speak directly</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the construction</div>
+            <div class="widget-question">In line 4, <span class="lat">num&hellip;an</span> (<span class="lat">plūs aurī an argentī</span>) signals&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">a double indirect question (&ldquo;whether&hellip;or&rdquo;)</button>
+                <button data-correct="false">a purpose clause</button>
+                <button data-correct="false">a direct command</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate</div>
+            <div class="widget-question">Line 8: <span class="lat">rogāvit num omnēs bene cēnāssent</span> means&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">he commanded everyone to eat well</button>
+                <button data-correct="true">he asked whether everyone had dined well</button>
+                <button data-correct="false">he doubted that anyone had eaten</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which line struck you most &mdash; and why do you think Petronius ended on the guests' silence?</div>
+            <div class="widget-options">
+                <button data-response="Line 8 is the punchline: after a whole dinner of whispered questions, the guests cannot even answer a simple 'did you dine well?'. The silence exposes how thoroughly Trimalchio has cowed them.">The silence in line 8</button>
+                <button data-response="Line 5 is the heart of it — everyone is certain he's rich (quīn dīves esset), but nobody can say how rich. The gap between certainty and knowledge is the whole comedy.">Line 5 — sure he's rich, but how rich?</button>
+                <button data-response="Line 2 sets the tone: nobody even knows who Trimalchio is or where his silver came from. Petronius keeps the host a mystery so his wealth feels both dazzling and suspect.">Line 2 — nobody even knows who he is</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 4 — COMMIT THEN REVEAL -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128221; PART 4 &middot; COMMIT, THEN REVEAL <span class="pill-time">5 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Translate three lines yourself</h3>
+        <p style="font-size: 16px; color: #1a2340; line-height: 1.6; margin: 0 0 12px 0;">Write your own translation of each line before you reveal. Then check both the meaning <em>and</em> the sequence-of-tenses reasoning.</p>
+        <div class="sentence">
+            <span class="s-lat">1. Nēmō sciēbat quis esset Trīmalchiō aut unde tam magna cōpia argentī eī fuisset.</span>
+            <div style="margin-top:10px;"><button class="reveal-btn">Reveal</button></div>
+            <div class="reveal-body">No one knew who Trimalchio was, or from where such a great abundance of silver had come to him. &mdash; <em>Two parallel indirect questions after secondary</em> <span class="lat">sciēbat</span>: <span class="lat">quis esset</span> (same time, impf. subj.) + <span class="lat">unde&hellip;fuisset</span> (before, plupf. subj.).</div>
+        </div>
+        <div class="sentence">
+            <span class="s-lat">2. Alius dīxit sē nescīre num Trīmalchiō plūs aurī an argentī possidēret.</span>
+            <div style="margin-top:10px;"><button class="reveal-btn">Reveal</button></div>
+            <div class="reveal-body">Another said that he did not know whether Trimalchio possessed more gold or silver. &mdash; <em>Outer clause: indirect statement</em> (<span class="lat">sē nescīre</span>). <em>Inner clause: indirect question</em> (<span class="lat">num&hellip;an</span>, a double question), impf. subj. after secondary <span class="lat">dīxit</span>.</div>
+        </div>
+        <div class="sentence">
+            <span class="s-lat">3. Scīlicet nēmō dubitābat quīn dīves esset &mdash; sed quam dīves, nēmō dīcere poterat.</span>
+            <div style="margin-top:10px;"><button class="reveal-btn">Reveal</button></div>
+            <div class="reveal-body">Obviously no one doubted that he was rich &mdash; but how rich, no one could say. &mdash; <span class="lat">dubitābat quīn</span> + subj. = &ldquo;doubted but that&rdquo; (Rule 3). The second clause is an indirect question: <span class="lat">quam</span> + subj. in secondary sequence.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 6.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole week together with mixed practice &mdash; then you're ready for the module's graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell the Petronius scene in three sentences &mdash; and explain, in one of them, why the whispered indirect questions make it satire.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ PETRONIUS TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Real Latin, a real author &mdash; and a construction that carries meaning far beyond grammar. One more day of practice and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 6.04 &middot; Reading &mdash; Petronius at the table</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct.'
+        : 'Not quite — reread the line (check the interrogative word and the subjunctive) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

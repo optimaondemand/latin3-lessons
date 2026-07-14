@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 4.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FBF9F4; border:1px solid #E4DBC9; border-radius:8px; padding:16px 20px; margin:14px 0; }
+    .passage .p-title { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:10px; }
+    .passage .p-line { font-style:italic; color:#0E1C42; font-size:16.5px; line-height:1.9; }
+    .passage .p-line .ln { font-style:normal; color:#9a7b1e; font-size:12px; margin-right:8px; }
+    .passage .gloss { font-size:13px; color:#6b7a99; line-height:1.65; border-top:1px solid #E4DBC9; padding-top:10px; margin-top:10px; }
+    .passage .gloss b { color:#1a2340; }
+    .ctr-input { width:100%; box-sizing:border-box; border:1px solid #D0D9E8; border-radius:6px; padding:9px 12px; font-size:15px; font-family:inherit; color:#1a2340; resize:vertical; min-height:52px; margin:6px 0; }
+    .ctr-input:focus { outline:none; border-color:#55C8E8; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 04</div>
+        <div style="font-size: 12px; color: #666;">Purpose &amp; Result Clauses</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 4.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Plautus &amp; Petronius</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Honors &middot; Plautus &rarr; Petronius</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 4.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Real Latin &mdash; Exit the Soldier, Enter the Feast</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Grammar plus vocabulary equals reading. Today the pieces click into authentic authors.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You read two adapted passages. First, the <strong>finale of Plautus's <em>M&imacr;les Gl&omacr;ri&omacr;sus</em></strong> &mdash; the boastful soldier is tricked into letting Philocomasium go. Then your <strong>first taste of Petronius</strong>: the guests arrive at Trimalchio's house and find excess beyond belief. Both are dense with the purpose and result clauses you have been building all week. No new grammar today: today you <em>read</em>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate adapted Plautus and Petronius containing purpose and result clauses.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain how Petronius uses excess and satire to portray Trimalchio.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; PLAUTUS FINALE <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Pyrgopol&ymacr;nic&emacr;s D&imacr;mittitur</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Read each line aloud. Find the main verb, then check for an intensity word before you decide whether an <span class="lat">ut</span> clause is purpose or result. The gloss is below &mdash; try each line yourself first.</p>
+        <div class="passage">
+            <div class="p-title">PYRGOPOL&Ymacr;NIC&Emacr;S D&Imacr;MITTITUR &mdash; ADAPTED FROM PLAUTUS, <em>M&Imacr;LES GL&Omacr;RI&Omacr;SUS</em> FINALE</div>
+            <div class="p-line">
+                <span class="ln">1.</span>Palaestrio Pleusicl&emacr;n hort&amacr;tus est ut Philoc&omacr;masiam quam celerrim&emacr; abd&umacr;ceret.<br>
+                <span class="ln">2.</span>Ita omnia par&amacr;ta erant ut m&imacr;les nihil suspic&amacr;r&emacr;tur.<br>
+                <span class="ln">3.</span>Pyrgopol&ymacr;nic&emacr;s, gl&omacr;ri&amacr; captus, n&emacr; quid mal&imacr; sibi accideret tim&emacr;bat.<br>
+                <span class="ln">4.</span>Tandem Palaestrio eum monuit ut Philoc&omacr;masiam &amacr; s&emacr; d&imacr;mitteret.<br>
+                <span class="ln">5.</span>M&imacr;les ita stultus erat ut sine mor&amacr; c&omacr;nsent&imacr;ret et gl&omacr;ri&amacr;ns ex&imacr;ret.
+            </div>
+            <div class="gloss"><b>Gloss:</b> <span class="lat">abd&umacr;ceret</span> &mdash; would lead away (impf. subj., purpose) &middot; <span class="lat">par&amacr;ta erant</span> &mdash; had been prepared &middot; <span class="lat">suspic&amacr;r&emacr;tur</span> &mdash; would suspect (impf. subj. of <span class="lat">suspicor</span>, a deponent!) &middot; <span class="lat">d&imacr;mitteret</span> &mdash; would release, let go &middot; <span class="lat">mor&amacr;</span> &mdash; delay (abl.) &middot; <span class="lat">c&omacr;nsent&imacr;ret</span> &mdash; would agree &middot; <span class="lat">gl&omacr;ri&amacr;ns</span> &mdash; boasting (pres. act. participle)</div>
+        </div>
+        <p style="font-size: 15px; color: #6b7a99; line-height: 1.6; margin: 6px 0 0;">Note the mix: line 1 and line 4 are purpose clauses; line 2 and line 5 are result clauses (both flagged by <span class="lat">ita</span>); line 3 is a negative purpose clause with <span class="lat">n&emacr;</span>.</p>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; ENTER PETRONIUS <span class="pill-time">14 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; PETRONIUS AND THE <em>C&Emacr;NA TR&Imacr;MALCHI&Omacr;NIS</em></div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.65;margin:0;">Gaius Petronius (died 66 CE) was Nero's <span class="lat">arbiter elegantiae</span>. His <em>Satyrica</em> is the earliest surviving Latin prose fiction, and its <span class="lat">C&emacr;na Tr&imacr;malchi&omacr;nis</span> is the sharpest satire of new money in all of antiquity. Trimalchio, a freed slave turned millionaire, spends without limit and without taste. Watch how Petronius stacks result clauses (<span class="lat">ita&hellip;ut</span>, <span class="lat">tam&hellip;ut</span>) to make the excess feel almost unbelievable.</p>
+        </div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 14px 0 8px 0;">Tr&imacr;malchi&omacr; Adven&imacr;t</h3>
+        <div class="passage">
+            <div class="p-title">TR&Imacr;MALCHI&Omacr; ADVEN&Imacr;T &mdash; ADAPTED FROM PETRONIUS, <em>SATYRICA</em> 27&ndash;28</div>
+            <div class="p-line">
+                <span class="ln">1.</span>Cum ad i&amacr;nuam conv&imacr;vi&imacr; perv&emacr;nimus, m&imacr;ra omnia v&imacr;dimus.<br>
+                <span class="ln">2.</span>Tr&imacr;malchi&omacr;, l&imacr;bertus d&imacr;vitissimus, conv&imacr;vium ita magnificum par&amacr;verat ut n&emacr;m&omacr; cr&emacr;deret.<br>
+                <span class="ln">3.</span>Serv&imacr; per aulam cucurr&emacr;runt n&emacr; quid deesset.<br>
+                <span class="ln">4.</span>Dominus ipse, balneum &emacr;gressus, intr&amacr;vit ut omnibus suam gl&omacr;riam ostent&amacr;ret.<br>
+                <span class="ln">5.</span>Tam d&imacr;ves erat ut n&emacr; n&omacr;mina quidem omnium serv&omacr;rum su&omacr;rum sc&imacr;ret.<br>
+                <span class="ln">6.</span>Omn&emacr;s hospit&emacr;s tam attonit&imacr; erant ut vix loqu&imacr; possent.
+            </div>
+            <div class="gloss"><b>Gloss:</b> <span class="lat">i&amacr;nuam</span> &mdash; gate, entrance (acc.) &middot; <span class="lat">d&imacr;vitissimus</span> &mdash; wealthiest (superlative of <span class="lat">d&imacr;ves</span>) &middot; <span class="lat">magnificum</span> &mdash; magnificent, lavish &middot; <span class="lat">aulam</span> &mdash; hall (acc.) &middot; <span class="lat">deesset</span> &mdash; would be lacking (impf. subj. of <span class="lat">d&emacr;sum</span>) &middot; <span class="lat">balneum &emacr;gressus</span> &mdash; having left the bath (perf. participle of <span class="lat">&emacr;gredior</span>, deponent) &middot; <span class="lat">hospit&emacr;s</span> &mdash; guests (nom. pl.) &middot; <span class="lat">attonit&imacr;</span> &mdash; astonished &middot; <span class="lat">vix</span> &mdash; barely, scarcely</div>
+        </div>
+    </div>
+
+    <!-- PART 3 : commit-then-reveal translations -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9997;&#65039; PART 3 &middot; TRANSLATE &mdash; THEN CHECK <span class="pill-time">8 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">Commit a full translation in writing for each, then reveal. Name the clause type as part of your answer.</p>
+
+        <div style="margin-bottom:14px;">
+            <p style="font-size:16.5px;color:#0e1c42;font-style:italic;margin:0 0 2px;">1. Palaestrio Pleusicl&emacr;n hort&amacr;tus est ut Philoc&omacr;masiam quam celerrim&emacr; abd&umacr;ceret.</p>
+            <textarea class="ctr-input" placeholder="Write your translation here&hellip;"></textarea>
+            <button class="reveal-btn">Reveal</button>
+            <div class="reveal-body">Palaestrio urged Pleusicles <em>to lead Philocomasium away as quickly as possible</em>. &mdash; <span class="lat">ut&hellip;abd&umacr;ceret</span>: purpose clause (secondary sequence); <span class="lat">hort&amacr;tus est</span>: deponent perfect of <span class="lat">hortor</span>.</div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+            <p style="font-size:16.5px;color:#0e1c42;font-style:italic;margin:0 0 2px;">2. Tr&imacr;malchi&omacr;, l&imacr;bertus d&imacr;vitissimus, conv&imacr;vium ita magnificum par&amacr;verat ut n&emacr;m&omacr; cr&emacr;deret.</p>
+            <textarea class="ctr-input" placeholder="Write your translation here&hellip;"></textarea>
+            <button class="reveal-btn">Reveal</button>
+            <div class="reveal-body">Trimalchio, the wealthiest freedman, had prepared the dinner party <em>so magnificently that no one would believe it</em>. &mdash; <span class="lat">ita magnificum</span>: intensity signal &rarr; result clause; <span class="lat">ut n&emacr;m&omacr; cr&emacr;deret</span>: imperfect subjunctive (secondary sequence after pluperfect <span class="lat">par&amacr;verat</span>).</div>
+        </div>
+
+        <div>
+            <p style="font-size:16.5px;color:#0e1c42;font-style:italic;margin:0 0 2px;">3. Tam d&imacr;ves erat ut n&emacr; n&omacr;mina quidem omnium serv&omacr;rum sc&imacr;ret.</p>
+            <textarea class="ctr-input" placeholder="Write your translation here&hellip;"></textarea>
+            <button class="reveal-btn">Reveal</button>
+            <div class="reveal-body">He was <em>so rich that he did not even know the names</em> of all his slaves. &mdash; <span class="lat">tam&hellip;ut</span>: result clause; <span class="lat">n&emacr;&hellip;quidem</span>: &ldquo;not even&rdquo; (note: this <span class="lat">n&emacr;</span> is NOT a purpose <span class="lat">n&emacr;</span> &mdash; it is the idiom <span class="lat">n&emacr;&hellip;quidem</span>).</div>
+        </div>
+    </div>
+
+    <!-- PART 4 : comprehension eval -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; CHECK YOUR READING <span class="pill-time">6 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some on the clauses, some on the story and its author. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify a line</div>
+            <div class="widget-question">In the Plautus passage, line 5 &mdash; <span class="lat">M&imacr;les ita stultus erat ut&hellip;c&omacr;nsent&imacr;ret</span> &mdash; is what type of clause?</div>
+            <div class="widget-options">
+                <button data-correct="false">purpose</button>
+                <button data-correct="true">result (<span class="lat">ita&hellip;ut</span>)</button>
+                <button data-correct="false">indirect statement</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; who is he?</div>
+            <div class="widget-question">Trimalchio is best described as:</div>
+            <div class="widget-options">
+                <button data-correct="true">a freedman who became fabulously wealthy</button>
+                <button data-correct="false">a Roman senator of old family</button>
+                <button data-correct="false">a Greek general</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the author</div>
+            <div class="widget-question">Petronius served in the court of which emperor?</div>
+            <div class="widget-options">
+                <button data-correct="false">Augustus</button>
+                <button data-correct="true">Nero</button>
+                <button data-correct="false">Trajan</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify a line</div>
+            <div class="widget-question">In Petronius line 3, <span class="lat">Serv&imacr;&hellip;cucurr&emacr;runt n&emacr; quid deesset</span> (&ldquo;so that nothing would be lacking&rdquo;) is a:</div>
+            <div class="widget-options">
+                <button data-correct="false">result clause</button>
+                <button data-correct="false">indirect command</button>
+                <button data-correct="true">negative purpose clause</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the effect</div>
+            <div class="widget-question"><span class="lat">Tam d&imacr;ves erat ut n&emacr; n&omacr;mina quidem&hellip;sc&imacr;ret</span> expresses:</div>
+            <div class="widget-options">
+                <button data-correct="true">a result &mdash; his wealth was so vast that a consequence followed</button>
+                <button data-correct="false">a purpose &mdash; his goal in getting rich</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which passage stretched you more today?</div>
+            <div class="widget-options">
+                <button data-response="Plautus can be tricky &mdash; the deponents (hort&amacr;tus est, suspic&amacr;r&emacr;tur) look passive but are active in meaning. Reread with that in mind and it opens up.">The Plautus finale</button>
+                <button data-response="Petronius packs result clauses back to back to build the sense of excess. Slowing down to name each ita/tam signal is exactly the right move &mdash; and it's the skill the quiz rewards.">The Petronius arrival</button>
+                <button data-response="Excellent &mdash; that's the goal of the whole week. You're reading real authors and parsing their subjunctive clauses in stride. Tomorrow you consolidate and head into the graded work.">Honestly, both felt readable</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 4.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with mixed practice &mdash; then you're ready for the graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then, out loud, retell in three sentences how Trimalchio is introduced &mdash; and use the words <span class="lat">l&imacr;bertus</span>, <span class="lat">d&imacr;ves</span>, and <span class="lat">conv&imacr;vium</span> at least once.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ TWO AUTHORS TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Comedy's last laugh from Plautus, and satire's opening course from Petronius &mdash; both carried by the clauses you built this week. One more day and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 4.04 &middot; Reading &mdash; Plautus &amp; Petronius</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — nicely read.'
+        : 'Not quite — reread the line (or the gloss) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

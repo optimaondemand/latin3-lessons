@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 8.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .vg { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+    .vc { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; background:#F9FBFD; }
+    .vcl { font-style:italic; color:#0E1C42; font-size:16px; }
+    .vce { font-size:14px; color:#6b7a99; margin-top:3px; }
+    @media(max-width:640px){ .vg{grid-template-columns:1fr;} }
+    .ctr { border:1px solid #D0D9E8; border-radius:8px; padding:12px 16px; margin:10px 0; }
+    .ctr .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .ctr textarea { width:100%; box-sizing:border-box; border:1px solid #D0D9E8; border-radius:6px; padding:8px 10px; font-family:inherit; font-size:14px; margin:8px 0; resize:vertical; min-height:52px; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:16px; color:#C7922C; letter-spacing:1px;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Sem 1 &middot; Module 08</div>
+        <div style="font-size: 12px; color: #666;">Cum Clauses &mdash; Four Types</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 8.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Vocabulary &amp; application</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius: The Werewolf</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 8.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> The Words of the Tale &mdash; and a Classification Workout</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">You have the four types. Today you gather the vocabulary of the werewolf tale and drill classification until it is second nature.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Tomorrow's reading &mdash; Petronius's <span class="lat">Versipellis</span> &mdash; moves fast and switches <span class="lat">cum</span> types line by line. Two things prepare you: the eight new words, most of them the connective adverbs (<span class="lat">repente, subit&#333;, itaque, praetere&#257;, d&#275;nique</span>) that drive Latin narrative, and a full classification workout that puts the diagnostic order under pressure.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize and translate the eight Module 08 words on sight.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> classify mixed <span class="lat">cum</span> clauses quickly and justify each with its signal.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 1 &middot; MODULE 08 VOCABULARY <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Petronius: The Werewolf Story</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Learn these eight. Most are <strong>connective adverbs</strong> &mdash; the small words that stitch a Latin narrative together and control its pace. Watch for all of them in tomorrow's passage.</p>
+        <div class="vg">
+            <div class="vc"><div class="vcl">repente (adv.)</div><div class="vce">suddenly, all of a sudden</div></div>
+            <div class="vc"><div class="vcl">subit&#333; (adv.)</div><div class="vce">suddenly, unexpectedly</div></div>
+            <div class="vc"><div class="vcl">itaque (conj.)</div><div class="vce">and so, therefore, consequently</div></div>
+            <div class="vc"><div class="vcl">praetere&#257; (adv.)</div><div class="vce">besides, moreover, in addition</div></div>
+            <div class="vc"><div class="vcl">d&#275;nique (adv.)</div><div class="vce">finally, at last; in short</div></div>
+            <div class="vc"><div class="vcl">&#275;brius, -a, -um</div><div class="vce">drunk, intoxicated</div></div>
+            <div class="vc"><div class="vcl">test&#257;mentum, -&#299;, n.</div><div class="vce">will, testament; last will</div></div>
+            <div class="vc"><div class="vcl">quippe (adv.)</div><div class="vce">of course, naturally, to be sure</div></div>
+        </div>
+        <div class="etym-box">
+            <div class="lbl">&#128161; HONORS NOTE &middot; NARRATIVE ADVERBS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Latin storytelling relies on a small toolkit of time-and-sequence adverbs. <span class="lat">Repente</span> and <span class="lat">subit&#333;</span> mark a shock; <span class="lat">itaque</span> draws a consequence; <span class="lat">praetere&#257;</span> adds to the pile; <span class="lat">d&#275;nique</span> closes the sequence. Reading them as signposts, not just words, is what lets you follow a fast passage like Petronius without a translation.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 2 &middot; CLASSIFICATION WORKOUT <span class="pill-time">18 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Mixed reps &mdash; some test a word, most test a <span class="lat">cum</span> classification with today's vocabulary woven in. Run the diagnostic order every time. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question"><span class="lat">Test&#257;mentum</span> means:</div>
+            <div class="widget-options">
+                <button data-correct="false">a witness</button>
+                <button data-correct="true">a will, a last testament</button>
+                <button data-correct="false">a warning</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum &#275;brius esset, tamen r&#275;ct&#275; loqu&#275;b&#257;tur.</span></div>
+            <div class="widget-options">
+                <button data-correct="true">Concessive &mdash; &ldquo;although he was drunk&rdquo;</button>
+                <button data-correct="false">Causal &mdash; &ldquo;since he was drunk&rdquo;</button>
+                <button data-correct="false">Temporal &mdash; &ldquo;when he was drunk&rdquo;</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum test&#257;mentum recit&#257;visset, omn&#275;s tacu&#275;runt.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">Concessive</button>
+                <button data-correct="true">Historical &mdash; sets the scene</button>
+                <button data-correct="false">Temporal (indicative)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum lupus esset, ulul&#257;re coepit.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">Concessive</button>
+                <button data-correct="false">Historical</button>
+                <button data-correct="true">Causal &mdash; being a wolf is the reason</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary in context</div>
+            <div class="widget-question">Which adverb would open a clause meaning &ldquo;<strong>suddenly</strong>, my companion became a werewolf&rdquo;?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">d&#275;nique</span></button>
+                <button data-correct="false"><span class="lat">praetere&#257;</span></button>
+                <button data-correct="true"><span class="lat">repente</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question"><span class="lat">Cum in urbe habitat, amīcōs saepe videt.</span> (note the mood)</div>
+            <div class="widget-options">
+                <button data-correct="true">Temporal &mdash; indicative, simple time</button>
+                <button data-correct="false">Causal &mdash; subjunctive</button>
+                <button data-correct="false">Concessive &mdash; subjunctive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128221; PART 3 &middot; COMMIT, THEN REVEAL <span class="pill-time">7 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Translate a sentence you will meet tomorrow</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">Write your own translation first &mdash; commit to it &mdash; then reveal the model. Name the <span class="lat">cum</span> type as part of your answer.</p>
+        <div class="ctr">
+            <span class="s-lat">Ille autem, cum lupus esset, ulul&#257;re coepit et in silvam f&#363;git.</span>
+            <textarea placeholder="Your translation, plus the cum type&hellip;"></textarea>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">But he, <strong>since</strong> he was a wolf, began to howl and fled into the forest. &mdash; <span class="lat">Cum</span> + <span class="lat">esset</span> (impf. subj.); no <span class="lat">tamen</span>, and being a wolf is the <em>reason</em> he howled &rarr; <strong>causal</strong>. Not concessive (no <span class="lat">tamen</span>) and not merely historical (it explains, it does not just set the scene).</div>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which part of the classification still feels least automatic to you?</div>
+            <div class="widget-options">
+                <button data-response="Very common. Historical vs. causal both take the subjunctive and both can appear in narrative — the test is whether the clause explains (causal) or just sets the moment (historical). Watch that distinction closely in tomorrow's reading.">Telling historical from causal</button>
+                <button data-response="Good to name. Once you train yourself to scan the main clause for tamen first, concessive stops hiding. Make that scan your reflex.">Catching the concessive tamen</button>
+                <button data-response="Fair — the vocabulary is the fastest thing to lock in. Re-read the eight words once more before the reading, focusing on the five connective adverbs; they carry the narrative.">Remembering the new vocabulary</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 8.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read Petronius's werewolf tale in adapted Latin &mdash; eight lines in which all four <span class="lat">cum</span> types appear, sometimes two or three in a row.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then say the eight words aloud with their meanings, and give one example sentence for a causal and a concessive <span class="lat">cum</span> clause.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; READY TO READ</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Grammar in hand, vocabulary in memory &mdash; tomorrow the pieces meet a real Roman text. <em>Ad cr&#257;stinum!</em></p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; HONORS &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 8.03 &middot; Vocabulary &amp; application</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — signal spotted, type named. That is exactly the reflex the reading rewards.'
+        : 'Not quite — re-run the diagnostic order (or recheck the word) and try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

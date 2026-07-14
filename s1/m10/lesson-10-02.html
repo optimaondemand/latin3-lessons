@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 10.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .vg { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0; }
+    .vc { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; background:#FBFCFE; }
+    .vcl { font-style:italic; color:#0E1C42; font-size:16px; }
+    .vce { font-size:14px; color:#6b7a99; margin-top:2px; }
+    @media(max-width:640px){ .vg{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 10</div>
+        <div style="font-size: 12px; color: #666;">The Gerund &mdash; Verbal Noun</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 10.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Forming &amp; declining the gerund</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Cicero &amp; the Verbal Noun</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 10.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> One Infix, Four Cases &mdash; Building the Gerund</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you grasped the idea. Today you build the forms &mdash; and they are gratifyingly regular.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Every gerund in Latin is made the same way: take the present stem, insert <span class="lat"><span class="ending">-nd-</span></span>, and add second-declension neuter endings. One rule covers all four conjugations and even deponents. Once the forms are automatic, the real work of the module &mdash; reading Cicero &mdash; is a matter of recognizing which <em>case</em> is doing which <em>job</em>. That case chart is the heart of today.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> form the gerund of any verb by adding <span class="lat">-nd-</span> plus neuter endings to the present stem.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recite the four gerund forms of <span class="lat">amō</span> and identify each by case.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> match each gerund case to its primary syntactic use.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Yesterday's idea</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Without scrolling back: the gerund is a verbal noun that exists in which cases?</div>
+            <div class="widget-options">
+                <button data-response="Yes — genitive, dative, accusative, ablative. No nominative (the infinitive covers that). Today we build all four forms.">The four oblique cases &mdash; no nominative</button>
+                <button data-response="Close — let's pin it down. The gerund lives in the genitive, dative, accusative, and ablative only. The infinitive still handles the nominative. Now let's build them.">not sure yet</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; ONE RULE, EVERY CONJUGATION <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Present stem + <span class="lat">-nd-</span> + neuter endings</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Drop <span class="lat">-re</span> from the present infinitive to reach the present stem, then add <span class="lat"><span class="ending">-nd</span>ī / -nd<span class="ending">ō</span> / -nd<span class="ending">um</span> / -nd<span class="ending">ō</span></span>. The same rule runs through all four conjugations &mdash; and deponents follow it too.</p>
+        <table class="gtable">
+            <thead><tr><th>Conjugation</th><th>Verb</th><th>Gerund stem</th><th>Genitive</th></tr></thead>
+            <tbody>
+                <tr><td>1st</td><td><span class="lat">amō, amāre</span></td><td><span class="lat">amā<span class="ending">nd</span>-</span></td><td><span class="lat">amandī</span></td></tr>
+                <tr><td>2nd</td><td><span class="lat">moneō, monēre</span></td><td><span class="lat">mone<span class="ending">nd</span>-</span></td><td><span class="lat">monendī</span></td></tr>
+                <tr><td>3rd</td><td><span class="lat">regō, regere</span></td><td><span class="lat">rege<span class="ending">nd</span>-</span></td><td><span class="lat">regendī</span></td></tr>
+                <tr><td>3rd i-stem</td><td><span class="lat">capiō, capere</span></td><td><span class="lat">capie<span class="ending">nd</span>-</span></td><td><span class="lat">capiendī</span></td></tr>
+                <tr><td>4th</td><td><span class="lat">audiō, audīre</span></td><td><span class="lat">audie<span class="ending">nd</span>-</span></td><td><span class="lat">audiendī</span></td></tr>
+                <tr><td>Deponent</td><td><span class="lat">loquor, loquī</span></td><td><span class="lat">loque<span class="ending">nd</span>-</span></td><td><span class="lat">loquendī</span></td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; THE 3RD/4TH CONNECTING VOWEL</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">In 3rd i-stem and 4th conjugation, an <span class="lat">-ie-</span> appears before <span class="lat">-nd-</span> (<span class="lat">capiendī, audiendī</span>). Third-conjugation consonant stems show a short <span class="lat">-e-</span> (<span class="lat">regendī</span>). Note also that a deponent verb, though passive in form, produces an ordinary active-meaning gerund: <span class="lat">loquendī</span> = &ldquo;of speaking.&rdquo;</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; THE CASE CHART <span class="pill-time">8 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Four forms, four jobs</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Here is the model gerund of <span class="lat">amō</span>, with the primary use of each case. Memorize the <em>job</em> attached to each form &mdash; that is what lets you read Cicero.</p>
+        <table class="gtable">
+            <thead><tr><th>Case</th><th>Form</th><th>Primary use</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td>Nominative</td><td>&mdash;</td><td>use the infinitive (<span class="lat">amāre bonum est</span>)</td><td>&mdash;</td></tr>
+                <tr><td>Genitive</td><td><span class="lat">amandī</span></td><td>depends on a noun; after <span class="lat">causā</span> / <span class="lat">grātiā</span></td><td><span class="lat">cupīdō amandī</span></td></tr>
+                <tr><td>Dative</td><td><span class="lat">amandō</span></td><td>purpose; after adjectives of fitness</td><td><span class="lat">aptus amandō</span></td></tr>
+                <tr><td>Accusative</td><td><span class="lat">amandum</span></td><td>after <span class="lat">ad</span> = purpose (&ldquo;in order to&rdquo;)</td><td><span class="lat">ad amandum</span></td></tr>
+                <tr><td>Ablative</td><td><span class="lat">amandō</span></td><td>means / manner; after prepositions</td><td><span class="lat">in amandō</span></td></tr>
+            </tbody>
+        </table>
+        <div class="virtue-box">
+            <div class="lbl">&#9878;&#65039; WATCH THE TWIN FORMS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Dative and ablative are <em>identical</em> in form: both <span class="lat">amandō</span>. You tell them apart only by context &mdash; a preposition (<span class="lat">in, dē</span>) or a sense of means/manner marks the ablative; an adjective of fitness (<span class="lat">aptus</span>) or a bare purpose marks the dative. This ambiguity is normal for second-declension neuters and rewards careful reading.</p>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; FORM &amp; MATCH <span class="pill-time">16 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps &mdash; building forms and matching each case to its job. Keep the two charts above in view; the goal is to make the forms automatic.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; build the gerund</div>
+            <div class="widget-question">What is the genitive gerund of <span class="lat">regō, regere</span> (&ldquo;to rule&rdquo;)?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">regandī</span></button>
+                <button data-correct="false"><span class="lat">regātum</span></button>
+                <button data-correct="true"><span class="lat">regendī</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the accusative job</div>
+            <div class="widget-question">Which case of the gerund follows <span class="lat">ad</span> to express purpose?</div>
+            <div class="widget-options">
+                <button data-correct="true">accusative (<span class="lat">ad amandum</span>)</button>
+                <button data-correct="false">genitive (<span class="lat">amandī</span>)</button>
+                <button data-correct="false">dative (<span class="lat">amandō</span>)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; deponent form</div>
+            <div class="widget-question">The gerund of the deponent <span class="lat">loquor, loquī</span> (&ldquo;to speak&rdquo;), genitive, is:</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">locūtī</span></button>
+                <button data-correct="true"><span class="lat">loquendī</span></button>
+                <button data-correct="false"><span class="lat">loquendus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the case</div>
+            <div class="widget-question">In <span class="lat">in scrībendō</span>, the gerund <span class="lat">scrībendō</span> is in the:</div>
+            <div class="widget-options">
+                <button data-correct="false">genitive</button>
+                <button data-correct="false">accusative</button>
+                <button data-correct="true">ablative (after the preposition <span class="lat">in</span>)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the twin forms</div>
+            <div class="widget-question">Why do <span class="lat">aptus dīcendō</span> (dative) and <span class="lat">in dīcendō</span> (ablative) share the same ending <span class="lat">-ndō</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">because deponents merge the two cases</button>
+                <button data-correct="true">the dative and ablative of 2nd-decl. neuters are identical; context decides</button>
+                <button data-correct="false">it is a printing convention with no grammatical basis</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Your turn, out loud: give all four gerund forms of <span class="lat">audiō, audīre</span> (&ldquo;to hear&rdquo;), naming each case. Say them, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><strong>Genitive</strong> <span class="lat">audiendī</span> &middot; <strong>Dative</strong> <span class="lat">audiendō</span> &middot; <strong>Accusative</strong> <span class="lat">audiendum</span> &middot; <strong>Ablative</strong> <span class="lat">audiendō</span>. Note the <span class="lat">-ie-</span> connecting vowel of the 4th conjugation, and that dative and ablative are identical.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 10.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you meet the two great gerund constructions &mdash; <span class="lat">causā</span> / <span class="lat">grātiā</span> and the gerund with an object &mdash; plus the module's vocabulary of study, leisure, and desire.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then recite the four gerund forms of <span class="lat">regō</span> out loud, naming each case &mdash; <span class="lat">regendī, regendō, regendum, regendō</span>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE FORMS ARE BUILT</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">One infix, four cases, every conjugation &mdash; and you can now decline the gerund of any verb. Tomorrow the forms go to work in the constructions Cicero loved.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 10.02 &middot; Forming &amp; declining the gerund</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that is exactly right.'
+        : 'Not quite — check the formation rule or the case chart and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

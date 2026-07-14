@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 13.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 HONORS <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 13</div>
+        <div style="font-size: 12px; color: #666;">Subjunctive System Review</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 13.01 &middot; Day 1 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">The whole system, one map</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Cicero &amp; the Subjunctive</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 13.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Everything in One Place &mdash; M03 through M12</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 35 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">No new grammar this week &mdash; instead, you take command of everything you have already built.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">M13 consolidates the entire subjunctive system you have assembled since M03. The goal is not to memorize anything new: it is <strong>fluent, confident identification and translation of every construction</strong> in complex, multi-clause Ciceronian sentences. Today you build the mental map &mdash; the three great families the subjunctive falls into, and how the sequence of tenses runs through all of them. The rest of the week fills that map in and puts it to work on real Cicero.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> distinguish the subjunctive mood from the indicative and explain what the subjunctive fundamentally signals.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> group the S1 subjunctive constructions into three families and describe how a <em>trigger</em> word signals each.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; WARM-UP <span class="pill-time">6 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Indicative vs. subjunctive &mdash; the feel of it</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The indicative <em>states facts</em>: this happened, this is true. The subjunctive is the mood of everything that stands one step off from bare fact &mdash; purpose, result, possibility, the hypothetical, the reported, the characteristic. Two years of Latin have handed you more than a dozen ways it does this.</p>
+        <div class="sentence"><span class="s-lat">Cicero venit.</span><p class="parse">Cicero came. &mdash; plain indicative statement of fact.</p></div>
+        <div class="sentence"><span class="s-lat">Cicero venit ut rem pūblicam servāret.</span><p class="parse">Cicero came in order to save the republic. &mdash; <span class="lat">servāret</span> is subjunctive: it reports a <em>purpose</em>, not a fact accomplished.</p></div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">After a year of it, what does the subjunctive most <em>feel</em> like to you when you meet it in a sentence?</div>
+            <div class="widget-options">
+                <button data-response="Exactly right. The subjunctive rarely stands alone as bare fact &mdash; it lives inside a subordinate clause and colors it: purpose, result, condition, characteristic. Spotting the clause is half the battle.">A signal that a dependent clause is doing something &mdash; not just stating a fact</button>
+                <button data-response="A fair instinct. The tense and mood together do tell you 'when' relative to the main verb &mdash; that is the sequence of tenses, and it threads through every construction we review this week.">A clue about time relative to the main verb</button>
+                <button data-response="Honest, and common at this stage &mdash; that is exactly what M13 fixes. By Friday the trigger words will make each construction announce itself, so the mood stops feeling like a fog.">Honestly, still a bit of a blur I want to sharpen</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE BIG PICTURE <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Three families under one roof</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Every subjunctive construction you learned in S1 fits into one of three families. Learn to sort a clause into its family first &mdash; the exact label follows quickly once you know which room you are standing in.</p>
+        <div class="contrast">
+            <div class="col a">
+                <h4>Family 1 &mdash; <span class="lat">ut / n&#275;</span> clauses</h4>
+                <div style="font-size:15px;color:#1a2340;line-height:1.6;">Purpose, result, indirect command, and indirect question all hang off a main verb and are introduced by a signal word: <span class="lat">ut</span>, <span class="lat">n&#275;</span>, or an interrogative. <em>What the action is aimed at, or what it produces.</em></div>
+            </div>
+            <div class="col b">
+                <h4>Family 2 &mdash; <span class="lat">cum</span> clauses</h4>
+                <div style="font-size:15px;color:#1a2340;line-height:1.6;">One little word, four jobs: temporal (indicative), historical/circumstantial, causal, and concessive. The mood and context decide which. <em>The circumstances around the main action.</em></div>
+            </div>
+        </div>
+        <div class="contrast">
+            <div class="col a">
+                <h4>Family 3 &mdash; conditions &amp; relatives</h4>
+                <div style="font-size:15px;color:#1a2340;line-height:1.6;">Future-less-vivid and contrary-to-fact conditions, plus the relative clauses of characteristic and of purpose. <em>The hypothetical and the qualifying.</em></div>
+            </div>
+            <div class="col b">
+                <h4>The thread &mdash; sequence of tenses</h4>
+                <div style="font-size:15px;color:#1a2340;line-height:1.6;">Running through all three families: a <strong>primary</strong> main verb takes present/perfect subjunctive; a <strong>secondary</strong> main verb takes imperfect/pluperfect. Master this and half the errors disappear.</div>
+            </div>
+        </div>
+        <div class="rb" style="background:#f2e8e8;border-left:3px solid #6B1919;border-radius:0 3px 3px 0;padding:12px 16px;margin:14px 0 0;">
+            <div style="font-size:11px;color:#6B1919;letter-spacing:.3px;margin-bottom:6px;font-weight:700;">&#9873; REVIEW PRIORITY &middot; USE YOUR M12 SURVEY</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">If you flagged a weak area in your M12 survey, <strong>this is the module to shore it up.</strong> As you meet each family this week, spend extra time on whichever room you find least familiar. By Day 5 you will test yourself under realistic Ciceronian reading conditions &mdash; so aim to close the gap before then.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; ORIENT YOURSELF <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Mood, trigger, and family</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five quick reps to warm up your eye for mood and trigger before the detailed review begins tomorrow. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; mood check</div>
+            <div class="widget-question">Which sentence contains a <strong>subjunctive</strong> verb doing subordinate work?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">Cicero &#333;r&#257;ti&#333;nem habuit.</span> (Cicero gave a speech.)</button>
+                <button data-correct="true"><span class="lat">Cicero &#333;r&#257;ti&#333;nem habuit ut sen&#257;tum move&#333;ret.</span> (&hellip;so as to move the senate.)</button>
+                <button data-correct="false"><span class="lat">Cicero c&#333;nsul erat.</span> (Cicero was consul.)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name the family</div>
+            <div class="widget-question">A clause opening with <span class="lat">ut</span> or <span class="lat">n&#275;</span> + subjunctive belongs to which family?</div>
+            <div class="widget-options">
+                <button data-correct="true">Family 1 &mdash; <span class="lat">ut / n&#275;</span> clauses</button>
+                <button data-correct="false">Family 2 &mdash; <span class="lat">cum</span> clauses</button>
+                <button data-correct="false">Family 3 &mdash; conditions &amp; relatives</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the thread</div>
+            <div class="widget-question">A <strong>secondary</strong> (past) main verb calls for which subjunctive tenses in its subordinate clause?</div>
+            <div class="widget-options">
+                <button data-correct="false">present / perfect</button>
+                <button data-correct="false">present only</button>
+                <button data-correct="true">imperfect / pluperfect</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; sort the room</div>
+            <div class="widget-question">A contrary-to-fact condition (<span class="lat">s&#299;&hellip;&hellip;</span>, &ldquo;if&hellip;were&hellip;&rdquo;) belongs to which family?</div>
+            <div class="widget-options">
+                <button data-correct="false">Family 1 &mdash; <span class="lat">ut / n&#275;</span> clauses</button>
+                <button data-correct="true">Family 3 &mdash; conditions &amp; relatives</button>
+                <button data-correct="false">Family 2 &mdash; <span class="lat">cum</span> clauses</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; what does mood signal?</div>
+            <div class="widget-question">Fundamentally, the subjunctive mood signals&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">a plain past fact</button>
+                <button data-correct="false">a direct command shouted aloud</button>
+                <button data-correct="true">something one step off bare fact &mdash; purpose, possibility, result, the hypothetical</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">In your own words: name the three families and one construction that lives in each. Say it aloud, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body"><strong>Family 1 &mdash; <span class="lat">ut / n&#275;</span> clauses:</strong> purpose, result, indirect command, indirect question. <strong>Family 2 &mdash; <span class="lat">cum</span> clauses:</strong> temporal, historical/circumstantial, causal, concessive. <strong>Family 3 &mdash; conditions &amp; relatives:</strong> future-less-vivid and contrary-to-fact conditions, relative of characteristic, relative of purpose. Sequence of tenses runs through all three.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 13.02</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you work through Family 1 and Family 2 in detail &mdash; the <span class="lat">ut / n&#275;</span> clauses (purpose, result, indirect command, indirect question) and the four faces of <span class="lat">cum</span> &mdash; with the trigger word for each.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas so your progress is recorded. Then, in your own words, answer out loud: <em>what are the three families of subjunctive construction, and what does the sequence of tenses control?</em></div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE MAP IS DRAWN</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">You now hold the whole subjunctive system as three families on one map. This week you fill it in and take it into Cicero's own prose. <em>Ad cr&#257;stinum!</em> &mdash; until tomorrow!</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 HONORS &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 13.01 &middot; The whole system, one map</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that is the one. Sorting the clause into its family first makes the exact label fall into place.'
+        : 'Not quite — check the trigger word and the mood, then try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

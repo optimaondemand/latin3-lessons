@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 7.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .vg { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0; }
+    .vc { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; background:#FCFDFF; }
+    .vcl { font-style:italic; color:#0E1C42; font-size:16px; }
+    .vce { font-size:14px; color:#6b7a99; margin-top:2px; }
+    @media(max-width:640px){ .vg{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:18px; background:#C7922C; border-radius:12px; padding:2px 10px; vertical-align:middle;">HONORS</span> <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Semester / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 07</div>
+        <div style="font-size: 12px; color: #666;">Indirect Command</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 7.01 &middot; Day 1 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reporting a command</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius &amp; the Roman Feast</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 7.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> When Someone Tells Someone Else What to Do</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 35 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">A direct command shouts <span class="lat">Venī!</span> An indirect command <em>reports</em> it &mdash; and Latin has a precise machinery for doing so.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">This week's construction is the <strong>indirect command</strong>: how Latin embeds an order inside a larger sentence, using <span class="lat">ut</span> or <span class="lat">nē</span> plus the subjunctive. It is the third and last of your three great noun-clause constructions &mdash; you already own indirect statement (acc. + infinitive) and indirect question (interrogative + subjunctive). Today is orientation: <strong>no full paradigm to drill</strong>, just the idea, the shape of the construction, and the eight vocabulary words that will carry the module. We anchor everything in a single scene &mdash; Trimalchio's outrageous dinner party in Petronius's <em>Satyrica</em>, a feast run entirely by commands.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> distinguish a <em>direct</em> command from an <em>indirect</em> (reported) command.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> recognize the outline of the construction: verb of ordering + <span class="lat">ut / nē</span> + subjunctive.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> use the module's eight vocabulary words, including which case each governing verb takes.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; WARM-UP <span class="pill-time">5 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Direct vs. reported</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">In English the difference is intuitive. A <strong>direct command</strong> quotes the order exactly: <em>&ldquo;Come!&rdquo;</em> An <strong>indirect (reported) command</strong> folds it into a sentence: <em>She ordered them to come</em> / <em>She ordered that they come</em>. Latin does the same &mdash; but where English reaches for an infinitive (&ldquo;to come&rdquo;), Latin usually reaches for <span class="lat">ut</span> + subjunctive.</p>
+        <div class="contrast">
+            <div class="col a">
+                <h4>Direct &mdash; imperative</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;"><span class="lat">Venī!</span><br><span style="color:#6b7a99;font-size:14px;">&ldquo;Come!&rdquo;</span><br><br>The order stands alone, in the imperative mood.</div>
+            </div>
+            <div class="col b">
+                <h4>Indirect &mdash; reported</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;"><span class="lat">Imperāvit ut venīrent.</span><br><span style="color:#6b7a99;font-size:14px;">&ldquo;He ordered that they come.&rdquo;</span><br><br>The order is embedded after a verb of commanding, with <span class="lat">ut</span> + subjunctive.</div>
+            </div>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">You already handle indirect statement and indirect question. What do you expect will be the <em>hardest</em> part of adding a third embedded construction?</div>
+            <div class="widget-options">
+                <button data-response="A very honest read. The three constructions all report speech, and all three can lurk after the same handful of verbs. This module is really about telling them apart on sight &mdash; that is exactly what Day 3 drills.">Telling the three constructions apart</button>
+                <button data-response="Reasonable. The subjunctive is shared with indirect question and purpose clauses, so it will feel familiar &mdash; the sequence of tenses (present vs. imperfect subjunctive) is the piece to keep sharp, and we handle it tomorrow.">Getting the subjunctive tense right</button>
+                <button data-response="Good instinct. Latin does not signal an indirect command with an English-style infinitive &mdash; it uses ut/nē + subjunctive, which can feel unnatural at first. Read enough of them and the pattern becomes automatic.">Trusting ut instead of an infinitive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE SHAPE OF IT <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Three signals, one clause</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">An indirect command has three visible parts. Learn the silhouette now; we fill in the fine detail (sequence of tenses, which case the person commanded takes) tomorrow.</p>
+        <table class="gtable">
+            <thead><tr><th>Part</th><th>What to look for</th><th>In the example</th></tr></thead>
+            <tbody>
+                <tr><td>Governing verb</td><td>a verb of <em>ordering, urging, asking, persuading</em></td><td><span class="lat">Imperāvit</span> (he ordered)</td></tr>
+                <tr><td>Connector</td><td><span class="lat">ut</span> (positive) or <span class="lat">nē</span> (negative)</td><td><span class="lat">ut</span></td></tr>
+                <tr><td>Verb of the clause</td><td>in the <strong>subjunctive</strong></td><td><span class="lat">venīrent</span> (they should come)</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; HOW IT DIFFERS FROM ITS COUSINS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Unlike <strong>indirect question</strong>, there is no interrogative word (<span class="lat">cūr, quid, num</span>&hellip;). Unlike <strong>indirect statement</strong>, there is no accusative + infinitive. The tell-tale mark of the indirect command is the plain connector <span class="lat">ut</span> or <span class="lat">nē</span> leading a subjunctive verb.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128221; PART 3 &middot; THE MODULE'S EIGHT WORDS <span class="pill-time">8 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Vocabulary &mdash; commands at the table</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 6px 0;">Five of these are verbs of commanding or urging &mdash; the very verbs that trigger indirect command. Note carefully which take the <strong>dative</strong> of the person commanded and which take the <strong>accusative</strong>; you will need this tomorrow.</p>
+        <div class="vg">
+            <div class="vc"><div class="vcl">imperō, -āre (+ dat.)</div><div class="vce">to command, order (someone)</div></div>
+            <div class="vc"><div class="vcl">ōrō, -āre</div><div class="vce">to beg, pray, implore</div></div>
+            <div class="vc"><div class="vcl">moneō, -ēre</div><div class="vce">to warn, advise, remind</div></div>
+            <div class="vc"><div class="vcl">prohibeō, -ēre</div><div class="vce">to prevent, forbid, restrain</div></div>
+            <div class="vc"><div class="vcl">persuādeō, -ēre (+ dat.)</div><div class="vce">to persuade (someone)</div></div>
+            <div class="vc"><div class="vcl">convīvium, -ī, n.</div><div class="vce">dinner party, banquet, feast</div></div>
+            <div class="vc"><div class="vcl">splendor, -ōris, m.</div><div class="vce">brilliance, splendor, magnificence</div></div>
+            <div class="vc"><div class="vcl">modus, -ī, m.</div><div class="vce">measure, limit, manner, way</div></div>
+        </div>
+        <div class="etym-box">
+            <div class="lbl">&#128220; DERIVATIVES TO ANCHOR THEM</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><span class="lat">imperō</span> &rarr; <em>imperative, empire, imperious</em> &middot; <span class="lat">persuādeō</span> &rarr; <em>persuade, suasion, dissuade</em> &middot; <span class="lat">splendor</span> &rarr; <em>splendid, resplendent</em> &middot; <span class="lat">modus</span> &rarr; <em>mode, moderate, modest, modify</em>.</p>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; FIRST LOOK <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Recognize and recall</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Six quick checks &mdash; five on the vocabulary and the shape of the construction, one to say out loud. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question">What does <span class="lat">persuādeō</span> mean &mdash; and what case of the person does it take?</div>
+            <div class="widget-options">
+                <button data-correct="true">to persuade (someone) &mdash; + dative</button>
+                <button data-correct="false">to forbid (someone) &mdash; + accusative</button>
+                <button data-correct="false">to beg (someone) &mdash; + genitive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; direct or indirect?</div>
+            <div class="widget-question">Which of these is a <strong>direct</strong> command?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">Imperāvit ut venīrent.</span></button>
+                <button data-correct="false"><span class="lat">Ōrāvit nē discēderent.</span></button>
+                <button data-correct="true"><span class="lat">Venīte!</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question">Which word means <strong>dinner party / banquet</strong>?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">splendor</span></button>
+                <button data-correct="true"><span class="lat">convīvium</span></button>
+                <button data-correct="false"><span class="lat">modus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the silhouette</div>
+            <div class="widget-question">Which connector introduces a <strong>negative</strong> indirect command?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">ut</span></button>
+                <button data-correct="false"><span class="lat">quod</span></button>
+                <button data-correct="true"><span class="lat">nē</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question"><span class="lat">Modus</span> can mean all of the following EXCEPT:</div>
+            <div class="widget-options">
+                <button data-correct="false">measure, limit</button>
+                <button data-correct="true">brilliance, splendor</button>
+                <button data-correct="false">manner, way</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Out loud: in <span class="lat">Trīmalchiō servīs imperāvit ut cantārent</span>, name the three signals of an indirect command &mdash; the governing verb, the connector, and the mood of <span class="lat">cantārent</span>. Say it, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">Governing verb <span class="lat">imperāvit</span> (&ldquo;he ordered&rdquo;) &middot; connector <span class="lat">ut</span> (positive) &middot; <span class="lat">cantārent</span> is <strong>imperfect subjunctive</strong> (&ldquo;that they should sing&rdquo;). All three signals present &rarr; indirect command. Note <span class="lat">servīs</span> is dative &mdash; the person commanded, because the verb is <span class="lat">imperō</span>.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 7.02</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you learn the exact formula: sequence of tenses (present vs. imperfect subjunctive), which governing verbs take dative and which take accusative, and the one great exception &mdash; <span class="lat">iubeō</span>, which refuses <span class="lat">ut</span> and demands an infinitive instead.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas so your progress is recorded. Then, in your own words, answer out loud: <em>what three signals mark an indirect command, and how does it differ from an indirect question?</em></div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; ONE STEP IN</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">You now know the silhouette of an indirect command and the eight words that fill it. Tomorrow the construction gets its precise rules. <em>Ad crāstinum!</em> &mdash; until tomorrow!</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 HONORS &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 7.01 &middot; Reporting a command</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that is exactly it.'
+        : 'Not quite — review the vocabulary and the three signals above, then try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

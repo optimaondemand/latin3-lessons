@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 5.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FBF9F4; border:1px solid #E4D9C4; border-radius:8px; padding:18px 22px; margin:14px 0; }
+    .passage .pline { display:flex; gap:12px; font-size:17px; color:#0E1C42; line-height:1.7; margin-bottom:4px; }
+    .passage .pline .ln { color:#b39a55; font-size:13px; min-width:22px; text-align:right; flex-shrink:0; padding-top:2px; }
+    .passage .pline .txt { font-style:italic; }
+    .gloss { border-top:1px solid #E4D9C4; margin-top:12px; padding-top:10px; font-size:14px; color:#6b7a99; line-height:1.7; }
+    .gloss strong { color:#0E1C42; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:15px; color:#C7922C; letter-spacing:1px; vertical-align:middle;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 05</div>
+        <div style="font-size: 12px; color: #666;">Perfect &amp; Pluperfect Subjunctive</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 5.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Trimalchio enters</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius &middot; <span class="lat">Cēna Trīmalchiōnis</span></div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 5.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Petronius &mdash; <span class="lat">Trīmalchiō Intrat</span></div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Forms plus rule equals reading. Today the whole system pays off on a real Roman page.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">No new grammar today: you <em>use</em> what you built. You read an adapted passage from Petronius's <span class="lat">Satyrica</span> in which Trimalchio makes his grand, absurd entrance &mdash; a scene threaded with result clauses, indirect questions, and <span class="lat">cum</span>-clauses in perfect and pluperfect subjunctive. Then you look at Petronius's satirical technique: how he lets a vulgar man condemn himself without a single word of authorial comment.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate the <span class="lat">Trīmalchiō Intrat</span> passage, identifying its subjunctive clauses and their sequence.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain Petronius's satirical narrative voice and how the grammar of the scene carries its irony.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READ THE PASSAGE <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><span class="lat">Trīmalchiō Intrat</span> &mdash; Petronius, <em>Satyrica</em> 32&ndash;33 (adapted)</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 4px 0;">Read each line aloud. Find the main verb first &mdash; that fixes the sequence &mdash; then work out each subjunctive clause. Use the gloss only after you have tried a line yourself.</p>
+        <div class="passage">
+            <div class="pline"><span class="ln">1</span><span class="txt">Cum ad triclinium pervēnissēmus, servī iam omnia parāverant ut nihil deesset.</span></div>
+            <div class="pline"><span class="ln">2</span><span class="txt">Trīmalchiō in pompā suā intrāvit; omnēs mīrātī sunt quī tam superbus esset.</span></div>
+            <div class="pline"><span class="ln">3</span><span class="txt">Hospitēs rogāvērunt num ipse Trīmalchiō vēnisset &mdash; nēmō crēdiderat eum tam dīvitem fuisse.</span></div>
+            <div class="pline"><span class="ln">4</span><span class="txt">Ille priusquam respondisset, digitōs concrepuit ut servī accurrerent.</span></div>
+            <div class="pline"><span class="ln">5</span><span class="txt">Interim argentum in mēnsā positum est cuius apparātus ita mīrus erat ut omnēs stupērent.</span></div>
+            <div class="pline"><span class="ln">6</span><span class="txt">Tam superbē incessit ut nēmō eum salūtāre ausus esset.</span></div>
+            <div class="pline"><span class="ln">7</span><span class="txt">Tandem locūtus est et dīxit sē per multōs annōs ēsurīvisse antequam lībertātem cōnsecūtus esset.</span></div>
+            <div class="pline"><span class="ln">8</span><span class="txt">Omnēs hospitēs rīsērunt, quamquam nescīrent cūr rīsissent.</span></div>
+            <div class="gloss">
+                <strong>Gloss:</strong> triclinium &mdash; dining room &nbsp;&middot;&nbsp; deesset &mdash; would be lacking (impf. subj. of <span class="lat">dēsum</span>) &nbsp;&middot;&nbsp; pompā &mdash; in procession / parade &nbsp;&middot;&nbsp; concrepuit &mdash; snapped (perfect of <span class="lat">concrepō</span>) &nbsp;&middot;&nbsp; accurrerent &mdash; would run up (impf. subj., purpose) &nbsp;&middot;&nbsp; mēnsā &mdash; table (abl.) &nbsp;&middot;&nbsp; incessit &mdash; walked, advanced (perfect of <span class="lat">incēdō</span>) &nbsp;&middot;&nbsp; lībertātem cōnsecūtus esset &mdash; had obtained his freedom (plupf. subj., deponent <span class="lat">cōnsequor</span>) &nbsp;&middot;&nbsp; antequam &mdash; before
+            </div>
+        </div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; WATCH THE SEQUENCE AT WORK</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Line 1: <span class="lat">cum pervēnissēmus</span> (plupf. subj.) &mdash; "when we had arrived," a "before" action in secondary sequence. Line 5: <span class="lat">ita mīrus&hellip;ut omnēs stupērent</span> &mdash; a result clause (impf. subj., same-time). Line 3: <span class="lat">num&hellip;vēnisset</span> &mdash; indirect question, "before" action in secondary sequence. Every subjunctive here is a decision you can now make.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE SATIRIST'S CRAFT <span class="pill-time">9 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#128220; LITERARY NOTE &middot; PETRONIUS'S NARRATIVE VOICE</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">Petronius writes through a first-person narrator, <strong>Encolpius</strong>, who is simultaneously inside the scene and ironically distant from it. Line 8 captures this perfectly: the guests laugh without knowing why (<span class="lat">nescīrent cūr rīsissent</span>) &mdash; an indirect question with pluperfect subjunctive (secondary sequence). Even the laughter is performed, not genuine. Petronius's satire works by letting characters reveal themselves without authorial comment &mdash; Trimalchio's vulgarity, the guests' cowed flattery, the whole hollow theatre of the feast, all shown rather than judged.</p>
+        </div>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 10px 0 0;">Notice how the <em>grammar itself</em> carries the irony. The stacked "before" subjunctives (<span class="lat">vēnisset, fuisse, respondisset, cōnsecūtus esset, rīsissent</span>) keep pushing the reader back through layers of prior action &mdash; a syntax of hearsay, expectation, and pretense that mirrors a world where nothing is quite what it claims to be.</p>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test comprehension, some test your grammar reading. Then three sentences to translate: commit your version in your head (or on paper) <em>before</em> you reveal.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">In line 5, what makes all the guests stunned (<span class="lat">stupērent</span>)?</div>
+            <div class="widget-options">
+                <button data-correct="false">Trimalchio's rude speech</button>
+                <button data-correct="true">the wondrous display of silver on the table</button>
+                <button data-correct="false">the arrival of more guests</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; identify the clause</div>
+            <div class="widget-question">In line 3, <span class="lat">num ipse Trīmalchiō vēnisset</span> is what kind of clause?</div>
+            <div class="widget-options">
+                <button data-correct="false">a purpose clause</button>
+                <button data-correct="false">a result clause</button>
+                <button data-correct="true">an indirect question (plupf. subj., secondary sequence)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; parse the form</div>
+            <div class="widget-question">In line 1, <span class="lat">pervēnissēmus</span> is which tense of the subjunctive?</div>
+            <div class="widget-options">
+                <button data-correct="true">pluperfect</button>
+                <button data-correct="false">perfect</button>
+                <button data-correct="false">imperfect</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">According to line 7, what did Trimalchio say about his past?</div>
+            <div class="widget-options">
+                <button data-correct="false">that he had always been rich</button>
+                <button data-correct="true">that he had gone hungry for many years before gaining his freedom</button>
+                <button data-correct="false">that he had once been a soldier</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the satire</div>
+            <div class="widget-question">Line 8 &mdash; the guests laugh <span class="lat">quamquam nescīrent cūr rīsissent</span> &mdash; best illustrates Petronius's technique of&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">direct moral condemnation of the guests</button>
+                <button data-correct="false">heroic praise of Trimalchio</button>
+                <button data-correct="true">showing performed, hollow behavior without authorial comment</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="virtue-box" style="margin-top:18px;">
+            <div class="lbl">&#9997;&#65039; COMMIT, THEN REVEAL &middot; THREE SENTENCES</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 10px;">For each, write your own translation and name the key subjunctive before you open the answer.</p>
+            <p style="font-size:16px;color:#0e1c42;font-style:italic;margin:0 0 6px;">1. <span class="lat">Hospitēs rogāvērunt num ipse Trīmalchiō vēnisset.</span></p>
+            <button class="reveal-btn">Reveal #1</button>
+            <div class="reveal-body">The guests asked whether Trimalchio himself had come. &mdash; <em><span class="lat">num</span> introduces a yes/no indirect question; <span class="lat">vēnisset</span> = pluperfect subjunctive (secondary sequence after <span class="lat">rogāvērunt</span>, action before that verb).</em></div>
+            <p style="font-size:16px;color:#0e1c42;font-style:italic;margin:14px 0 6px;">2. <span class="lat">Nēmō crēdiderat eum tam dīvitem fuisse.</span></p>
+            <button class="reveal-btn">Reveal #2</button>
+            <div class="reveal-body">No one had believed that he had been so wealthy. &mdash; <em><span class="lat">fuisse</span> = perfect infinitive of <span class="lat">sum</span> in indirect statement (acc. + inf.); <span class="lat">crēdiderat</span> = pluperfect indicative main verb.</em></div>
+            <p style="font-size:16px;color:#0e1c42;font-style:italic;margin:14px 0 6px;">3. <span class="lat">Omnēs hospitēs rīsērunt, quamquam nescīrent cūr rīsissent.</span></p>
+            <button class="reveal-btn">Reveal #3</button>
+            <div class="reveal-body">All the guests laughed, although they did not know why they had laughed. &mdash; <em><span class="lat">nescīrent</span> = impf. subj. (secondary, same time as <span class="lat">rīsērunt</span>); <span class="lat">cūr rīsissent</span> = indirect question, pluperfect subj. (action before the not-knowing).</em></div>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Reading authentic Petronius &mdash; how did that feel?</div>
+            <div class="widget-options">
+                <button data-response="Wonderful. That is the payoff of building the forms first: real Latin becomes readable, not just decodable. Carry that confidence into tomorrow's review.">Satisfying &mdash; the grammar clicked</button>
+                <button data-response="Normal for a first authentic passage. Reread it once more with the sequence notes open; the second pass is always faster, and the subjunctives start to announce themselves.">Slow going, but I got there</button>
+                <button data-response="Honest, and fine. Note which clause type slowed you (result? indirect question?) and revisit that section of 5.03. One more review day is coming before anything is graded.">A struggle in places</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 5.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with mixed practice &mdash; then you are ready for the graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell the <span class="lat">Trīmalchiō Intrat</span> scene in three sentences, and point to one place where a subjunctive marks a "before" action.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ PETRONIUS TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Real satire, real syntax &mdash; and grammar that finally carries meaning and wit at once. One more day of practice and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 5.04 &middot; Reading &mdash; Trimalchio enters</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the line (check the main verb and the subjunctive) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

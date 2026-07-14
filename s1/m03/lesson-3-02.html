@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 3.02</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 03</div>
+        <div style="font-size: 12px; color: #666;">Subjunctive Mood (Honors)</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 3.02 &middot; Day 2 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Present subjunctive formation</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Plautus &amp; the Mood of Possibility</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 3.02</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> One Vowel Change &mdash; The Present Subjunctive</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Yesterday you met the mood. Today you build it &mdash; and it costs you exactly one vowel.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">The present active subjunctive is formed by altering the characteristic vowel of each conjugation and then adding the ordinary active personal endings. One mnemonic covers all four families. Learn it here, and every present subjunctive you ever meet is just this pattern applied to a new stem.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> apply the vowel-change rule for the present subjunctive across all four conjugations.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> conjugate a verb like <span class="lat">amō</span> or <span class="lat">dūcō</span> fully in the present active subjunctive.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> tell a present subjunctive apart from a look-alike future indicative.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">4 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Yesterday's idea</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Without scrolling back: the subjunctive is a <em>mood</em>, not a tense. What does &ldquo;mood&rdquo; tell you about a verb?</div>
+            <div class="widget-options">
+                <button data-response="Yes — mood is the speaker's stance toward the reality of the action. The subjunctive marks the not-yet-fact. Today we give that mood a concrete present-tense shape.">The speaker's attitude toward whether it is real/factual</button>
+                <button data-response="Close — tense is the &ldquo;when.&rdquo; Mood is the different question of whether the action is stated as fact, commanded, or merely projected. A verb carries both. Let's build the present subjunctive now.">still fuzzy on it</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE VOWEL RULE <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Change the vowel, add the endings</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The present active subjunctive is formed by <strong>altering the characteristic vowel</strong> of each conjugation, then adding the normal active personal endings <span class="lat">-m, -s, -t, -mus, -tis, -nt</span> (note: 1st singular is <span class="lat">-m</span>, not <span class="lat">-ō</span>).</p>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; THE MNEMONIC</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Remember <strong>&ldquo;She eats A BIG elephant.&rdquo;</strong> Each vowel of the phrase is the subjunctive vowel for a conjugation, in order.</p>
+        </div>
+        <table class="gtable">
+            <thead><tr><th>Conjugation</th><th>Vowel shift</th><th>Signal vowel</th></tr></thead>
+            <tbody>
+                <tr><td>1st</td><td><span class="lat">-ā-</span> &rarr; <span class="ending">-ē-</span></td><td><span class="lat">am<span class="ending">ē</span>s</span></td></tr>
+                <tr><td>2nd</td><td><span class="lat">-ē-</span> &rarr; <span class="ending">-eā-</span></td><td><span class="lat">mon<span class="ending">eā</span>s</span></td></tr>
+                <tr><td>3rd</td><td>short <span class="lat">-e-</span> &rarr; <span class="ending">-ā-</span></td><td><span class="lat">dūc<span class="ending">ā</span>s</span></td></tr>
+                <tr><td>3rd-iō &amp; 4th</td><td>add <span class="ending">-iā-</span></td><td><span class="lat">capi<span class="ending">ā</span>s</span>, <span class="lat">audi<span class="ending">ā</span>s</span></td></tr>
+            </tbody>
+        </table>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 10px 0 0;">A single sentence captures the whole rule: <strong>the first conjugation swaps its <span class="lat">ā</span> for <span class="lat">ē</span>; every other conjugation brings in an <span class="lat">ā</span>.</strong></p>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; TWO FULL PARADIGMS <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The pattern in full</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Here are the model verbs <span class="lat">amō</span> (1st) and <span class="lat">dūcō</span> (3rd), fully conjugated in the present active subjunctive. English glosses use &ldquo;may&rdquo; because the subjunctive alone carries no single fixed translation &mdash; its meaning comes from the clause it sits in.</p>
+        <div class="contrast">
+            <div class="col a">
+                <h4><span class="lat">amō</span> &mdash; 1st conjugation</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.9;"><span class="lat">am<span class="ending">e</span>m</span> &mdash; I may love<br><span class="lat">am<span class="ending">ē</span>s</span> &mdash; you may love<br><span class="lat">am<span class="ending">e</span>t</span> &mdash; he/she may love<br><span class="lat">am<span class="ending">ē</span>mus</span> &mdash; we may love<br><span class="lat">am<span class="ending">ē</span>tis</span> &mdash; you all may love<br><span class="lat">am<span class="ending">e</span>nt</span> &mdash; they may love</div>
+            </div>
+            <div class="col b">
+                <h4><span class="lat">dūcō</span> &mdash; 3rd conjugation</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.9;"><span class="lat">dūc<span class="ending">a</span>m</span> &mdash; I may lead<br><span class="lat">dūc<span class="ending">ā</span>s</span> &mdash; you may lead<br><span class="lat">dūc<span class="ending">a</span>t</span> &mdash; he/she may lead<br><span class="lat">dūc<span class="ending">ā</span>mus</span> &mdash; we may lead<br><span class="lat">dūc<span class="ending">ā</span>tis</span> &mdash; you all may lead<br><span class="lat">dūc<span class="ending">a</span>nt</span> &mdash; they may lead</div>
+            </div>
+        </div>
+        <div class="culture-box" style="background:#FBF4EE;">
+            <div class="lbl" style="color:#9a7b1e;">&#9888;&#65039; CAUTION &middot; FUTURE vs. SUBJUNCTIVE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">The 3rd conjugation present subjunctive can look identical to a 1st/2nd conjugation <em>future</em> indicative in some forms (compare <span class="lat">dūcat</span>, subjunctive, with <span class="lat">amābit</span>, future). Your guides are the same three every time: <strong>context</strong>, <strong>connecting words</strong> (<span class="lat">ut, nē, cum</span>), and <strong>the verb's own conjugation</strong>. Never read a form in isolation &mdash; read the clause it belongs to.</p>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; BUILD &amp; SPOT <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps &mdash; forming subjunctives and telling them from indicatives, both directions. Keep the mnemonic in view; the goal is to make the vowel shift automatic. Wrong answers give a hint; Reset to retry.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; form it</div>
+            <div class="widget-question">Make <span class="lat">amō</span> (1st conj.) say &ldquo;<strong>they may love</strong>&rdquo; in the present subjunctive.</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">ament</span></button>
+                <button data-correct="false"><span class="lat">amant</span></button>
+                <button data-correct="false"><span class="lat">amābunt</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the vowel</div>
+            <div class="widget-question">Which vowel signals the <strong>third</strong> conjugation present subjunctive?</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">-ē-</span></button>
+                <button data-correct="true"><span class="lat">-ā-</span></button>
+                <button data-correct="false"><span class="lat">-eā-</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; form it</div>
+            <div class="widget-question">Make <span class="lat">dūcō</span> (3rd conj.) say &ldquo;<strong>we may lead</strong>.&rdquo;</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">dūcēmus</span></button>
+                <button data-correct="false"><span class="lat">dūcimus</span></button>
+                <button data-correct="true"><span class="lat">dūcāmus</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; mood check</div>
+            <div class="widget-question">The 1st conjugation form <span class="lat">amet</span> is:</div>
+            <div class="widget-options">
+                <button data-correct="false">present indicative (&ldquo;he loves&rdquo;)</button>
+                <button data-correct="true">present subjunctive (&ldquo;he may love&rdquo;)</button>
+                <button data-correct="false">future indicative (&ldquo;he will love&rdquo;)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; form it</div>
+            <div class="widget-question">Make <span class="lat">fingō</span> (3rd conj., &ldquo;to invent&rdquo;) say &ldquo;<strong>you (sg.) may invent</strong>.&rdquo;</div>
+            <div class="widget-options">
+                <button data-correct="false"><span class="lat">fingēs</span></button>
+                <button data-correct="true"><span class="lat">fingās</span></button>
+                <button data-correct="false"><span class="lat">fingis</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Out loud: how would you tell <span class="lat">dūcat</span> (subjunctive) apart from <span class="lat">amābit</span> (future) in a real sentence? Commit to a rule, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">Three checks, together: (1) <strong>the verb's conjugation</strong> &mdash; <span class="lat">dūcō</span> is 3rd, so an <span class="lat">-ā-</span> form is subjunctive, while a 1st/2nd conj. verb spells its future with <span class="lat">-bi-</span>; (2) <strong>connecting words</strong> &mdash; <span class="lat">ut, nē, cum</span> almost always introduce a subjunctive; (3) <strong>context</strong> &mdash; a subordinate clause of purpose or result wants the subjunctive. Read the whole clause, never the bare form.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 3.03</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you meet the easiest subjunctive of all &mdash; the imperfect &mdash; along with the sequence-of-tenses rule that decides which subjunctive tense a clause needs, plus this module's eight vocabulary words.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then recite the present subjunctive of <span class="lat">amō</span> out loud, all six forms &mdash; <span class="lat">amem, amēs, amet, amēmus, amētis, ament</span> &mdash; and say the &ldquo;She eats A BIG elephant&rdquo; mnemonic from memory.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE FIRST TENSE IS YOURS</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">One vowel change and the ordinary endings &mdash; and you can build the present subjunctive of any verb. Tomorrow the imperfect makes it even simpler.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 3.02 &middot; Present subjunctive formation</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — the vowel shift and endings line up.'
+        : 'Not quite — apply the mnemonic (1st swaps ā→ē; the rest bring in ā) and add the normal active endings, then try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 16.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 16</div>
+        <div style="font-size: 12px; color: #666;">Pre-Finals Synthesis (Honors)</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 16.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">The construction checklist</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Three Authors, One Semester</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 16.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> The Full Construction List &mdash; and the Words to Read Cicero</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Today is the workshop: the whole semester's grammar on one page, plus the vocabulary that unlocks tomorrow's reading.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">Part 1 of the final is an unseen passage, and the passage will be built out of the same subordinate constructions you have met since M01. Today you review that list at a glance, drill recognition on real clause-types, and pre-load the key words from the <em>Pro Archi&#257;</em> passage &mdash; so that on Day 4 your attention is on syntax, not the dictionary.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> name and recognize the major M01&ndash;M15 subordinate constructions on sight.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> gloss the core vocabulary of the <em>Pro Archi&#257;</em> passage before I read it.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; RECALL <span class="pill-time">3 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Where the constructions live</h3>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">When you hit a subjunctive verb in an unseen passage, what is the first question you ask?</div>
+            <div class="widget-options">
+                <button data-response="Exactly. A subjunctive is never free-floating &mdash; it belongs to a construction. Naming that construction (purpose? result? characteristic? condition?) is what tells you how to translate it.">What construction is this subjunctive in?</button>
+                <button data-response="Tense and sequence matter &mdash; but only after you know the construction. First identify the clause type; then let sequence of tenses tell you how to render the tense.">What tense is it, for sequence?</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE CHECKLIST <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">M01&ndash;M15 on one page</h3>
+        <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">Every construction below has appeared in the semester's reading. Cover the right column and see whether the signal alone lets you name the clause.</p>
+        <table class="gtable">
+            <thead><tr><th>Construction</th><th>Signal to watch for</th></tr></thead>
+            <tbody>
+                <tr><td>Purpose clause</td><td><span class="lat">ut / n&#275;</span> + subjunctive; answers &ldquo;in order that&rdquo;</td></tr>
+                <tr><td>Result clause</td><td><span class="lat">ut</span> + subjunctive, cued by <span class="lat">tam, ita, tantus, s&#299;c</span>; &ldquo;so &hellip; that&rdquo;</td></tr>
+                <tr><td>Indirect command</td><td>verb of asking/ordering + <span class="lat">ut / n&#275;</span> + subjunctive</td></tr>
+                <tr><td>Cum clause (circumstantial/causal)</td><td><span class="lat">cum</span> + subjunctive; &ldquo;when / since&rdquo;</td></tr>
+                <tr><td>Indirect statement</td><td>head verb of saying/thinking + accusative + infinitive</td></tr>
+                <tr><td>Relative clause of characteristic</td><td>relative pronoun + subjunctive; &ldquo;the kind of &hellip; who&rdquo;</td></tr>
+                <tr><td>Conditions (contrary to fact)</td><td><span class="lat">s&#299;</span> + subjunctive in both clauses; present = imperfect subj., past = pluperfect subj.</td></tr>
+                <tr><td>Ablative absolute</td><td>noun + participle, both ablative, grammatically detached</td></tr>
+                <tr><td>Genitive of quality</td><td>noun + adjective in genitive describing a person's character (<span class="lat">tam parv&#299; anim&#299;</span>)</td></tr>
+            </tbody>
+        </table>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; THE TWO THAT TRIP READERS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;"><strong>Result vs. purpose:</strong> both use <span class="lat">ut</span> + subjunctive; the giveaway for result is an anticipating word (<span class="lat">tam, tantus, ita</span>) in the main clause. <strong>Characteristic vs. ordinary relative:</strong> the ordinary relative takes the indicative; the characteristic clause takes the subjunctive and means &ldquo;the sort of person who&hellip;&rdquo;.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 3 &middot; VOCABULARY FOR <em>PRO ARCHI&#256;</em> <span class="pill-time">8 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Pre-load these words</h3>
+        <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">Tomorrow's passage is minimally glossed. Learn these now so that on Day 4 you spend your effort on the syntax, not on lookups.</p>
+        <table class="gtable">
+            <thead><tr><th>Latin</th><th>Gloss</th></tr></thead>
+            <tbody>
+                <tr><td><span class="lat">cogn&#257;ti&#333;, -&#333;nis</span> (f.)</td><td>kinship, blood-relation</td></tr>
+                <tr><td><span class="lat">condici&#333; et dignit&#257;s</span></td><td>position and rank</td></tr>
+                <tr><td><span class="lat">oblect&#257;re</span></td><td>to delight, gladden</td></tr>
+                <tr><td><span class="lat">adversa</span> (n. pl.)</td><td>adversity, hard times (adj. used as noun)</td></tr>
+                <tr><td><span class="lat">perfugium, -&#299;</span> (n.)</td><td>refuge</td></tr>
+                <tr><td><span class="lat">remissi&#333;, -&#333;nis</span> (f.)</td><td>relaxation, easing of the mind</td></tr>
+                <tr><td><span class="lat">h&#363;m&#257;nissimus ac l&#299;ber&#257;lissimus</span></td><td>most humane and most befitting a free person</td></tr>
+                <tr><td><span class="lat">penetr&#257;re</span></td><td>to pierce, penetrate</td></tr>
+                <tr><td><span class="lat">su&#257;vit&#257;s versuum</span></td><td>sweetness of one's verses</td></tr>
+                <tr><td><span class="lat">testim&#333;nium ingeni&#299;</span></td><td>testimony / proof of one's genius</td></tr>
+            </tbody>
+        </table>
+        <div class="etym-box">
+            <div class="lbl">&#128218; STUDIA H&#362;M&#256;NIT&#256;TIS</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">The phrase <span class="lat">studia h&#363;m&#257;nit&#257;tis</span> &mdash; &ldquo;the pursuits of humane letters&rdquo; &mdash; is the heart of tomorrow's passage and the ancestor of our word <em>humanities</em>. Cicero argues these <span class="lat">studia</span> are not luxuries but the very substance of civilization. Keep the phrase in mind; it is the passage's thesis.</p>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 4 &middot; NAME THE CONSTRUCTION <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five recognition reps. For each clause, name the construction &mdash; the exact move you make on the unseen passage. Wrong answers give a hint; Reset to retry.</p>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name it</div>
+            <div class="widget-question"><span class="lat">&hellip;ut nusquam disc&#275;dant.</span> The main clause has <span class="lat">ita &hellip; penetrant</span>. What construction is the <span class="lat">ut</span>-clause?</div>
+            <div class="widget-options">
+                <button data-correct="true">result clause (cued by <span class="lat">ita</span>)</button>
+                <button data-correct="false">purpose clause</button>
+                <button data-correct="false">indirect command</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name it</div>
+            <div class="widget-question"><span class="lat">Po&#275;ta n&#333;n erat qu&#299; n&#333;n aliquod testim&#333;nium rel&#299;quisset.</span> The <span class="lat">qu&#299;</span>-clause with subjunctive is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">purpose clause</button>
+                <button data-correct="false">ordinary relative clause</button>
+                <button data-correct="true">relative clause of characteristic</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name it</div>
+            <div class="widget-question"><span class="lat">Quod s&#299; n&#333;n hic fr&#363;ctus ostender&#275;tur &hellip; i&#363;dic&#257;r&#275;tis.</span> Both verbs are imperfect subjunctive. This is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">future-less-vivid condition</button>
+                <button data-correct="true">present contrary-to-fact condition</button>
+                <button data-correct="false">simple past condition</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; name it</div>
+            <div class="widget-question"><span class="lat">tam parv&#299; anim&#299;</span> describing a person's character is an example of the&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">partitive genitive</button>
+                <button data-correct="true">genitive of quality</button>
+                <button data-correct="false">objective genitive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; vocabulary</div>
+            <div class="widget-question"><span class="lat">Perfugium</span> in the phrase <span class="lat">adversīs perfugium praebent</span> means:</div>
+            <div class="widget-options">
+                <button data-correct="false">delight</button>
+                <button data-correct="false">kinship</button>
+                <button data-correct="true">refuge</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit, then reveal: what single test tells a <em>result</em> clause apart from a <em>purpose</em> clause when both use <span class="lat">ut</span> + subjunctive? Answer, then check.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">Look in the <strong>main clause</strong> for an anticipating word &mdash; <span class="lat">tam, ita, tantus, s&#299;c, ade&#333;</span>. If one is present, the <span class="lat">ut</span>-clause is almost always <strong>result</strong> (&ldquo;so &hellip; that&rdquo;). A negative result uses <span class="lat">ut n&#333;n</span>, whereas negative purpose uses <span class="lat">n&#275;</span> &mdash; that negation is a second, confirming test.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 16.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read it live: minimally adapted Cicero, <em>Pro Archi&#257; Po&#275;t&#257;</em> &sect;&sect;18&ndash;26 &mdash; the constructions and vocabulary you drilled today, working together in a real passage.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then cover the checklist and recite from memory the signal for four constructions: purpose, result, characteristic, and contrary-to-fact condition.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; TOOLS ON THE BENCH</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">The full construction list is in front of you and the passage's vocabulary is pre-loaded. Tomorrow the two meet in real Cicero. <em>Ad cr&#257;stinum!</em></p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 16.03 &middot; The construction checklist</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that is the recognition that carries the unseen passage.'
+        : 'Not quite — check the signal against the construction checklist and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

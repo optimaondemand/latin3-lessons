@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 0.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FBF7EF; border:1px solid #E4D6BE; border-radius:8px; padding:18px 22px; margin:14px 0; }
+    .passage .pl { font-style:italic; color:#0E1C42; font-size:17px; line-height:1.9; }
+    .passage .pl span.line { display:block; margin-bottom:4px; }
+    .gloss { font-size:14px; color:#6b7a99; line-height:1.7; border-top:1px solid #E4D6BE; padding-top:12px; margin-top:12px; }
+    .gloss strong { color:#1a2340; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 HONORS <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 00</div>
+        <div style="font-size: 12px; color: #666;">Orientation &amp; Grammar Review</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 0.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Plautus</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Recapitul&#257;ti&#333; &middot; Review Week</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 0.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Lecti&#333; &mdash; Plautus et The&#257;trum R&#333;m&#257;num</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Three days of review meet real Latin. Today you read an orientation passage and hunt in it for everything you have reactivated this week.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">No new grammar today &mdash; you <em>use</em> what you rebuilt. Read the passage below and find (1) at least two passive forms, (2) a PPP used as a modifier, and (3) the indirect statement. Then meet <strong>Plautus</strong> and the world of Roman comedy that anchors the next four modules. The Latin here is written to be read, not drilled &mdash; exactly the shift this course asks of you.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read a short connected passage and identify passive forms, a PPP, and indirect statement in it.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> describe Plautus, Roman comedy, and how its register differs from Cicero's prose.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; THE PASSAGE <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Read for the grammar you just reviewed</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Read the passage aloud. As you go, mark: two passive forms, one PPP used as a modifier, and the indirect statement. Verify your finds against the gloss below.</p>
+        <div class="passage">
+            <div class="pl">
+                <span class="line">1. Plautus, po&#275;ta R&#333;m&#257;nus cl&#257;rissimus, circ&#257; ducent&#333;s ann&#333;s ante Christum n&#257;tum f&#257;bul&#257;s composuit.</span>
+                <span class="line">2. F&#257;bulae eius &#257; popul&#333; R&#333;m&#257;n&#333; magnopere am&#257;tae sunt et in the&#257;tr&#299;s mult&#299;s &#257;ct&#257;tae sunt.</span>
+                <span class="line">3. D&#299;citur Plautum v&#299;gint&#299; et &#363;nam f&#257;bul&#257;s Lat&#299;n&#257;s scr&#299;psisse.</span>
+                <span class="line">4. In f&#257;bul&#299;s eius serv&#299; callid&#299; et m&#299;lit&#275;s arrogant&#275;s semper reperiuntur.</span>
+                <span class="line">5. N&#333;s h&#333;c semestr&#299; f&#257;bulam cu&#299; n&#333;men est <em>M&#299;les Gl&#333;ri&#333;sus</em> leg&#275;mus et multa nova disc&#275;mus.</span>
+            </div>
+            <div class="gloss">
+                <strong>Gloss:</strong> cl&#257;rissimus &mdash; most famous &middot; circ&#257; + acc. &mdash; around, approximately &middot; ante Christum n&#257;tum &mdash; before Christ was born (= BCE) &middot; composuit &mdash; composed, wrote &middot; &#257;ct&#257;tae sunt &mdash; were performed &middot; d&#299;citur &mdash; it is said &middot; reperiuntur &mdash; are found, are encountered &middot; cu&#299; n&#333;men est &mdash; whose name is &middot; leg&#275;mus &mdash; we will read &middot; disc&#275;mus &mdash; we will learn
+                <br><br>
+                <strong>Grammar to find:</strong> Passive forms: <span class="lat">am&#257;tae sunt, &#257;ct&#257;tae sunt, d&#299;citur, reperiuntur</span> &middot; PPP as modifier: <span class="lat">n&#257;tum</span> (modifying <span class="lat">Christum</span>); <span class="lat">am&#257;tae / &#257;ct&#257;tae</span> in the passive perfects &middot; Indirect statement: <span class="lat">d&#299;citur Plautum &hellip; scr&#299;psisse</span> (acc. subject <span class="lat">Plautum</span> + perfect infinitive <span class="lat">scr&#299;psisse</span>).</span>
+            </div>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">After one read-through, how did the passage feel?</div>
+            <div class="widget-options">
+                <button data-response="Excellent — that fluency is the goal of the review week. Push yourself on Day 5's mixed practice and you will be ready for the Plautus itself in M01.">I could read most of it on sight</button>
+                <button data-response="That is exactly what the gloss is for. Reread with it open, then reread once more without it — the second pass almost always clicks. This is normal honors-level work.">I needed the gloss for several words</button>
+                <button data-response="Good honesty. Slow down and take it clause by clause: find the verb first, then its subject, then the extras. Reread lines 2 and 3 — they carry the passive and the indirect statement you reviewed this week.">The syntax slowed me down</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; PLAUTUS &amp; ROMAN COMEDY <span class="pill-time">12 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127917; PLAUTUS AND THE FABULA PALLI&#256;TA</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">Titus Maccius Plautus (c. 254&ndash;184 BCE) wrote for a popular Roman audience. Roman comedy (<span class="lat">f&#257;bula palli&#257;ta</span>) adapted Greek New Comedy plots: clever slaves who outwit pompous masters, mercenary soldiers in love, parasites hunting for a free meal.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">Plautus excels at rapid dialogue, wordplay, and social inversion. His Latin is <strong>colloquial and energetic</strong> &mdash; a very different register from Cicero's formal prose, which you will encounter in M10. Learning to navigate <em>both</em> registers is one of the goals of Latin 3 Honors.</p>
+        </div>
+        <div class="virtue-box">
+            <div class="lbl">&#127914; WHY START WITH COMEDY?</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Comedy rewards the reader who can hear tone. <em>M&#299;les Gl&#333;ri&#333;sus</em> &mdash; &ldquo;The Braggart Soldier&rdquo; &mdash; turns on the boasting of Pyrgopol&#299;nic&#275;s and the scheming of the slave Palaestrio. Reading it, you meet deponent verbs, the subjunctive, and purpose clauses <em>in action</em>, spoken by characters &mdash; not isolated in a chart.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some on the Latin, some on the culture. Work slowly; the point is to prove you can read the passage <em>and</em> place Plautus. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; find the passive</div>
+            <div class="widget-question">Which word from the passage is a <strong>passive</strong> form?</div>
+            <div class="widget-options">
+                <button data-correct="true"><span class="lat">reperiuntur</span> (are found)</button>
+                <button data-correct="false"><span class="lat">composuit</span> (composed)</button>
+                <button data-correct="false"><span class="lat">leg&#275;mus</span> (we will read)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the indirect statement</div>
+            <div class="widget-question">In line 3, <span class="lat">D&#299;citur Plautum &hellip; scr&#299;psisse</span>, what is <span class="lat">Plautum</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">the direct object of <span class="lat">d&#299;citur</span></button>
+                <button data-correct="true">the accusative subject of the indirect statement</button>
+                <button data-correct="false">a personal agent (&#257;/ab + abl.)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate</div>
+            <div class="widget-question">Translate line 2: <span class="lat">F&#257;bulae eius &#257; popul&#333; R&#333;m&#257;n&#333; magnopere am&#257;tae sunt.</span></div>
+            <div class="widget-options">
+                <button data-correct="false">His plays greatly loved the Roman people.</button>
+                <button data-correct="true">His plays were greatly loved by the Roman people.</button>
+                <button data-correct="false">The Roman people will greatly love his plays.</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the culture</div>
+            <div class="widget-question">Roman comedy (<span class="lat">f&#257;bula palli&#257;ta</span>) is best described as&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">solemn tragedy modeled on epic</button>
+                <button data-correct="false">Cicero's formal courtroom oratory</button>
+                <button data-correct="true">colloquial comedy adapting Greek plots &mdash; clever slaves, boastful soldiers</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; register</div>
+            <div class="widget-question">Compared with Cicero, Plautus's Latin is&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="true">colloquial and energetic</button>
+                <button data-correct="false">identical in register</button>
+                <button data-correct="false">more formal and periodic</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit, then reveal &mdash; two sentences from the passage. Type or say your translation of each <em>before</em> you reveal. Watch the passive and the indirect statement.</p>
+            <div class="sentence" style="margin-top:10px;"><span class="s-lat">2. F&#257;bulae eius &#257; popul&#333; R&#333;m&#257;n&#333; magnopere am&#257;tae sunt et in the&#257;tr&#299;s mult&#299;s &#257;ct&#257;tae sunt.</span></div>
+            <button class="reveal-btn">Reveal sentence 2</button>
+            <div class="reveal-body">His plays were greatly loved by the Roman people and were performed in many theaters. &mdash; two perfect passives (<span class="lat">am&#257;tae sunt, &#257;ct&#257;tae sunt</span>), each a PPP (fem. pl.) + <span class="lat">sunt</span>; <span class="lat">&#257; popul&#333;</span> is the personal agent.</div>
+            <div class="sentence" style="margin-top:14px;"><span class="s-lat">3. D&#299;citur Plautum v&#299;gint&#299; et &#363;nam f&#257;bul&#257;s Lat&#299;n&#257;s scr&#299;psisse.</span></div>
+            <button class="reveal-btn">Reveal sentence 3</button>
+            <div class="reveal-body">It is said that Plautus wrote twenty-one Latin plays. &mdash; indirect statement after <span class="lat">d&#299;citur</span>: accusative subject <span class="lat">Plautum</span> + perfect infinitive <span class="lat">scr&#299;psisse</span> (action completed before &ldquo;is said&rdquo;).</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 0.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole week together with mixed practice, take an honest ready-check, and move to the module's graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then retell the passage in three English sentences, and name one way Plautus's Latin differs from Cicero's.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ REAL LATIN TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Passive forms, a PPP, an indirect statement &mdash; all found in connected prose, not a drill. One more day, and Module 00 is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 HONORS &#127963;&#65039; &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 0.04 &middot; Reading &mdash; Plautus</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the passage (or check the word endings) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

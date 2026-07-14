@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 12.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .reading { background:#FBF9F4; border:1px solid #E4D9C4; border-radius:8px; padding:18px 22px; margin:14px 0; }
+    .reading .rl { font-style:italic; color:#0E1C42; font-size:17px; line-height:2.1; }
+    .reading .rl .n { color:#9a7b1e; font-style:normal; font-size:13px; margin-right:10px; }
+    .reading .rl span.line { display:block; }
+    .reading .gloss { font-size:13.5px; color:#6b7a99; line-height:1.65; border-top:1px solid #E4D9C4; padding-top:10px; margin-top:12px; }
+    .reading .gloss strong { color:#1a2340; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 12</div>
+        <div style="font-size: 12px; color: #666;">Relative Clauses (Honors)</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 12.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; Cicero, <span style="font-style:italic;">Pr&#333; Archi&#257;</span></div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Cicero, <span style="font-style:italic;">Pr&#333; Archi&#257;</span></div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 12.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Cicero Defends a Poet</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Grammar plus vocabulary equals reading. Today the pieces click together on a page of adapted Cicero.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You read a passage adapted from <span class="lat">Pr&#333; Archi&#257; Po&#275;t&#257;</span>, Cicero's defense of the poet Archias's Roman citizenship. Watch the relative clauses of characteristic and purpose do real argumentative work &mdash; they are not decoration but the very structure of his case for why a civilized state needs its poets. No new grammar today: today you <em>use</em> what you built.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate a passage of adapted Cicero containing relative clauses of characteristic and purpose.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain how Cicero uses these clauses to argue that a state needs its poets and scholars.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; THE TEXT <span class="pill-time">14 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Adapted from <span class="lat">Pr&#333; Archi&#257; Po&#275;t&#257;</span></h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Cicero defends the citizenship of the poet Archias. Read each line aloud, find the relative clauses, and name their type as you go. The gloss below carries the harder words and constructions.</p>
+        <div class="reading">
+            <div class="rl">
+                <span class="line"><span class="n">1</span>Quis est qu&#299; n&#333;n videat quantum m&#333;mentum habeant studia h&#363;m&#257;nit&#257;tis?</span>
+                <span class="line"><span class="n">2</span>Archi&#257;s est is qu&#299; ingeni&#333; omn&#275;s super&#257;re vide&#257;tur et doctr&#299;n&#257;.</span>
+                <span class="line"><span class="n">3</span>N&#333;n sunt mult&#299; qu&#299; hanc viam virt&#363;tis et laudis in&#299;re velint.</span>
+                <span class="line"><span class="n">4</span>Pomp&#275;ius l&#275;g&#257;t&#333;s m&#299;sit qu&#299; Archiam rog&#257;rent ut d&#275; bell&#299;s eius scr&#299;beret.</span>
+                <span class="line"><span class="n">5</span>H&#363;m&#257;nit&#257;tis studi&#299;s sumus &#275;r&#363;d&#299;t&#299; &mdash; s&#299;ne h&#299;s n&#275;m&#333; est qu&#299; satis valeat.</span>
+                <span class="line"><span class="n">6</span>Po&#275;ta est is qu&#299; immort&#257;lit&#257;tem per carmina rebus gest&#299;s tribuit.</span>
+                <span class="line"><span class="n">7</span>Cicer&#333; erat qu&#299; et d&#299;cere et scr&#299;bere et bene v&#299;vere posset &mdash; r&#257;rus homo.</span>
+                <span class="line"><span class="n">8</span>M&#299;simus libellum ad i&#363;dic&#275;s qu&#299; causam nostram cogn&#333;scerent et prob&#257;rent.</span>
+            </div>
+            <div class="gloss">
+                <strong>Gloss:</strong> <span class="lat">quantum m&#333;mentum</span> &mdash; how great the weight/importance (indirect question) &middot; <span class="lat">studia h&#363;m&#257;nit&#257;tis</span> &mdash; the pursuits of culture/civilization &middot; <span class="lat">doctr&#299;n&#257;</span> &mdash; learning, scholarship (abl.) &middot; <span class="lat">viam in&#299;re</span> &mdash; to enter upon a road/path &middot; <span class="lat">h&#363;m&#257;nit&#257;tis studi&#299;s</span> &mdash; in the liberal studies &middot; <span class="lat">&#275;r&#363;d&#299;t&#299; sumus</span> &mdash; we have been educated (perf. passive) &middot; <span class="lat">carmina</span> &mdash; songs, poems &middot; <span class="lat">rebus gest&#299;s</span> &mdash; to deeds accomplished (dative after <span class="lat">tribuit</span>) &middot; <span class="lat">tribuit</span> &mdash; attributes, gives &middot; <span class="lat">libellum</span> &mdash; a little book, a brief written document &middot; <span class="lat">cogn&#333;scerent et prob&#257;rent</span> &mdash; might examine and approve (purpose)
+            </div>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; LITERARY NOTE <span class="pill-time">8 min</span></div>
+        <div class="virtue-box">
+            <div class="lbl">&#127963;&#65039; <span class="lat">PR&#332; ARCHI&#256;</span> AND THE DEFENSE OF CULTURE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 8px;">Cicero delivered <span class="lat">Pr&#333; Archi&#257;</span> in 62 BC to defend the poet Archias's Roman citizenship. The speech transcends the legal case: it becomes a meditation on why a civilized state needs poets, historians, and scholars.</p>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">The relative clauses of characteristic (<span class="lat">quis est qu&#299;, n&#275;m&#333; est qu&#299;, is est qu&#299;</span>) are Cicero's argumentative tools &mdash; they define what kind of person matters, what kind of state flourishes, what kind of legacy endures. Recognize them: this is Cicero at his most philosophically ambitious.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">18 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some test the clauses, some test comprehension of the argument. Take them slowly; the point is to prove you can read the Latin and follow Cicero's case. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question">In line 1, <span class="lat">Quis est qu&#299; n&#333;n videat&hellip;</span> is a relative clause of:</div>
+            <div class="widget-options">
+                <button data-correct="true">characteristic</button>
+                <button data-correct="false">purpose</button>
+                <button data-correct="false">ordinary (indicative fact)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question">In line 4, <span class="lat">l&#275;g&#257;t&#333;s m&#299;sit qu&#299; Archiam rog&#257;rent</span> is a relative clause of:</div>
+            <div class="widget-options">
+                <button data-correct="false">characteristic</button>
+                <button data-correct="true">purpose</button>
+                <button data-correct="false">ordinary (indicative fact)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">According to line 5, what does Cicero claim about a person without the liberal studies (<span class="lat">h&#363;m&#257;nit&#257;s</span>)?</div>
+            <div class="widget-options">
+                <button data-correct="false">He becomes a great poet anyway</button>
+                <button data-correct="false">He is sent abroad as an ambassador</button>
+                <button data-correct="true">There is no one who is strong/worthy enough without them</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">In line 6, what does Cicero say a poet does (<span class="lat">Po&#275;ta est is qu&#299;&hellip;</span>)?</div>
+            <div class="widget-options">
+                <button data-correct="false">He wages wars against the enemy</button>
+                <button data-correct="true">He gives immortality to great deeds through his songs</button>
+                <button data-correct="false">He judges legal cases in court</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; classify</div>
+            <div class="widget-question">In line 8, <span class="lat">m&#299;simus libellum ad i&#363;dic&#275;s qu&#299; causam&hellip; cogn&#333;scerent</span> is a relative clause of:</div>
+            <div class="widget-options">
+                <button data-correct="false">ordinary (indicative fact)</button>
+                <button data-correct="false">characteristic</button>
+                <button data-correct="true">purpose</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">In your own words: how do Cicero's relative clauses of characteristic (&ldquo;there is no one who&hellip;&rdquo;, &ldquo;he is the sort who&hellip;&rdquo;) help him argue for the value of poetry? Think it through, then reveal one way to say it.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">By phrasing his claims as characteristics of a <em>type</em> rather than facts about one person, Cicero makes them feel universal and self-evident: &ldquo;there is no one who does not see&hellip;&rdquo; forces the jury to agree, and &ldquo;a poet is the sort of person who confers immortality&rdquo; defines the very worth of the poet he defends. The subjunctive turns opinion into what seems the nature of things.</div>
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 4 &middot; COMMIT, THEN REVEAL <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Translate three lines</h3>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 10px;">Draft a full translation of each line in your notebook <em>before</em> revealing. Then compare &mdash; the note after each explains the construction.</p>
+        <div style="margin-top:10px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;"><strong>1.</strong> <span class="lat">Quis est qu&#299; n&#333;n videat quantum m&#333;mentum habeant studia h&#363;m&#257;nit&#257;tis?</span></p>
+            <button class="reveal-btn">Reveal</button>
+            <div class="reveal-body">&ldquo;Who is there who does not see how great an importance the pursuits of culture have?&rdquo; &mdash; <span class="lat">quis est qu&#299;</span> + subjunctive (<span class="lat">videat</span>) = characteristic clause; <span class="lat">quantum m&#333;mentum habeant</span> = indirect question (Module 06 review) embedded within.</div>
+        </div>
+        <div style="margin-top:14px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;"><strong>2.</strong> <span class="lat">Pomp&#275;ius l&#275;g&#257;t&#333;s m&#299;sit qu&#299; Archiam rog&#257;rent ut d&#275; bell&#299;s eius scr&#299;beret.</span></p>
+            <button class="reveal-btn">Reveal</button>
+            <div class="reveal-body">&ldquo;Pompey sent ambassadors to ask Archias that he should write about his wars.&rdquo; &mdash; <span class="lat">qu&#299; rog&#257;rent</span> = relative clause of purpose (<span class="lat">m&#299;sit</span> + <span class="lat">qu&#299;</span> + subj.); <span class="lat">ut&hellip;scr&#299;beret</span> = indirect command nested inside the purpose clause.</div>
+        </div>
+        <div style="margin-top:14px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;"><strong>3.</strong> <span class="lat">Po&#275;ta est is qu&#299; immort&#257;lit&#257;tem per carmina rebus gest&#299;s tribuit.</span></p>
+            <button class="reveal-btn">Reveal</button>
+            <div class="reveal-body">&ldquo;A poet is the sort of person who gives immortality to deeds through songs.&rdquo; &mdash; <span class="lat">is qu&#299;</span> defines what type of person a poet is. Note: <span class="lat">tribuit</span> here is present indicative (a specific true claim), which some editors accept in this pattern; watch for such variation in Cicero.</div>
+        </div>
+    </div>
+
+    <!-- PART 5 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128173; PART 5 &middot; READER'S CHECK-IN <span class="pill-time">3 min</span></div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which line was hardest to unpack on your first read?</div>
+            <div class="widget-options">
+                <button data-response="A common one. Line 1 nests an indirect question (quantum mōmentum habeant) inside a characteristic clause. Reread it slowly: main clause 'Quis est quī... videat', then the embedded question as videat's object.">Line 1 &mdash; the nested indirect question</button>
+                <button data-response="Understandable. Line 4 layers a purpose clause (quī rogārent) over an indirect command (ut scrīberet). Peel it back one layer at a time and it resolves cleanly.">Line 4 &mdash; purpose over indirect command</button>
+                <button data-response="Fair &mdash; line 5 packs an ablative of means (studiīs), a perfect passive (ērudītī sumus), and a characteristic clause into one sentence. Honors Latin rewards a second, slower pass.">Line 5 &mdash; the dense sentence</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 12.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with mixed practice &mdash; then you're ready for the graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then, in two or three sentences, explain Cicero's central claim in <span class="lat">Pr&#333; Archi&#257;</span> &mdash; and use the words <span class="lat">h&#363;m&#257;nit&#257;s</span> and <span class="lat">gl&#333;ria</span> at least once.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ CICERO TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Real Ciceronian argument, carried by the very clauses you learned this week. One more day of practice and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 12.04 &middot; Reading &mdash; Cicero, <span style="font-style:italic;">Pr&#333; Archi&#257;</span></div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the line, check the signal words and the mood, and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

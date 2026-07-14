@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 16.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .passage { background:#FBF9F4; border:1px solid #E4D9C4; border-radius:8px; padding:16px 20px; margin:14px 0; }
+    .passage .pline { display:block; font-style:italic; color:#0E1C42; font-size:16px; line-height:1.9; }
+    .passage .pn { font-style:normal; color:#9a8a6a; font-size:13px; margin-right:8px; }
+    .gloss { font-size:13.5px; color:#6b7a99; line-height:1.7; border-top:1px solid #E4D9C4; padding-top:10px; margin-top:10px; }
+    .gloss strong { color:#0E1C42; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 16</div>
+        <div style="font-size: 12px; color: #666;">Pre-Finals Synthesis (Honors)</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 16.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; <em>Pro Archi&#257;</em></div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Three Authors, One Semester</div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 16.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Cicero &mdash; Why Literature Matters</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Checklist plus vocabulary equals reading. Today the whole week converges on real Cicero.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">You will read a minimally adapted passage of the <em>Pro Archi&#257; Po&#275;t&#257;</em>, &sect;&sect;18&ndash;26 &mdash; near exam density, only the essential words glossed. This is your closest rehearsal for Part 1 of the final. <strong>Map all subordinate clauses before translating.</strong> No new grammar; today you <em>use</em> everything you have built.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate a minimally adapted passage of Ciceronian prose, mapping its subordinate clauses.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain Cicero's argument in the <em>Pro Archi&#257;</em> for the value of the <span class="lat">studia h&#363;m&#257;nit&#257;tis</span>.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; THE PASSAGE <span class="pill-time">16 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;"><em>Pro Archi&#257; Po&#275;t&#257;</em> &mdash; near-original, &sect;&sect;18&ndash;26</h3>
+        <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">This passage is minimally adapted. Only the most essential words are glossed. Read each line aloud, find the main verb, map every subordinate clause, <em>then</em> translate.</p>
+        <div class="passage">
+            <div style="font-size:11px;color:#9a8a6a;letter-spacing:.4px;margin-bottom:8px;">CICERO, <em>PRO ARCHI&#256; PO&#274;T&#256;</em> &mdash; MINIMALLY ADAPTED</div>
+            <span class="pline"><span class="pn">1.</span>Etenim omn&#275;s art&#275;s quae ad h&#363;m&#257;nit&#257;tem pertinent habent quoddam comm&#363;ne vinculum et quasi cogn&#257;ti&#333;ne qu&#257;dam inter s&#275; continentur.</span>
+            <span class="pline"><span class="pn">2.</span>N&#333;n erat difficile qu&#299; in e&#257; essent condici&#333;ne et dignit&#257;te ut patriam d&#275;sider&#257;re possent.</span>
+            <span class="pline"><span class="pn">3.</span>Haec studia adul&#275;scentiam alunt, senect&#363;tem oblectant, secund&#257;s r&#275;s ornant, adversīs perfugium ac s&#333;l&#257;cium praebent.</span>
+            <span class="pline"><span class="pn">4.</span>Quod s&#299; n&#333;n hic tantus fr&#363;ctus ostender&#275;tur et s&#299; ex h&#299;s studi&#299;s d&#275;lect&#257;ti&#333; s&#333;la peter&#275;tur, tamen hanc anim&#299; remissi&#333;nem h&#363;m&#257;nissimam ac l&#299;ber&#257;lissimam i&#363;dic&#257;r&#275;tis.</span>
+            <span class="pline"><span class="pn">5.</span>Nam illa quae saepe memorat Archias, cum ipse s&#333;l&#257;cium requ&#299;rit, record&#257;tur &mdash; ita in animum penetrant ut nusquam disc&#275;dant.</span>
+            <span class="pline"><span class="pn">6.</span>An v&#275;r&#333; tam parv&#299; anim&#299; nostrae erant virt&#363;t&#275;s ut, quod d&#275; Pomp&#275;i&#333; f&#275;cimus, hoc idem d&#275; Archi&#257; scr&#299;ber&#275;mus?</span>
+            <span class="pline"><span class="pn">7.</span>S&#299; quis min&#333;re gl&#333;ri&#257; c&#333;ntentus esset, tamen h&#333;s po&#275;tae su&#257;vit&#257;tem versuum laud&#257;re d&#275;b&#275;ret.</span>
+            <span class="pline"><span class="pn">8.</span>Po&#275;ta autem n&#333;n erat qu&#299; n&#333;n aliquod testim&#333;nium ingeni&#299; rel&#299;quisset &mdash; Archias rel&#299;quit.</span>
+            <div class="gloss">
+                <strong>Gloss:</strong> cogn&#257;ti&#333;ne &mdash; kinship &middot; condici&#333;ne et dignit&#257;te &mdash; in position and rank &middot; oblectant &mdash; delight &middot; adversīs &mdash; in adversity (dat./abl. pl. used as noun) &middot; perfugium &mdash; refuge &middot; remissi&#333;nem &mdash; relaxation &middot; h&#363;m&#257;nissimam ac l&#299;ber&#257;lissimam &mdash; most humane and most befitting a free person &middot; penetrant &mdash; pierce, penetrate &middot; tam parv&#299; anim&#299; &mdash; so petty of spirit (genitive of quality) &middot; su&#257;vit&#257;tem versuum &mdash; sweetness of his verses &middot; rel&#299;quisset = pluperf. subj. (relative clause of characteristic, secondary sequence)
+            </div>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; LITERARY CONTEXT <span class="pill-time">10 min</span></div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; <em>PRO ARCHI&#256;</em> (62 BC)</div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;"><em>Pro Archi&#257;</em> is Cicero's defense of the Greek poet Archias, whose Roman citizenship was disputed. It is as much a defense of the <span class="lat">studia h&#363;m&#257;nit&#257;tis</span> &mdash; humane letters &mdash; as of the man. Cicero's argument: poetry and philosophy are not luxuries but the substance of what makes a civilization. The speech became, in the Renaissance, a foundational text for the defense of liberal education. After a semester of Plautus, Petronius, and Cicero's political writing, this text asks you to hear Cicero reflecting on why literature itself matters.</p>
+        </div>
+        <div class="virtue-box">
+            <div class="lbl">&#9878;&#65039; THE FAMOUS LINE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Line 3 &mdash; <span class="lat">Haec studia adul&#275;scentiam alunt, senect&#363;tem oblectant, secund&#257;s r&#275;s ornant, adversīs perfugium ac s&#333;l&#257;cium praebent</span> &mdash; is among the most quoted sentences in Latin prose: &ldquo;These studies nourish the young, delight the old, adorn prosperity, and offer refuge and solace in adversity.&rdquo; Note the four parallel clauses, each verb final, building by <em>tricolon and beyond</em> &mdash; Ciceronian architecture in miniature.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">14 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some on the argument, some on the syntax of specific lines. Work slowly; prove you can both construe the Latin and follow Cicero's thought.</p>
+
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the argument</div>
+            <div class="widget-question">Cicero's central claim about the <span class="lat">studia h&#363;m&#257;nit&#257;tis</span> is that they are&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">pleasant luxuries for the wealthy few</button>
+                <button data-correct="true">the substance of what makes a civilization, not luxuries</button>
+                <button data-correct="false">useful only for training public speakers</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; construe line 3</div>
+            <div class="widget-question">In <span class="lat">Haec studia &hellip; senect&#363;tem oblectant</span>, <span class="lat">oblectant</span> means:</div>
+            <div class="widget-options">
+                <button data-correct="true">they delight (old age)</button>
+                <button data-correct="false">they abandon (old age)</button>
+                <button data-correct="false">they lengthen (old age)</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; construe line 5</div>
+            <div class="widget-question">In line 5, <span class="lat">ita in animum penetrant ut nusquam disc&#275;dant</span>, the <span class="lat">ut</span>-clause is a&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">purpose clause</button>
+                <button data-correct="true">result clause (cued by <span class="lat">ita</span>)</button>
+                <button data-correct="false">indirect command</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; construe line 8</div>
+            <div class="widget-question"><span class="lat">Po&#275;ta n&#333;n erat qu&#299; n&#333;n &hellip; rel&#299;quisset.</span> The double negative means, in effect:</div>
+            <div class="widget-options">
+                <button data-correct="true">there was no poet who had not left some proof of his genius (i.e., every poet did)</button>
+                <button data-correct="false">no poet ever left proof of his genius</button>
+                <button data-correct="false">the poet refused to leave any proof</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the occasion</div>
+            <div class="widget-question">What legal question is the <em>Pro Archi&#257;</em> actually defending?</div>
+            <div class="widget-options">
+                <button data-correct="false">whether poetry should be taught in schools</button>
+                <button data-correct="false">whether Cicero was a good orator</button>
+                <button data-correct="true">whether the poet Archias held valid Roman citizenship</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Now that you have read it: how did this passage feel compared with earlier reading this semester?</div>
+            <div class="widget-options">
+                <button data-response="Good &mdash; that density is the point. This is near exam pace. If you mapped the clauses before translating, you did exactly what Part 1 rewards.">Denser and faster than Plautus or the satire</button>
+                <button data-response="Encouraging &mdash; that means the checklist and vocabulary prep did their job. Keep the same habit on the exam: map first, translate second.">Manageable, because I pre-loaded the grammar and words</button>
+                <button data-response="Honest and useful to name. Reread lines 4 and 6 once more slowly, marking each subjunctive and its construction; those two carry the hardest syntax in the passage.">Still shaky on a couple of the long sentences</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit, then reveal: translate line 3 &mdash; <span class="lat">Haec studia adul&#275;scentiam alunt, senect&#363;tem oblectant, secund&#257;s r&#275;s ornant, adversīs perfugium ac s&#333;l&#257;cium praebent.</span> Write your version, then check.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">&ldquo;These studies nourish the young, delight the old, adorn prosperity, and provide refuge and solace in adversity.&rdquo; &mdash; Four parallel clauses, each with its own accusative object and a verb held to the end (<span class="lat">alunt &hellip; oblectant &hellip; ornant &hellip; praebent</span>). <span class="lat">Adversīs</span> is a dative/ablative plural used as a noun (&ldquo;for those in adversity&rdquo;). The accumulating parallelism is what makes the line ring.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 16.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with three finals-rehearsal sentences from this passage &mdash; then move to the module's graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then, in three sentences, state Cicero's argument for why the <span class="lat">studia h&#363;m&#257;nit&#257;tis</span> matter &mdash; and quote line 3 as your evidence.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ REAL CICERO TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Minimally adapted, at exam density &mdash; and you construed it. One more day of rehearsal and the module, and the semester's reading, is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 16.04 &middot; Reading &mdash; Pro Archi&#257;</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well construed.'
+        : 'Not quite — reread the line (map its clauses) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

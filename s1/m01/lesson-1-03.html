@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 1.03</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .vgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+    .vcard { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; }
+    .vcard .vl { font-style:italic; color:#C0392B; font-size:16px; }
+    .vcard .ve { font-size:14px; color:#1a2340; }
+    .vcard .vn { font-size:12px; color:#6b7a99; }
+    @media(max-width:640px){ .vgrid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:16px; background:#C7922C; color:#fff; border-radius:12px; padding:3px 12px; vertical-align:middle;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q1 &middot; Module 01</div>
+        <div style="font-size: 12px; color: #666;">Deponent Verbs I</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 1.03 &middot; Day 3 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Vocabulary &amp; the deponent perfect</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Plautus, <em>M&#299;les Gl&#333;ri&#333;sus</em></div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 1.03</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Eight Words &amp; the Perfect That Hides in Plain Sight</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 38 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">The forms are the frame; today you hang words on it &mdash; and meet the past tense that still looks passive.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">First, the module's <strong>eight vocabulary words</strong>: seven deponents drawn straight from the Plautus you will read tomorrow, plus <span class="lat">gl&#333;ria</span>, the play's theme-word. Then the <strong>deponent perfect</strong> &mdash; a perfect active participle + a form of <span class="lat">esse</span>. It looks exactly like a passive perfect, and it means something active every time. This is the single most common place readers stumble.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> give the meaning and conjugation class of the module's eight vocabulary words.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> translate a deponent perfect (e.g. <span class="lat">pollicitus est</span>) with correct active meaning.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 — VOCABULARY -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 1 &middot; VOCABUL&#256;RIUM <span class="pill-time">10 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Eight words for Module 01</h3>
+        <p style="font-size:15px;color:#6b7a99;line-height:1.55;margin:0 0 4px;">All seven verbs are deponents. The principal parts show <em>1st singular present &middot; infinitive &middot; 1st singular perfect</em>. The perfect is formed with a perfect active participle + <span class="lat">sum</span>, even though the verb is &ldquo;passive&rdquo; in form.</p>
+        <div class="vgrid">
+            <div class="vcard"><div class="vl">m&#299;ror, m&#299;r&#257;r&#299;, m&#299;r&#257;tus sum</div><div class="ve">to marvel at, be amazed by</div><div class="vn">1st conj. deponent &middot; + acc.</div></div>
+            <div class="vcard"><div class="vl">c&#333;nor, c&#333;n&#257;r&#299;, c&#333;n&#257;tus sum</div><div class="ve">to try, attempt</div><div class="vn">1st conj. deponent &middot; + inf.</div></div>
+            <div class="vcard"><div class="vl">hortor, hort&#257;r&#299;, hort&#257;tus sum</div><div class="ve">to urge, encourage</div><div class="vn">1st conj. deponent &middot; + ut/inf.</div></div>
+            <div class="vcard"><div class="vl">moror, mor&#257;r&#299;, mor&#257;tus sum</div><div class="ve">to delay, linger</div><div class="vn">1st conj. deponent</div></div>
+            <div class="vcard"><div class="vl">polliceor, pollic&#275;r&#299;, pollicitus sum</div><div class="ve">to promise</div><div class="vn">2nd conj. deponent &middot; + acc. or inf.</div></div>
+            <div class="vcard"><div class="vl">vereor, ver&#275;r&#299;, veritus sum</div><div class="ve">to fear, respect, be in awe of</div><div class="vn">2nd conj. deponent &middot; + acc. or n&#275;</div></div>
+            <div class="vcard"><div class="vl">fateor, fat&#275;r&#299;, fassus sum</div><div class="ve">to confess, acknowledge, admit</div><div class="vn">2nd conj. deponent &middot; + acc. or acc. + inf.</div></div>
+            <div class="vcard"><div class="vl">gl&#333;ria, -ae (f.)</div><div class="ve">glory, fame, renown; boastfulness</div><div class="vn">Key Plautus theme word</div></div>
+        </div>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:6px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; READ THE ENTRY LIKE A DIAGNOSTIC</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Every verb here shows the deponent signature: 1st part in <span class="lat">-or</span>, infinitive in <span class="lat">-&#257;r&#299;</span> or <span class="lat">-&#275;r&#299;</span>, perfect in <span class="lat">-us sum</span>. Notice the infinitive is what separates 1st (<span class="lat">-&#257;r&#299;</span>) from 2nd (<span class="lat">-&#275;r&#299;</span>) conjugation.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 — THE DEPONENT PERFECT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128204; PART 2 &middot; THE DEPONENT PERFECT <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Looks passive, means active</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The perfect tense of a deponent uses a <strong>perfect active participle</strong> (PAP) + a form of <span class="lat">esse</span>. This looks identical to a passive perfect. But remember: the meaning is always active.</p>
+        <table class="gtable">
+            <thead><tr><th>Form</th><th>Looks like</th><th>Means</th></tr></thead>
+            <tbody>
+                <tr><td><span class="lat">m&#299;r&#257;tus sum</span></td><td>Passive perfect: &ldquo;I have been marveled&rdquo;</td><td style="color:#2A9D5C;font-weight:600;">I have marveled / I marveled</td></tr>
+                <tr><td><span class="lat">hort&#257;tus es</span></td><td>Passive perfect: &ldquo;you have been urged&rdquo;</td><td style="color:#2A9D5C;font-weight:600;">You have urged / you urged</td></tr>
+                <tr><td><span class="lat">pollicitus est</span></td><td>Passive perfect: &ldquo;he has been promised&rdquo;</td><td style="color:#2A9D5C;font-weight:600;">He has promised / he promised</td></tr>
+            </tbody>
+        </table>
+        <div class="culture-box" style="border-left-color:#C0392B;background:#FBEEEC;border-color:#E4B8B0;">
+            <div class="lbl" style="color:#a5331f;">&#9888;&#65039; COMMON MISTAKE</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Students often translate a deponent perfect as passive because of the <span class="lat">-tus/a/um sum</span> pattern. The test: check the dictionary entry. If the verb's principal parts show <span class="lat">-or, -&#257;r&#299;/-&#275;r&#299;/-&#299;, -&#257;tus/-&#299;tus/-tus sum</span>, it is a deponent and the meaning is always active regardless of form.</p>
+        </div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:10px 0 0;">One more subtlety worth noting as an honors reader: because the participle agrees with the subject in gender and number, <span class="lat">m&#299;r&#257;ta est</span> tells you the marveler is feminine singular, and <span class="lat">hort&#257;t&#299; sunt</span> tells you the urgers are masculine plural. The &ldquo;passive&rdquo; participle carries real information &mdash; just not passive <em>meaning</em>.</p>
+    </div>
+
+    <!-- PART 3 — APPLICATION -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; IDENTIFY THE DEPONENT <span class="pill-time">13 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five reps on today's vocabulary and the perfect. For each form, use the entry to decide the conjugation and the meaning. Wrong answers give a hint; Reset to retry.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which conjugation?</div>
+            <div class="widget-question"><span class="lat">m&#299;r&#257;bantur</span> (&ldquo;they were marveling&rdquo;) belongs to which conjugation?</div>
+            <div class="widget-options">
+                <button data-correct="true">1st &mdash; <span class="lat">m&#299;ror, m&#299;r&#257;r&#299;</span></button>
+                <button data-correct="false">2nd &mdash; <span class="lat">m&#299;reor, m&#299;r&#275;r&#299;</span></button>
+                <button data-correct="false">3rd &mdash; <span class="lat">m&#299;ror, m&#299;r&#299;</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which conjugation?</div>
+            <div class="widget-question"><span class="lat">vereor</span> (&ldquo;I fear&rdquo;) belongs to which conjugation?</div>
+            <div class="widget-options">
+                <button data-correct="false">1st &mdash; <span class="lat">-&#257;r&#299;</span></button>
+                <button data-correct="true">2nd &mdash; <span class="lat">ver&#275;r&#299;</span>, ending in <span class="lat">-&#275;r&#299;</span></button>
+                <button data-correct="false">4th &mdash; <span class="lat">-&#299;r&#299;</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; translate the perfect</div>
+            <div class="widget-question"><span class="lat">Pollicitus est.</span> What does it mean?</div>
+            <div class="widget-options">
+                <button data-correct="false">he has been promised</button>
+                <button data-correct="false">he was promising</button>
+                <button data-correct="true">he promised / he has promised</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; which conjugation?</div>
+            <div class="widget-question"><span class="lat">c&#333;n&#257;bor</span> (&ldquo;I will try&rdquo;) belongs to which conjugation?</div>
+            <div class="widget-options">
+                <button data-correct="true">1st &mdash; <span class="lat">c&#333;nor, c&#333;n&#257;r&#299;</span></button>
+                <button data-correct="false">2nd &mdash; <span class="lat">c&#333;neor, c&#333;n&#275;r&#299;</span></button>
+                <button data-correct="false">3rd &mdash; <span class="lat">c&#333;nor, c&#333;n&#299;</span></button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; read the participle</div>
+            <div class="widget-question"><span class="lat">Fassa est.</span> Given the feminine participle, this means:</div>
+            <div class="widget-options">
+                <button data-correct="false">he confessed</button>
+                <button data-correct="true">she confessed</button>
+                <button data-correct="false">she was confessed</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Which of these eight words do you expect to trip you up most in tomorrow's reading?</div>
+            <div class="widget-options">
+                <button data-response="Good self-knowledge. The perfect forms (pollicitus, veritus, fassus) are where the passive disguise is thickest — flag them now and you will read past them tomorrow.">The perfect forms</button>
+                <button data-response="Reasonable — the 2nd conjugation deponents (polliceor, vereor, fateor) share the -eor / -ērī shape. Say them a few times so the pattern feels automatic.">The 2nd conjugation set</button>
+                <button data-response="Fair — glōria is the odd one out, a noun among verbs, and it carries the play's whole theme. Watch how Plautus uses it to puncture his braggart.">glōria, the theme word</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit, then reveal: translate <span class="lat">Magn&#257;s r&#275;s pollicitus est</span>. Give the deponent perfect its correct active sense before checking.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">&ldquo;He promised great things.&rdquo; <span class="lat">Pollicitus est</span> is the deponent perfect of <span class="lat">polliceor</span> &mdash; active meaning, not &ldquo;was promised.&rdquo; <span class="lat">Magn&#257;s r&#275;s</span> is the accusative object.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 1.04</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you read real Plautus &mdash; the braggart soldier Pyrgopolyn&#299;c&#275;s boasting in the forum while his clever slave watches. Every deponent you learned this week is waiting in the text.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then quiz yourself: cover the English column and give the meaning of all eight words &mdash; then give the perfect of <span class="lat">hortor</span> and translate it (<span class="lat">hort&#257;tus sum</span> = &ldquo;I urged&rdquo;).</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; WORDS IN HAND</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">Eight words, the whole present system, and a perfect that no longer fools you. You have everything you need to read. Tomorrow, Plautus. <em>Ad cr&#257;stinum!</em></p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; Honors &middot; Quarter 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 1.03 &middot; Vocabulary &amp; the deponent perfect</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — the entry told you the conjugation, and the deponent gave you an active meaning.'
+        : 'Not quite — check the infinitive ending (-ārī vs -ērī) and remember the perfect is active. Try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

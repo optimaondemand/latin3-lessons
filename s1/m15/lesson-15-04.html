@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 &mdash; Lesson 15.04</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+    .pb{background:#FBFAF7;border:1px solid #E4C9A8;border-radius:8px;padding:16px 20px;margin:14px 0;}
+    .pbt{font-size:11px;color:#9a7b1e;letter-spacing:.4px;margin-bottom:10px;}
+    .pbl{font-size:17px;line-height:2.0;color:#0E1C42;}
+    .pbl span.line{display:block;}
+    .ln{color:#9C8E85;font-size:12px;margin-right:8px;}
+    .gl{font-size:13px;color:#6b7a99;line-height:1.7;border-top:1px solid #E4C9A8;padding-top:10px;margin-top:10px;}
+    .gl strong{color:#0E1C42;}
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">Q2 &middot; Module 15</div>
+        <div style="font-size: 12px; color: #666;">Advanced Cicero Reading II &middot; Honors</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 15.04 &middot; Day 4 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Reading &mdash; <em>In Catilinam</em></div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Cicero &middot; <em>In Catilinam</em></div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 15.04</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> Reading Cicero &mdash; <em>Qu&#333; &#363;sque tandem&hellip;?</em></div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 40 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">Devices plus vocabulary equals reading. Today you read the most famous opening in Roman oratory.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">First the opening of the <span class="lat">First Catilinarian</span> &mdash; Cicero confronting Catiline before the Senate &mdash; then the triumphant opening of the <span class="lat">Second</span>, delivered to the Roman people after Catiline fled. Read each passage aloud. No new grammar today: today you <em>use</em> the anaphora, apostrophe, questions, and CTF conditions you spent three days preparing for.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> read and translate the adapted opening of <span class="lat">In Catilinam</span> I and II with the running gloss.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> point to the rhetorical devices in the text and explain the effect each one produces.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; READING I <span class="pill-time">13 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">The opening &mdash; <em>In Catilinam</em> I.1&ndash;4, lightly adapted</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">Read the whole passage aloud once for rhythm, then again slowly with the gloss. Cicero addresses Catiline directly before the Senate.</p>
+        <div class="pb">
+            <div class="pbt">IN CATILINAM I &mdash; CICERO ADDRESSES CATILINE BEFORE THE SENATE (ADAPTED)</div>
+            <div class="pbl">
+                <span class="line"><span class="ln">1.</span>Qu&#333; &#363;sque tandem ab&#363;t&#275;re, Catil&#299;na, patienti&#257; nostr&#257;? Quam di&#363; etiam furor iste tuus nos &#275;l&#363;det?</span>
+                <span class="line"><span class="ln">2.</span>Nihil&#333; t&#275; nocturnum praesidium Pal&#257;t&#299;, nihil urbis vigiliae, nihil timor popul&#299;, nihil concursus bon&#333;rum omnium mov&#275;bat?</span>
+                <span class="line"><span class="ln">3.</span>Pat&#275;re tua c&#333;nsilia n&#333;n sent&#299;s? C&#333;nstrictam iam omnium h&#333;rum scienti&#257; ten&#275;r&#299; coni&#363;r&#257;ti&#333;nem tuam n&#333;n vid&#275;s?</span>
+                <span class="line"><span class="ln">4.</span>&#332; tempora, &#333; m&#333;r&#275;s! Sen&#257;tus haec intellegit, c&#333;nsul videt &mdash; hic tamen v&#299;vit.</span>
+                <span class="line"><span class="ln">5.</span>V&#299;vit? Imo v&#275;r&#333; etiam in sen&#257;tum venit, fit p&#363;blic&#299; c&#333;nsil&#299; particeps, notat et d&#275;signat ocul&#299;s ad caedem &#363;num quemque nostrum.</span>
+                <span class="line"><span class="ln">6.</span>N&#333;s autem, fort&#275;s vir&#299;, satis facere re&#299; p&#363;blicae vid&#275;mur s&#299; ist&#299;us fur&#333;rem ac t&#275;la v&#299;t&#257;mus.</span>
+                <span class="line"><span class="ln">7.</span>Ad mortem t&#275;, Catil&#299;na, d&#363;c&#299; iuss&#363; c&#333;nsulis iam pr&#299;dem oport&#275;bat &mdash; in t&#275; conferr&#299; pestem quam t&#363; in n&#333;s mach&#299;n&#257;ris.</span>
+                <span class="line"><span class="ln">8.</span>Quod s&#299; hoc, Catil&#299;na, tempore patri&#257; exire iussus ess&#275;s, n&#333;nne omnia ist&#299;us aud&#257;ciae monumenta d&#275;l&#275;ta essent?</span>
+            </div>
+            <div class="gl">
+                <strong>Gloss:</strong> qu&#333; &#363;sque tandem &mdash; how far, finally? &middot; ab&#363;t&#275;re &mdash; you will abuse (future 2nd sing. of <span class="lat">ab&#363;tor</span>, deponent) &middot; &#275;l&#363;det &mdash; will mock &middot; nocturnum praesidium Pal&#257;t&#299; &mdash; nightly guard of the Palatine &middot; concursus bon&#333;rum &mdash; gathering of all good citizens &middot; c&#333;nstrictam ten&#275;r&#299; &mdash; to be held bound &middot; imo v&#275;r&#333; &mdash; no, on the contrary &middot; particeps &mdash; partaker (takes gen.: <span class="lat">p&#363;blic&#299; c&#333;nsil&#299;</span>) &middot; notat et d&#275;signat ocul&#299;s &mdash; marks and singles out with his eyes &middot; iuss&#363; c&#333;nsulis &mdash; by the consul's order &middot; pestem &mdash; plague, destruction &middot; mach&#299;n&#257;ris &mdash; you are plotting (deponent) &middot; iussus ess&#275;s / d&#275;l&#275;ta essent = past CTF condition
+            </div>
+        </div>
+        <div class="culture-box">
+            <div class="lbl">&#127963;&#65039; HISTORICAL CONTEXT &mdash; CATILINARIAN CRISIS, 63 BC</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">In 63 BC, Cicero as consul uncovered Catiline's plot to overthrow the government. On November 8 he delivered this speech before the Senate with Catiline himself present in the chamber. The speech is partly genuine crisis rhetoric, partly a performance designed to shame Catiline into voluntary exile &mdash; which it achieved. Catiline left Rome that night. He died in battle against Roman forces in Etruria in early 62 BC.</p>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; READING II <span class="pill-time">9 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">After Catiline leaves &mdash; <em>In Catilinam</em> II.1&ndash;3, lightly adapted</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The next day, Catiline gone, Cicero speaks to the Roman people. Hear the tempo shift from confrontation to triumph.</p>
+        <div class="pb">
+            <div class="pbt">IN CATILINAM II &mdash; CICERO ADDRESSES THE ROMAN PEOPLE (ADAPTED)</div>
+            <div class="pbl">
+                <span class="line"><span class="ln">9.</span>Abiit, excessit, &#275;v&#257;sit, &#275;r&#363;pit &mdash; Catil&#299;na discessit!</span>
+                <span class="line"><span class="ln">10.</span>Quam rem p&#363;blicam hab&#275;mus? In qu&#257; urbe v&#299;vimus? Quid sent&#299;mus?</span>
+                <span class="line"><span class="ln">11.</span>At enim, R&#333;m&#257;n&#299;, id quod maxim&#275; vol&#333;, v&#333;s quoque id sc&#299;re d&#275;b&#275;tis: Catil&#299;nam v&#299;vum expuls&#299; sumus.</span>
+                <span class="line"><span class="ln">12.</span>N&#333;l&#299;te arbitr&#257;r&#299; m&#275; mala improb&#333;rum extim&#275;scere &mdash; ego enim t&#363;tus sum s&#299; v&#333;s t&#363;t&#299; estis.</span>
+            </div>
+            <div class="gl">
+                <strong>Gloss:</strong> abiit, excessit, &#275;v&#257;sit, &#275;r&#363;pit &mdash; went away, departed, escaped, burst out (4-verb anaphora for dramatic triumph) &middot; quod maxim&#275; vol&#333; &mdash; which I most want (relative clause: &ldquo;the thing which&hellip;&rdquo;) &middot; v&#299;vum &mdash; alive, predicative accusative (we expelled him while he was still alive &mdash; emphasis on the mercy Cicero gave Catiline) &middot; n&#333;l&#299;te arbitr&#257;r&#299; &mdash; do not suppose (neg. imperative + inf.) &middot; improb&#333;rum &mdash; of the wicked &middot; extim&#275;scere &mdash; to greatly fear
+            </div>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9989; PART 3 &middot; CHECK YOUR READING <span class="pill-time">15 min</span></div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0 0 6px;">Five checks &mdash; some on comprehension, some on the Latin itself. Take them slowly; the point is to prove you read the passage, not skim it.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the famous opening</div>
+            <div class="widget-question"><span class="lat">Qu&#333; &#363;sque tandem ab&#363;t&#275;re, Catil&#299;na, patienti&#257; nostr&#257;?</span> is best rendered:</div>
+            <div class="widget-options">
+                <button data-correct="true">&ldquo;How far, at last, will you abuse our patience, Catiline?&rdquo;</button>
+                <button data-correct="false">&ldquo;When will you finally leave Rome, Catiline?&rdquo;</button>
+                <button data-correct="false">&ldquo;Why do you fear our patience, Catiline?&rdquo;</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the form</div>
+            <div class="widget-question"><span class="lat">Ab&#363;t&#275;re</span> is which form of the deponent verb <span class="lat">ab&#363;tor</span>?</div>
+            <div class="widget-options">
+                <button data-correct="false">present indicative, 3rd sing.</button>
+                <button data-correct="true">future indicative, 2nd sing.</button>
+                <button data-correct="false">perfect indicative, 2nd sing.</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the device</div>
+            <div class="widget-question">In line 4, <span class="lat">&#332; tempora, &#333; m&#333;r&#275;s!</span> is an instance of:</div>
+            <div class="widget-options">
+                <button data-correct="false">a contrary-to-fact condition</button>
+                <button data-correct="false">indirect statement</button>
+                <button data-correct="true">apostrophe &mdash; direct address to abstractions</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; comprehension</div>
+            <div class="widget-question">In line 5, what shocking thing does Cicero say Catiline is still doing?</div>
+            <div class="widget-options">
+                <button data-correct="false">fleeing the city under cover of night</button>
+                <button data-correct="true">coming into the Senate and marking men out for death with his eyes</button>
+                <button data-correct="false">standing trial before the consul</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the mood shift</div>
+            <div class="widget-question">The four verbs <span class="lat">Abiit, excessit, &#275;v&#257;sit, &#275;r&#363;pit</span> that open the Second Catilinarian convey:</div>
+            <div class="widget-options">
+                <button data-correct="false">calm philosophical reflection</button>
+                <button data-correct="false">uncertainty about Catiline's whereabouts</button>
+                <button data-correct="true">breathless, triumphant relief that Catiline has gone</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">Commit then reveal &mdash; translate line 2: <span class="lat">Nihil&#333; t&#275; nocturnum praesidium Pal&#257;t&#299;, nihil urbis vigiliae, nihil timor popul&#299;, nihil concursus bon&#333;rum omnium mov&#275;bat?</span> Write your version, then check.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">&ldquo;Did the nightly guard of the Palatine move you not at all &mdash; not the city's night-watches, not the fear of the people, not the gathering of all the good citizens?&rdquo; <em style="color:#1A6B3D;">nihil&#333;&hellip;nihil&hellip;nihil&hellip;nihil = quadruple anaphora. The <span class="lat">-ne</span> on the first element signals the yes/no question. <span class="lat">Mov&#275;bat</span> = imperfect indicative &mdash; five subjects, one verb at the very end.</em></div>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">One more, commit then reveal &mdash; translate line 8: <span class="lat">Quod s&#299; hoc, Catil&#299;na, tempore patri&#257; exire iussus ess&#275;s, n&#333;nne omnia ist&#299;us aud&#257;ciae monumenta d&#275;l&#275;ta essent?</span> Then check.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">&ldquo;But if at this moment, Catiline, you had been ordered to leave your fatherland, would not all the monuments of that man's audacity have been destroyed?&rdquo; <em style="color:#1A6B3D;"><span class="lat">iussus ess&#275;s</span> = past CTF protasis (pluperf. subj. passive). <span class="lat">d&#275;l&#275;ta essent</span> = past CTF apodosis (pluperf. subj. passive). <span class="lat">N&#333;nne</span> expects &ldquo;yes&rdquo; &mdash; rhetorical.</em></div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 15.05</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you pull the whole module together with mixed practice &mdash; then you're ready for the graded work: the Module Quiz, the Translation Assignment, and the Survey.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas. Then read lines 1&ndash;4 aloud one more time, at full oratorical pace, and feel where the pressure builds.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; YOU READ CICERO TODAY</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">The most famous opening in Roman oratory &mdash; and you tracked every device as it struck. One more day of practice and the module is yours.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Quarter 2 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 15.04 &middot; Reading &mdash; In Catilinam</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — well read.'
+        : 'Not quite — reread the line (or check the gloss) and try again.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

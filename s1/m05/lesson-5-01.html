@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Latin 3 Honors &mdash; Lesson 5.01</title>
+<style>
+    body { margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6fa; }
+    .canvas-frame { max-width: 1100px; margin: 0 auto; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .optima-widget { background: linear-gradient(135deg, #E8F6FB 0%, #F4F9FC 100%); border: 1px solid #C5DCE5; border-left: 5px solid #2196D0; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+    .widget-kicker { font-size: 11px; color: #1B6A94; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .widget-question { font-size: 17px; color: #0E1C42; margin-bottom: 14px; line-height: 1.55; }
+    .widget-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .widget-options button { background: #FFFFFF; border: 1.5px solid #D0D9E8; border-radius: 8px; padding: 8px 14px; font-size: 14px; color: #0E1C42; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .widget-options button:hover { background: #F4F6FA; border-color: #55C8E8; }
+    .widget-options button.selected { background: #0E1C42; color: #FFFFFF; border-color: #0E1C42; }
+    .widget-options button.correct { background: #2A9D5C; color: #fff; border-color: #2A9D5C; }
+    .widget-options button.incorrect { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .widget-feedback { background: #FFFFFF; border-left: 3px solid #C7922C; padding: 10px 14px; font-size: 15px; color: #1a2340; line-height: 1.55; margin: 10px 0; display: none; border-radius: 4px; }
+    .widget-feedback.show { display: block; }
+    .widget-reset { background: transparent; border: 1px solid #C7922C; color: #C7922C; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; margin-top: 6px; }
+    .widget-reset:hover { background: #FDF3E3; }
+    .reveal-btn { background: #0E1C42; color:#fff; border:none; border-radius:6px; padding:8px 14px; font-size:14px; cursor:pointer; font-family:inherit; }
+    .reveal-body { display:none; margin-top:10px; background:#fff; border-left:3px solid #2A9D5C; padding:10px 14px; border-radius:4px; font-size:15px; color:#1a2340; }
+    .reveal-body.show { display:block; }
+    .pill-time { display: inline-block; background: #C7922C; color: #fff; font-size: 12px; border-radius: 12px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    .opt-strip { background: #FDF7E9; border: 1px dashed #C7922C; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+    .opt-strip .lbl { font-size: 11px; color: #9a7b1e; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .markdone { background: #EAF6EE; border: 1px solid #2A9D5C; border-left: 5px solid #2A9D5C; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+    .markdone .lbl { font-size: 11px; color: #1A6B3D; letter-spacing: 0.4px; margin-bottom: 6px; }
+    .gtable { width:100%; border-collapse:collapse; font-size:15px; margin:12px 0; }
+    .gtable th { background:#0E1C42; color:#fff; text-align:left; padding:8px 12px; font-size:13px; }
+    .gtable td { padding:8px 12px; border-bottom:1px solid #D0D9E8; }
+    .gtable tr:nth-child(even) td { background:#F4F9FC; }
+    .ending { color:#C0392B; font-weight:700; }
+    .lat { font-style:italic; color:#0E1C42; }
+    .parse { font-size:14px; color:#6b7a99; line-height:1.5; margin:2px 0 0; }
+    .sentence { border:1px solid #D0D9E8; border-radius:8px; padding:10px 14px; margin:8px 0; }
+    .sentence .s-lat { font-style:italic; color:#0E1C42; font-size:17px; }
+    .contrast { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+    .contrast .col { border:1px solid #D0D9E8; border-radius:8px; padding:14px 16px; }
+    .contrast .col.a { border-top:3px solid #0E1C42; }
+    .contrast .col.b { border-top:3px solid #C7922C; }
+    .contrast h4 { margin:0 0 8px; color:#0E1C42; font-size:16px; }
+    .culture-box { background:#FBF4EE; border:1px solid #E4C9A8; border-left:5px solid #C7922C; border-radius:8px; padding:16px 20px; margin:18px 0; }
+    .culture-box .lbl { font-size:11px; color:#9a7b1e; letter-spacing:.4px; margin-bottom:8px; }
+    .etym-box { background:#EEF6F1; border:1px solid #BFE0CC; border-left:5px solid #2A9D5C; border-radius:8px; padding:14px 18px; margin:16px 0; }
+    .etym-box .lbl { font-size:11px; color:#1A6B3D; letter-spacing:.4px; margin-bottom:6px; }
+    .virtue-box { background:#F1EBF6; border:1px solid #D4C2E4; border-left:5px solid #5A2A82; border-radius:8px; padding:14px 18px; margin:18px 0; }
+    .virtue-box .lbl { font-size:11px; color:#5A2A82; letter-spacing:.4px; margin-bottom:6px; }
+    @media(max-width:640px){ .contrast{grid-template-columns:1fr;} }
+    .roma { display:flex; height:6px; width:100%; border-bottom:1px solid #D0D9E8; }
+    .roma i { display:block; }
+    .roma .p { flex:2; background:#5A2A82; }
+    .roma .g { flex:1; background:#C7922C; }
+    .sol { color:#C79A1E; font-style:normal; }
+</style>
+</head>
+<body>
+<div class="canvas-frame">
+
+<div style="background: #0E1C42; border-bottom: 5px solid #55C8E8; padding: 22px 34px;">
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><img src="https://raw.githubusercontent.com/optimaondemand/optima-assets/eeb0b335630058906d52f478028361d352253a93/images/Optima%20Final%20Circle%20-%20Owl%20Only.png" alt="Optima Academy" style="width: 50px; height: 40px; object-fit: contain;" /></div>
+        <div>
+            <div style="font-size: 28px; color: #ffffff; line-height: 1.2;">Optima Academy Online</div>
+            <div style="font-size: 12px; color: #55c8e8;">An Education Experience Company</div>
+        </div>
+    </div>
+    <div style="font-size: 36px; color: #ffffff; margin-bottom: 6px;">LATIN 3 <span style="font-size:22px;">&#127963;&#65039;</span> <span style="font-size:15px; color:#C7922C; letter-spacing:1px; vertical-align:middle;">HONORS</span></div>
+</div>
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+
+<div style="background: #FFFFFF; border-bottom: 2px solid #D0D9E8; display: flex; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Quarter / Module</div>
+        <div style="font-size: 17px; color: #0e1c42;">S1 &middot; Module 05</div>
+        <div style="font-size: 12px; color: #666;">Perfect &amp; Pluperfect Subjunctive</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Lesson</div>
+        <div style="font-size: 17px; color: #0e1c42;">Lesson 5.01 &middot; Day 1 of 5</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px; border-right: 1px solid #D0D9E8;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Topic</div>
+        <div style="font-size: 17px; color: #0e1c42; font-style: italic;">Completing the subjunctive</div>
+    </div>
+    <div style="flex: 1; min-width: 140px; padding: 12px 16px;">
+        <div style="font-size: 11px; color: #6b7a99; margin-bottom: 4px;">Module Theme</div>
+        <div style="font-size: 16px; color: #0e1c42;">Petronius &middot; <span class="lat">Cēna Trīmalchiōnis</span></div>
+    </div>
+</div>
+
+<div style="padding: 24px 34px;">
+
+    <div style="background: #EEF1F8; border-left: 5px solid #0E1C42; border-radius: 7px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #0e1c42; margin-bottom: 6px;">Lesson 5.01</div>
+        <div style="font-size: 22px; color: #0e1c42; margin-bottom: 4px;"><span class="sol">&#9733;</span> The Subjunctive System, Completed</div>
+        <div style="font-size: 16px; color: #666;">Lesson &middot; about 35 minutes</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128214; TODAY'S FOCUS</div>
+        <div style="font-size: 20px; color: #0e1c42; font-style: italic; margin-bottom: 10px;">You already command two of the four subjunctive tenses. This module hands you the last two &mdash; and with them, the whole machine.</div>
+        <div style="font-size: 18px; color: #1a2340; line-height: 1.65;">In earlier modules you built the <strong>present</strong> and <strong>imperfect</strong> subjunctive and learned to use them in purpose clauses, result clauses, indirect questions, and <span class="lat">cum</span>-clauses. Those two tenses handle actions happening <em>at the same time</em> as the main verb. But Latin authors constantly need to say that a subordinate action happened <em>earlier</em> &mdash; and for that they reach for the <strong>perfect</strong> and <strong>pluperfect subjunctive</strong>. Master these two, and you can express the full <strong>sequence of tenses</strong> &mdash; the rule that links every subjunctive to its main verb. Today there is nothing to drill: just the map of where the week is going, and your first look at the author who will test it, <strong>Petronius</strong>.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127919; BY THE END OF THIS LESSON YOU WILL BE ABLE TO&hellip;</div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> name all four subjunctive tenses and say which two this module adds.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> explain, in outline, why the <em>tense of the main verb</em> governs which subjunctive tense a subordinate clause takes.</div>
+        </div>
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="min-width: 26px; height: 26px; border-radius: 50%; background: #C7922C; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+            <div style="font-size: 18px; color: #1a2340; line-height: 1.65;"><strong>I will be able to</strong> place Petronius and the <span class="lat">Cēna Trīmalchiōnis</span> in their literary and historical setting.</div>
+        </div>
+    </div>
+
+    <!-- PART 1 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#9200; PART 1 &middot; WHERE YOU ALREADY STAND <span class="pill-time">6 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Two tenses down, two to go</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">The subjunctive mood expresses actions that are willed, intended, potential, or subordinated &mdash; not plainly stated facts. You already form and read two of its four tenses:</p>
+        <table class="gtable">
+            <thead><tr><th>Tense</th><th>How you form it</th><th>Typical force</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Present subj.</strong></td><td>modified present stem (e.g. <span class="lat">amet, moneat, dūcat</span>)</td><td>same-time action after a primary main verb</td></tr>
+                <tr><td><strong>Imperfect subj.</strong></td><td>infinitive + endings (<span class="lat">amāret, monēret, dūceret</span>)</td><td>same-time action after a secondary main verb</td></tr>
+            </tbody>
+        </table>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 10px 0 0;">Notice what both of these share: they describe an action <em>contemporaneous</em> with the main verb. What neither can do &mdash; yet &mdash; is signal that the subordinate action happened <strong>before</strong> the main verb. That gap is exactly what the perfect and pluperfect subjunctive fill.</p>
+        <div class="optima-widget ow-reflect">
+            <div class="widget-kicker">&#128173; QUICK CHECK-IN &middot; no wrong answer</div>
+            <div class="widget-question">Before we go further &mdash; how solid do the two tenses you already know feel right now?</div>
+            <div class="widget-options">
+                <button data-response="Excellent. Then the perfect and pluperfect will slot in cleanly, because they are built on machinery you already trust: perfect stems and familiar endings.">Solid &mdash; I can form and read both</button>
+                <button data-response="Good to name it. Keep the present/imperfect chart above open this week; the two new tenses contrast directly against these, so a quick refresh will pay off fast.">A bit rusty on one of them</button>
+                <button data-response="Fair enough. Treat this module as the moment it all clicks into a system &mdash; seeing all four tenses side by side is often when the subjunctive finally makes sense.">Honestly, still shaky on the subjunctive</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#128218; PART 2 &middot; THE BIG IDEA <span class="pill-time">12 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Time is relative &mdash; and the main verb sets the clock</h3>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 0 0 10px 0;">A subjunctive verb almost never stands alone. It lives in a subordinate clause hanging off a main verb, and Latin coordinates the two with a rule called the <strong>sequence of tenses</strong>. The rule has two moving parts:</p>
+        <div class="contrast">
+            <div class="col a">
+                <h4>1. Is the main verb primary or secondary?</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;"><strong>Primary</strong> = present, future, future perfect.<br><strong>Secondary</strong> = imperfect, perfect, pluperfect.<br><br>This decides <em>which pair</em> of subjunctive tenses you may use.</div>
+            </div>
+            <div class="col b">
+                <h4>2. Same time, or before?</h4>
+                <div style="font-size:16px;color:#1a2340;line-height:1.6;">If the subordinate action is <strong>contemporaneous</strong>, use present/imperfect.<br>If it is <strong>prior</strong>, use perfect/pluperfect.<br><br>This decides <em>which member</em> of the pair.</div>
+            </div>
+        </div>
+        <p style="font-size: 17px; color: #1a2340; line-height: 1.65; margin: 12px 0 10px 0;">So the two new tenses are not random additions &mdash; they are the "before" slots in a four-cell grid. Once you can form them, you can complete every clause type you already know (indirect question, result, purpose, <span class="lat">cum</span>-circumstantial) in <em>any</em> time relationship the author needs.</p>
+        <div style="background:#F4F9FC;border:1px solid #D0D9E8;border-left:4px solid #2196D0;border-radius:6px;padding:12px 16px;margin:12px 0 0;">
+            <div style="font-size:11px;color:#1B6A94;letter-spacing:.3px;margin-bottom:6px;">&#128161; WHY THIS MATTERS FOR REAL LATIN</div>
+            <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:0;">Authentic authors &mdash; Cicero, Livy, Petronius &mdash; assume you read sequence automatically. When Petronius writes <span class="lat">rogāvērunt num ipse vēnisset</span> ("they asked whether he himself had come"), the pluperfect subjunctive <span class="lat">vēnisset</span> is doing precise temporal work: the coming happened <em>before</em> the asking. Miss the tense and you miss the timeline of the scene.</p>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 14px;">&#127963;&#65039; PART 3 &middot; MEET THE AUTHOR <span class="pill-time">9 min</span></div>
+        <h3 style="font-size: 20px; color: #0e1c42; margin: 6px 0 8px 0;">Petronius and the feast of Trimalchio</h3>
+        <div class="culture-box">
+            <div class="lbl">&#128220; PETRONIUS &middot; THE <em>SATYRICA</em></div>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;">The <span class="lat">Satyrica</span> (often called the <span class="lat">Satyricon</span>) is a comic, satirical novel in prose and verse, written in the mid-first century A.D. &mdash; almost certainly by <strong>Gaius Petronius</strong>, the courtier whom Tacitus calls <span class="lat">arbiter elegantiae</span>, Nero's "judge of taste." Its most famous surviving stretch is the <span class="lat">Cēna Trīmalchiōnis</span>, the "Dinner of Trimalchio."</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0 0 10px;"><strong>Trimalchio</strong> is a freedman &mdash; a former slave &mdash; who has grown fabulously, vulgarly rich and now throws a dinner party of staggering, tasteless excess. Petronius uses him to skewer the <em>nouveau riche</em> of Neronian Rome: the man who has money but no <span class="lat">gustus</span>, wealth without cultivation.</p>
+            <p style="font-size:17px;color:#1a2340;line-height:1.65;margin:0;">You will read an adapted passage, <span class="lat">Trīmalchiō Intrat</span> ("Trimalchio Enters"), on Day 4. It is dense with exactly the grammar of this module &mdash; result clauses, indirect questions, and <span class="lat">cum</span>-clauses stacked with perfect and pluperfect subjunctives. This is why we build the forms first.</p>
+        </div>
+        <p style="font-size:16px;color:#1a2340;line-height:1.6;margin:14px 0 6px;">Five quick orientation checks &mdash; they set the frame for the week. Wrong answers give a hint; use Reset to try again.</p>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the system</div>
+            <div class="widget-question">Which two subjunctive tenses does this module add?</div>
+            <div class="widget-options">
+                <button data-correct="true">perfect and pluperfect</button>
+                <button data-correct="false">present and imperfect</button>
+                <button data-correct="false">future and future perfect</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; what governs the choice</div>
+            <div class="widget-question">In the sequence of tenses, what decides which subjunctive tense a subordinate clause takes?</div>
+            <div class="widget-options">
+                <button data-correct="false">the gender of the subject</button>
+                <button data-correct="true">the tense of the main verb, plus the time relationship</button>
+                <button data-correct="false">whether the clause is positive or negative</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the "before" slot</div>
+            <div class="widget-question">The perfect and pluperfect subjunctive are needed chiefly to express a subordinate action that happens&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">at the same time as the main verb</button>
+                <button data-correct="false">after the main verb</button>
+                <button data-correct="true">before the main verb</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; primary sequence</div>
+            <div class="widget-question">Which set of main-verb tenses counts as <em>primary</em> sequence?</div>
+            <div class="widget-options">
+                <button data-correct="true">present, future, future perfect</button>
+                <button data-correct="false">imperfect, perfect, pluperfect</button>
+                <button data-correct="false">present, imperfect, perfect</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div class="optima-widget ow-eval">
+            <div class="widget-kicker">&#9989; TRY IT &middot; the author</div>
+            <div class="widget-question">Trimalchio, the host of the famous dinner, is best described as&hellip;</div>
+            <div class="widget-options">
+                <button data-correct="false">a Roman senator of ancient family</button>
+                <button data-correct="false">a Greek philosopher visiting Rome</button>
+                <button data-correct="true">a freedman grown vulgarly rich</button>
+            </div>
+            <div class="widget-feedback"></div>
+            <button class="widget-reset">Reset</button>
+        </div>
+        <div style="margin-top:16px;">
+            <p style="font-size:16px;color:#1a2340;margin-bottom:8px;">In your own words: why does Latin <em>need</em> a perfect and a pluperfect subjunctive when it already has a present and an imperfect one? Say your reasoning, then reveal.</p>
+            <button class="reveal-btn">Reveal answer</button>
+            <div class="reveal-body">Because the present and imperfect subjunctive can only mark <strong>same-time</strong> action. To show that a subordinate action happened <strong>earlier</strong> than the main verb, Latin needs a second pair: the <strong>perfect</strong> subjunctive for "before" in primary sequence, and the <strong>pluperfect</strong> subjunctive for "before" in secondary sequence. Together the four tenses cover every time relationship an author might need.</div>
+        </div>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div style="background: #FFFFFF; border-top: 3px solid #0E1C42; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 16px;">&#10145;&#65039; WHAT YOU'LL DO NEXT</div>
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="min-width: 34px; height: 34px; border-radius: 50%; background: #0E1C42; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+            <div>
+                <div style="font-size: 18px; color: #0e1c42; margin-bottom: 4px;"><strong>Continue to Lesson 5.02</strong></div>
+                <div style="font-size: 16px; color: #1a2340; line-height: 1.55;">Tomorrow you build the actual forms: the <strong>perfect active subjunctive</strong> (<span class="lat">-erim</span> endings) and the <strong>pluperfect active subjunctive</strong> (<span class="lat">-issem</span> endings), both from the perfect stem you already know.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="markdone">
+        <div class="lbl">&#9989; BEFORE YOU LEAVE</div>
+        <div style="font-size: 17px; color: #1a2340; line-height: 1.6;">Click <strong>&ldquo;Mark as Done&rdquo;</strong> on this page in Canvas so your progress is recorded. Then, out loud, name all four subjunctive tenses and say which one marks a "before" action in secondary sequence.</div>
+    </div>
+
+    <div style="background: #FFFFFF; border-top: 3px solid #C7922C; border: 1px solid #D0D9E8; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: #c7922c; margin-bottom: 12px;">&#128170; THE MAP IS IN HAND</div>
+        <p style="font-size: 18px; color: #1a2340; line-height: 1.65; margin: 0;">You know the shape of the whole system now: four tenses, two decisions, one elegant rule. Tomorrow you forge the last two forms. <em>Ad crāstinum!</em> &mdash; until tomorrow.</p>
+    </div>
+
+</div>
+
+<div class="roma" aria-hidden="true"><i class="p"></i><i class="g"></i><i class="p"></i></div>
+<div style="background: #0E1C42; border-top: 3px solid #55C8E8; padding: 18px 34px; text-align: center;">
+    <div style="font-size: 18px; color: #ffffff; margin-bottom: 6px;"><span style="color: #55c8e8;">Optima Academy Online</span> &middot; LATIN 3 &#127963;&#65039; &middot; Semester 1 &middot; Student Lesson Page</div>
+    <div style="font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 4px;">Lesson 5.01 &middot; Completing the subjunctive</div>
+    <div style="font-size: 12px; color: rgba(255,255,255,0.4);">&copy; Optima Academy Online &middot; An Education Experience Company</div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('.widget-reset');
+    if (reset) {
+      var w = reset.closest('.optima-widget');
+      w.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected','correct','incorrect'); });
+      w.querySelectorAll('.widget-feedback').forEach(function (f) { f.classList.remove('show'); f.textContent = ''; });
+      return;
+    }
+    var rBtn = e.target.closest('.ow-reflect .widget-options button');
+    if (rBtn) {
+      var rw = rBtn.closest('.optima-widget');
+      rw.querySelectorAll('.widget-options button').forEach(function (b) { b.classList.remove('selected'); });
+      rBtn.classList.add('selected');
+      var fb = rw.querySelector('.widget-feedback');
+      fb.textContent = rBtn.dataset.response || '';
+      fb.classList.add('show');
+      return;
+    }
+    var eBtn = e.target.closest('.ow-eval .widget-options button');
+    if (eBtn) {
+      var ew = eBtn.closest('.optima-widget');
+      var correct = eBtn.dataset.correct === 'true';
+      eBtn.classList.add(correct ? 'correct' : 'incorrect');
+      var efb = ew.querySelector('.widget-feedback');
+      efb.textContent = correct
+        ? 'Correct — that is exactly the frame for the week ahead.'
+        : 'Not quite — reread the section above and try once more.';
+      efb.classList.add('show');
+      return;
+    }
+    var rev = e.target.closest('.reveal-btn');
+    if (rev) {
+      var body = rev.parentElement.querySelector('.reveal-body');
+      if (body) body.classList.toggle('show');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
